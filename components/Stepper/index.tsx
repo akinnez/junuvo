@@ -31,10 +31,10 @@ function Stepper() {
             className={`flex flex-col md:flex-row  items-center py-2.5 rounded gap-x-1 sm:gap-x-3 `}
           >
             <div
-              className={`font-bold rounded-full w-12 h-12 flex justify-center items-center  transition-colors duration-200 text-xl ${
+              className={`rounded-full w-12 h-12 flex justify-center items-center  transition-colors duration-200 text-xl ${
                 currentStep >= idx + 1
-                  ? "bg-[#00ADEF] text-white"
-                  : "bg-gray-200 text-gray-700"
+                  ? "bg-[#00ADEF] text-white font-bold"
+                  : "bg-transparent text-gray-400  border border-secondary"
               }
               ${currentStep > idx + 1 ? "bg-[#00ADEF] text-white" : ""}
                                 `}

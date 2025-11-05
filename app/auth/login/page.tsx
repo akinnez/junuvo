@@ -68,6 +68,7 @@ function Login() {
               type="email"
               error={errors.email?.message as string}
               placeholder="Enter your email address"
+              className="border-none bg-[#F0F2F5] rounded-md"
             />
             <CustomInput
               form={form}
@@ -76,6 +77,7 @@ function Login() {
               type="password"
               error={errors.password?.message as string}
               placeholder="Enter your password"
+              className="border-none bg-[#F0F2F5] rounded-md"
             />
             <div className="flex justify-end my-5">
               <a

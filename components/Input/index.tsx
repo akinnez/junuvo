@@ -18,17 +18,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <>
         {label && (
-          <label className="block font-semibold text-sm text-gray-900">
+          <label className="block font-semibold text-sm text-gray-900 mb-2">
             {label}
           </label>
         )}
-        <div
-          style={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
+        <div className="relative flex items-center">
           <input
             ref={ref}
             type={inputType}
@@ -41,14 +35,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               { "pr-10": isPassword },
               { "pr-4": !isPassword }
             )}
-            // style={{
-            //   paddingRight: isPassword ? 40 : 8,
-            //   border: error ? "1px solid red" : "1px solid #ccc",
-            //   borderRadius: 4,
-            //   padding: 16,
-            //   width: "100%",
-            //   boxSizing: "border-box",
-            // }}
           />
           {isPassword && (
             <button

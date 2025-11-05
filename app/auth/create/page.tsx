@@ -29,7 +29,7 @@ export default function Create() {
 
   const handleProceed = () => {
     if (accountValue) {
-      router.push("/auth/create/profile");
+      router.push(`/auth/create/${accountValue}`);
       changeCurrentStep(2);
     } else {
       alert("Please select an account type to proceed.");

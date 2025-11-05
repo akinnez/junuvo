@@ -2,6 +2,7 @@
 @import "./inline.css";
 @import "tw-animate-css";
 
+
 body {
   background: var(--color-secondary-main);
   color: var(--color-tertiary);
@@ -21,18 +22,15 @@ a {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-primary-main);
+  background: var(--color-secondary-main);
+
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-secondary-main);
+   background: var(--color-primary-main);
   border-radius: var(--border-radius-sm);
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--color-primary-main);
 }
-
-/* *{
-  border: 1px solid red;
-} */

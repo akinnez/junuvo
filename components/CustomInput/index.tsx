@@ -33,7 +33,7 @@ const CustomInput = ({
             <FormControl className="">
               <div className="relative">
                 <Input
-                  className={`border-none bg-[#F0F2F5] rounded-md ${className}`}
+                  className={`${className}`}
                   label={label}
                   id={id}
                   type={type}
