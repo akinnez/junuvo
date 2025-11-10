@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Define the structure for each option
 interface SelectOption {
@@ -19,6 +19,10 @@ const SelectTypeAddForm: React.FC<SelectTypeProps> = ({
   onSelect,
 }) => {
   const [selectedValue, setSelectedValue] = useState(defaultValue);
+
+  useEffect(() => {
+    setSelectedValue(defaultValue);
+  }, [defaultValue]);
 
   const handleSelection = (value: string) => {
     setSelectedValue(value);

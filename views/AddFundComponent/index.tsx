@@ -38,7 +38,6 @@ export default function AddFundComponent() {
 
   const handleSelectionChange = (value: string) => {
     setValues(value);
-    console.log("Selected option:", value);
     // You would typically use this function to update state in the parent component
   };
 

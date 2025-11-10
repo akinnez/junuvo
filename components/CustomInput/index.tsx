@@ -1,3 +1,4 @@
+"use client";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import clsx from "clsx";
 import Input, { InputProps } from "../Input";
