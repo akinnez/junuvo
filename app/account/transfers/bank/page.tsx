@@ -1,10 +1,7 @@
 "use client";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
-import { addFundBeneficiarySchema } from "@/schema/addfund";
 import SelectTypeAddForm from "@/views/SelectTypeAddFormComponent";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import dynamic from "next/dynamic";
 import PageLayout from "@/components/PageLayout";
 import { useSearchParams, useRouter } from "next/navigation";

@@ -7,11 +7,7 @@ function CreateSavingsComponent({ children }: { children: React.ReactNode }) {
   const { accountType } = useParams();
   return (
     <PageLayout
-      title={`Set up your ${
-        accountType == "set-goals"
-          ? "goals"
-          : `${accountType?.toString()} savings plan`
-      }`}
+      title={`Set up your ${accountType?.toString()} savings plan`}
       description="Please provide the required informaton"
     >
       <CardPageLayout

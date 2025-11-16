@@ -5,8 +5,9 @@ import { fixedSavingSchema } from "@/schema/savings";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import InterestRateCard from "../InterestRateCard";
+import Link from "next/link";
 
-function FixedSavings() {
+function FixedSavings({ accountType }: { accountType?: string }) {
   const form = useForm<any>({
     resolver: zodResolver(fixedSavingSchema),
     defaultValues: {
@@ -52,10 +53,13 @@ function FixedSavings() {
         form={form}
         name="endDate"
         placeholder="Enter End Date"
+        // error={errors}
       />
       {<InterestRateCard />}
 
-      <Button className="w-full">Proceed</Button>
+      <Link href={`${accountType}/balance`}>
+        <Button className="w-full">Proceed</Button>
+      </Link>
     </CustomForm>
   );
 }

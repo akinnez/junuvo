@@ -5,9 +5,15 @@ interface InterestRate {
   noOfDays: string | number;
 }
 
-function InterestRateCard({ data }: { data?: InterestRate }) {
+function InterestRateCard({
+  data,
+  className,
+}: {
+  data?: InterestRate;
+  className?: string;
+}) {
   return (
-    <Card className="space-y-3 !p-5">
+    <Card className={`space-y-3 !py-5 !shadow ${className}`}>
       <h4 className="text-sm font-bold">Interest rate</h4>
       <ul className="text-xs space-y-3 list-disc">
         <li>

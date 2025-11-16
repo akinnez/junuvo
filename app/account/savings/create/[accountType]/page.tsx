@@ -1,15 +1,27 @@
 "use client";
-
-import FixedSavings from "@/views/FixedSavings";
-import SmartSavingComponent from "@/views/SmartSavingComponent";
 import { useParams } from "next/navigation";
+import dynamic from "next/dynamic";
+("next/dynamic");
 
+const DynamicFixedSavings = dynamic(() => import("@/views/FixedSavings"), {
+  ssr: false,
+});
+const DynamicSmartSaving = dynamic(
+  () => import("@/views/SmartSavingComponent"),
+  {
+    ssr: false,
+  }
+);
 function CreateSavingsPage() {
   const { accountType } = useParams();
   return (
     <>
-      {accountType == "fixed" && <FixedSavings />}
-      {accountType == "smart" && <SmartSavingComponent />}
+      {accountType == "fixed" && (
+        <DynamicFixedSavings accountType={accountType} />
+      )}
+      {accountType == "smart" && (
+        <DynamicSmartSaving accountType={accountType} />
+      )}
     </>
   );
 }

@@ -1,7 +1,11 @@
+"use client";
 import Button from "@/components/Button";
 import { formattedAmount } from "@/lib/currency-formatter";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 function AccountBalance() {
+  const { accountType } = useParams();
   return (
     <>
       <div className="w-full border-1 border-[#E4E7EC] border-dashed bg-[#F6F6F6] rounded-2xl py-3 px-5 flex justify-center items-center">
@@ -24,7 +28,9 @@ function AccountBalance() {
       </div>
       <div className="grid grid-cols-2 gap-5 mt-5">
         <Button className="!bg-[#E5E5E5] !text-black !font-bold">Back</Button>
-        <Button className="font-bold">Next</Button>
+        <Link href={`/account/savings/create/${accountType}/summary`}>
+          <Button className="font-bold w-full">Next</Button>
+        </Link>
       </div>
     </>
   );
