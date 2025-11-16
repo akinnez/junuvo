@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { Router } from "next/router"
 import { routes } from "@/routes";
-import { loginSchema } from "@/components/schema";
+import { loginSchema } from "@/schema";
 import CustomForm from "@/components/CustomForm";
 import CustomInput from "@/components/CustomInput";
 import Button from "@/components/Button";

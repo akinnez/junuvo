@@ -1,6 +1,6 @@
 "use client";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
-import { addFundBeneficiarySchema } from "@/components/schema/addfund";
+import { addFundBeneficiarySchema } from "@/schema/addfund";
 import SelectTypeAddForm from "@/views/SelectTypeAddFormComponent";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";

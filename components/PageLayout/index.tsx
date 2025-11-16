@@ -8,6 +8,7 @@ export interface PageLayoutProps {
   title: string;
   description: string;
   isBack?: boolean;
+  isCardAllow?: boolean;
 }
 
 export default function PageLayout({
@@ -15,6 +16,7 @@ export default function PageLayout({
   title,
   description,
   isBack = true,
+  isCardAllow = true,
 }: PageLayoutProps) {
   return (
     <div className="py-7">
@@ -23,7 +25,8 @@ export default function PageLayout({
         <h1 className="text-2xl font-bold">{title}</h1>
         <span className="text-sm text-gray-500">{description}</span>
       </div>
-      <Card className="mt-10">{children}</Card>
+      {isCardAllow && <Card className="mt-10">{children}</Card>}
+      {!isCardAllow && <div className="mt-10">{children}</div>}
     </div>
   );
 }

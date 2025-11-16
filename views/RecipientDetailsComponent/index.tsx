@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 import CustomForm from "@/components/CustomForm";
 import CustomInput from "@/components/CustomInput";
 import FormSelect from "@/components/FormSelect";
-import { recipientSchema } from "@/components/schema/addfund";
+import { recipientSchema } from "@/schema/recipient";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

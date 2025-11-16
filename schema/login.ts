@@ -1,5 +1,5 @@
 import z from "zod";
-import { ErrorMessages } from "../constants/ErrorMessages";
+import { ErrorMessages } from "../components/constants/ErrorMessages";
 
 export const loginSchema = z.object({
   email: z.email({

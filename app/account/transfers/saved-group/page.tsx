@@ -23,7 +23,7 @@ export default function Recipient() {
         description="Here is the list of recipients"
         className="max-w-md"
       >
-        <DebitAccountComponent type="recipient" />
+        <DebitAccountComponent type="saved" />
         <Button className="w-full mt-5">Proceed</Button>
       </CardPageLayout>
     </PageLayout>

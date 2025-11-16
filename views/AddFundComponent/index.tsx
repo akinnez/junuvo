@@ -4,7 +4,7 @@ import CustomForm from "@/components/CustomForm";
 import CustomInput from "@/components/CustomInput";
 import FormSelect from "@/components/FormSelect";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
-import { addFundSchema } from "@/components/schema/addfund";
+import { addFundSchema } from "@/schema/addfund";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import SelectTypeAddForm from "../SelectTypeAddFormComponent";
