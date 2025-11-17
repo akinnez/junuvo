@@ -1,6 +1,6 @@
 "use client";
-import SpendingTrend from "@/components/Dashboard/SpendingTrend";
-import StocksSection from "@/components/Dashboard/StocksSection";
+import SpendingTrend from "@/views/Dashboard/SpendingTrend";
+import StocksSection from "@/views/Dashboard/StocksSection";
 
 const BottomDashboardSection = () => {
   return (

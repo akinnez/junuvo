@@ -1,3 +1,4 @@
+'use client'
 import RecipientDetailsComponent from "@/views/RecipientDetailsComponent";
 
 function NewRecipientTransfer() {

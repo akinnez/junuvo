@@ -1,5 +1,5 @@
 "use client";
-import ContributionSettingsForm from "@/views/ContributionComponent";
+import ContributionSettingsForm from "@/views/Savings/ContributionComponent";
 
 function Contribution() {
   return <ContributionSettingsForm />;

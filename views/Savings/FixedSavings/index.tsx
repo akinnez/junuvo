@@ -4,7 +4,7 @@ import CustomInput from "@/components/CustomInput";
 import { fixedSavingSchema } from "@/schema/savings";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import InterestRateCard from "../InterestRateCard";
+import InterestRateCard from "../../InterestRateCard";
 import Link from "next/link";
 
 function FixedSavings({ accountType }: { accountType?: string }) {

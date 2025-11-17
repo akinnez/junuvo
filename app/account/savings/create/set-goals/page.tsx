@@ -1,6 +1,6 @@
 "use client";
 
-import SetGoalsComp from "@/views/SetGoals";
+import SetGoalsComp from "@/views/Savings/SetGoals";
 
 function SetGoals() {
   return <SetGoalsComp />;

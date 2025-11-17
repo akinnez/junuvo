@@ -3,11 +3,11 @@ import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
 ("next/dynamic");
 
-const DynamicFixedSavings = dynamic(() => import("@/views/FixedSavings"), {
+const DynamicFixedSavings = dynamic(() => import("@/views/Savings/FixedSavings"), {
   ssr: false,
 });
 const DynamicSmartSaving = dynamic(
-  () => import("@/views/SmartSavingComponent"),
+  () => import("@/views/Savings/SmartSavingComponent"),
   {
     ssr: false,
   }

@@ -1,4 +1,4 @@
-import CreateSavingsComponent from "@/views/CreateSavingsComponent";
+import CreateSavingsComponent from "@/views/Savings/CreateSavingsComponent";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

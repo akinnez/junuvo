@@ -3,7 +3,7 @@ import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
 import { formattedAmount } from "@/lib/currency-formatter";
 import { base64UrlDecode } from "@/lib/encode";
-import SavingPlanDetails from "@/views/SavingPlanDetails";
+import SavingPlanDetails from "@/views/Savings/SavingPlanDetails";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";

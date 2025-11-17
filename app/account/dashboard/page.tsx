@@ -1,7 +1,7 @@
 import Card from "@/components/Card";
-import AccountOverview from "@/views/AccountOverview";
-import Onboarding from "@/views/Onboarding";
-import PayBillsSection from "@/views/PayBillsOverview";
+import AccountOverview from "@/views/Dashboard/AccountOverview";
+import Onboarding from "@/views/Dashboard/Onboarding";
+import PayBillsSection from "@/views/Dashboard/PayBillsOverview";
 import BottomDashboardSection from "@/views/SpendingSection";
 
 export default function Dashboard() {

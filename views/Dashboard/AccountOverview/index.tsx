@@ -2,7 +2,7 @@
 
 import BalanceCard, {
   BalanceCardProps,
-} from "@/components/Dashboard/BalanceCard";
+} from "@/views/Dashboard/BalanceCard";
 
 const AccountOverview = () => {
   // Define the data for each card

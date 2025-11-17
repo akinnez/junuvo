@@ -1,8 +1,8 @@
 "use client";
 import Button from "@/components/Button";
 import InterestRateCard from "@/views/InterestRateCard";
-import PersonalSummary from "@/views/PersonalSummarySaving";
-import OtherDetailsSummary from "@/views/SavingsDetails";
+import PersonalSummary from "@/views/Savings/PersonalSummarySaving";
+import OtherDetailsSummary from "@/views/Savings/SavingsDetails";
 
 function SavingsSummary() {
   return (

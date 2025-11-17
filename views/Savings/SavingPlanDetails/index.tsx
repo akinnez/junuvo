@@ -11,6 +11,7 @@ import {
 import { formattedAmount } from "@/lib/currency-formatter";
 import Card from "@/components/Card";
 import Button from "@/components/Button";
+import Link from "next/link";
 
 // --- 1. Type Definitions ---
 
@@ -69,8 +70,14 @@ interface TransactionItemProps {
 const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
   const isFailed = transaction.status === "failed";
   const iconColor = isFailed
-    ? " !bg-[#FEE4E2] !border !border-[#FEF3F2]"
-    : "text-green-500";
+    ? " bg-[#FEE4E2]"
+    : "bg-[#C1FFC7] ";
+  const iconTextColor = isFailed
+    ? " text-red-500"
+    : "text-success";
+  const iconBorderColor = isFailed
+    ? "bg-[#FEF3F2]"
+    : "bg-[#E1FFEF] ";
   const amountColor = isFailed ? "text-gray-900" : "text-green-600";
   const Icon = isFailed ? AlertCircle : CheckCircle;
 
@@ -79,10 +86,12 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
       {/* Left side: Icon, Type, Time */}
       <div className="flex items-center space-x-3">
         {/* Icon Circle */}
-        <div
-          className={`p-2 rounded-full ${iconColor} bg-opacity-10 bg-current`}
+        <div className={`p-1 rounded-full ${iconBorderColor}`}>
+          <div
+          className={`p-2 rounded-full ${iconColor}`}
         >
-          <Icon className="w-5 h-5 text" />
+          <Icon className={`w-4 h-4 ${iconTextColor}`} />
+        </div>
         </div>
         {/* Text Details */}
         <div>
@@ -152,12 +161,12 @@ const SavingPlanDetails: React.FC = () => {
           <h2 className="text-lg font-bold text-gray-800">
             Recent Transactions
           </h2>
-          <a
+          <Link
             href="#"
             className="text-sm font-medium text-blue-600 hover:text-blue-700 transition duration-200"
           >
             See all
-          </a>
+          </Link>
         </div>
 
         {/* --- Section 4: Transactions List --- */}

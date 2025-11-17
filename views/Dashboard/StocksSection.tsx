@@ -1,4 +1,4 @@
-import QuickActionCard, { QuickAction } from "./QuickActionCard";
+import QuickActionCard, { QuickAction } from "../../components/Dashboard/QuickActionCard";
 
 const stocks: QuickAction[] = [
   {

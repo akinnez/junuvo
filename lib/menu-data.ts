@@ -18,6 +18,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'bnpl', label: 'BNPL', icon: CreditCard, isComingSoon: true },
   { id: 'p2p', label: 'P2P', icon: Users, isComingSoon: true },
   { id: 'pay-bills', label: 'Pay Bills', icon: Receipt, submenu: [
+    { id: 'airtime', label: 'Airtime & Data', icon: Banknote, href: '/account/bills/airtime' },
     { id: 'electricity', label: 'Electricity', icon: Banknote, href: '/bills/electricity' },
     { id: 'cabletv', label: 'Cable TV', icon: Banknote, href: '/bills/cabletv' },
     { id: 'betting', label: 'Betting', icon: Banknote, href: '/bills/betting' },
