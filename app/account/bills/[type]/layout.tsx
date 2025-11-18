@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Multiple Transfer",
 };
 
-export default function MultipleTransferLayout({
+export default function AirtimeDataLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

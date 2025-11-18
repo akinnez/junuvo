@@ -13,16 +13,6 @@ import Image from "next/image";
  * --- 1. Type Definitions ---
  */
 
-// Define the structure for an individual option
-type Option = {
-  value: string;
-  // Allows for rich content like icons, styled text, or external image elements
-  label: React.ReactNode;
-  disabled?: boolean;
-  // Optional property for icon or graphic associated with the option
-  icon?: string;
-};
-
 // Define props for the CustomSelect component
 export type CustomSelectProps = {
   id: string;

@@ -88,10 +88,10 @@ function AirtelDataComponent() {
         searchable={false}
       />
       <FormSelect
-        id="network"
+        id="provider"
         form={form}
-        label="Select Network"
-        name="network"
+        label="Select Provider"
+        name="provider"
         value={selectedNetwork}
         options={option}
         onChange={setSelectedNetwork}
@@ -113,7 +113,7 @@ function AirtelDataComponent() {
 
       <CustomInput
         id="phone"
-        label="Phone Number"
+        label="Meter Number"
         form={form}
         name="phone"
         placeholder="Enter Phone number"

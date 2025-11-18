@@ -11,11 +11,13 @@ export default function SummaryOverview({
   destination,
   currency = "NGN",
   children,
+  className,
 }: {
   amount?: string | number;
   createdAt?: string;
   destination?: string;
   currency?: string;
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -36,7 +38,9 @@ export default function SummaryOverview({
           {formattedAmount(currency, amount as string)}
         </span>
       </div>
-      <Card className="space-y-10 my-5 !shadow-none border-y border-x-0 rounded-none">
+      <Card
+        className={`space-y-10 my-5 !shadow-none border-y border-x-0 rounded-none ${className}`}
+      >
         {children}
       </Card>
       <Button className="w-full">Proceed</Button>
