@@ -98,7 +98,7 @@ function AirtelDataComponent() {
         searchable={false}
       />
 
-      {type == "data" && (
+      {type == "postpaid" && (
         <FormSelect
           id="plan"
           form={form}
@@ -112,11 +112,11 @@ function AirtelDataComponent() {
       )}
 
       <CustomInput
-        id="phone"
+        id="meterNo"
         label="Meter Number"
         form={form}
-        name="phone"
-        placeholder="Enter Phone number"
+        name="meterNo"
+        placeholder="Enter Meter Number"
         error={errors.phone?.message as string}
       />
       <div>
