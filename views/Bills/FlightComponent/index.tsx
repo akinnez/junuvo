@@ -37,12 +37,12 @@ const option: Option[] = [
   },
 ];
 
-function ElectricityComponent({ type }: { type: string }) {
+function FlightComponent({ type }: { type: string }) {
   const [selectedAcc, setSelectedAcc] = useState<string>("");
   const [selectedProvider, setSelectedProvider] = useState<string>("");
 
   const router = useRouter();
-
+  7;
   const form = useForm<electricity>({
     resolver: zodResolver(electricitySchema),
     defaultValues: {
@@ -64,7 +64,11 @@ function ElectricityComponent({ type }: { type: string }) {
 
     console.log(payload);
 
-    router.push(`/account/bills/summary/electricity`);
+    router.push(`/account/bills/flight/search`);
+  }
+
+  if (!["one-way", "round"].includes(type)) {
+    return router.push(`/account/bills/flight/round?type=one-way`);
   }
 
   return (
@@ -72,7 +76,7 @@ function ElectricityComponent({ type }: { type: string }) {
       <FormSelect
         id="debitAccount"
         form={form}
-        label="Select Account to debit"
+        label="Departure"
         name="debitAccount"
         value={selectedAcc}
         options={[
@@ -87,7 +91,7 @@ function ElectricityComponent({ type }: { type: string }) {
       <FormSelect
         id="provider"
         form={form}
-        label="Select Provider"
+        label="Destination"
         name="provider"
         value={selectedProvider}
         options={option}
@@ -96,35 +100,24 @@ function ElectricityComponent({ type }: { type: string }) {
       />
 
       <CustomInput
+        type="date"
         id="meterNo"
-        label="Meter Number"
+        label="Departure Date"
         form={form}
         name="meterNo"
-        placeholder="Enter Meter Number"
-        error={errors.meterNo?.message as string}
       />
-      {type == "postpaid" && (
+      {type == "round" && (
         <CustomInput
+          type="date"
           id="meterName"
-          label="Meter Name"
+          label="Return Date"
           form={form}
-          name="meterName"
+          name="amount"
           placeholder="Enter Meter Name"
         />
       )}
-      <div>
-        <CustomInput
-          id="amount"
-          label="Amount"
-          form={form}
-          name="amount"
-          placeholder="Enter amount"
-          error={errors.amount?.message as string}
-        />
-        <div>{}</div>
-      </div>
-      <Button className="w-full">Continue</Button>
+      <Button className="w-full">Proceed</Button>
     </CustomForm>
   );
 }
-export default ElectricityComponent;
+export default FlightComponent;

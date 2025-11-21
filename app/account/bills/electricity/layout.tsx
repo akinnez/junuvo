@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import AirtimeDataComp from ".";
+import { Metadata } from "next";
+import ElectricityComp from ".";
 
 export const metadata: Metadata = {
-  title: "Airtime&Date - MyJunuvo ",
-  description: "Multiple Transfer",
+  title: "Electricity - MyJunuvo ",
+  description: "Electricity Payment Plan",
 };
 
 export default function ElectricityLayout({
@@ -12,8 +12,8 @@ export default function ElectricityLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AirtimeDataComp>
+    <ElectricityComp>
       <div className="py-5">{children}</div>
-    </AirtimeDataComp>
+    </ElectricityComp>
   );
 }

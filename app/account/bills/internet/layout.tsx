@@ -1,5 +1,5 @@
+import AirtimeDataComp from "@/views/Bills/AirtimeLayoutComp";
 import type { Metadata } from "next";
-import AirtimeDataComp from ".";
 
 export const metadata: Metadata = {
   title: "Airtime&Date - MyJunuvo ",
