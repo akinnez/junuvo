@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
 import AirtimeDataComponent from "@/views/Bills/AirtimeDataComponent";
 
 function AirtimeData() {
-  return <AirtimeDataComponent />;
+  return <AirtimeDataComponent type="data" />;
 }
 
 export default AirtimeData;

@@ -37,8 +37,7 @@ const option: Option[] = [
   },
 ];
 
-function AirtelDataComponent() {
-  const { type } = useParams();
+function AirtelDataComponent({ type }: { type: string }) {
   const [selectedAcc, setSelectedAcc] = useState<string>("");
   const [selectedNetwork, setSelectedNetwork] = useState<string>("");
   const [selectedPlan, setSelectedPlan] = useState<string>("");
@@ -67,7 +66,7 @@ function AirtelDataComponent() {
 
     console.log(payload);
 
-    router.push(`summary/${type}`);
+    router.push(`/account/bills/summary/internet/${type}`);
   }
 
   return (
