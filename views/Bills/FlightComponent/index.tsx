@@ -42,7 +42,6 @@ function FlightComponent({ type }: { type: string }) {
   const [selectedProvider, setSelectedProvider] = useState<string>("");
 
   const router = useRouter();
-  7;
   const form = useForm<electricity>({
     resolver: zodResolver(electricitySchema),
     defaultValues: {

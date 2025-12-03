@@ -1,10 +1,10 @@
-function Card({
-  children,
-  className,
-}: {
+import React from "react";
+
+interface ICard extends React.AllHTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
-}) {
+}
+function Card({ children, className }: ICard) {
   return (
     <div
       className={

@@ -32,7 +32,7 @@ export const NavItem = ({
       <Icon className="h-5 w-5" />
       <span className="flex-1">{item.label}</span>
       {item.isComingSoon && (
-        <span className="text-[8px] bg-button font-semibold text-secondart px-2 py-0.5 rounded-full">
+        <span className="text-[8px] bg-button font-semibold text-secondary px-2 py-0.5 rounded-full">
           Coming soon
         </span>
       )}
