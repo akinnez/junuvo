@@ -6,3 +6,8 @@ type Option = {
   // Optional property for icon or graphic associated with the option
   icon?: string;
 };
+
+type DownloadFile =  {
+  startDate: string;
+  endDate: string;
+}

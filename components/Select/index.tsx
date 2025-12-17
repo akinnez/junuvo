@@ -272,7 +272,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
         aria-haspopup="listbox"
         aria-activedescendant={activeId}
         className={`
-          flex justify-between items-center w-full min-h-[48px] px-4 py-2 text-left
+          flex justify-between items-center w-full px-4 py-2 text-left
           border rounded-xl shadow-sm transition-all duration-150 group
           ${
             disabled

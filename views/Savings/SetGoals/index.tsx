@@ -5,6 +5,7 @@ import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
 import { formattedAmount } from "@/lib/currency-formatter";
 import { safeBtoa } from "@/lib/encode";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const data = [
   {
@@ -24,11 +25,13 @@ const data = [
 ];
 
 function SetGoalsComp() {
+  const router = useRouter();
   return (
     <PageLayout
       title="Savings"
       description="Create a saving plan as desired"
       showButton={true}
+      buttonFn={() => router.push("/account/savings/create")}
       buttonLabel="Create plan"
       buttonStyle="w-[327px] !px-5 !py-2.5"
       isBack={false}

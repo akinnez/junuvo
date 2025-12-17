@@ -67,7 +67,17 @@ function BusinessProfile() {
             >
               Upload your ID
             </label>
-            <UploadComponent />
+            <UploadComponent>
+              <div className="flex gap-x-1">
+                <h3 className="text-button text-sm font-semibold">
+                  Click to upload
+                </h3>
+                <p className="text-gray-600 text-sm">or drag and drop</p>
+              </div>
+              <span className="text-gray-400 text-xs text-center">
+                SVG, PNG, JPG or GIF (max. 800x400px)
+              </span>
+            </UploadComponent>
           </div>
         </form>
       </div>

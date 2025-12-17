@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Gilroy_Medium, Gilroy_ExtraBold } from "@/fonts";
 import "./styles/globals.css";
+import { ModalProvider } from "@/hooks/useModal";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,7 +23,7 @@ export default function RootLayout({
       <body
         className={`${Gilroy_Medium.variable} ${Gilroy_ExtraBold.variable} antialiased`}
       >
-        {children}
+        <ModalProvider>{children}</ModalProvider>
       </body>
     </html>
   );

@@ -1,17 +1,13 @@
 "use client";
 import React from "react";
 // Assuming lucide-react icons are available in a standard Next.js setup
-import {
-  Plus,
-  ListChecks,
-  AlertCircle,
-  CheckCircle,
-  Watch,
-} from "lucide-react";
+import { Plus, ListChecks, AlertCircle, CheckCircle } from "lucide-react";
 import { formattedAmount } from "@/lib/currency-formatter";
 import Card from "@/components/Card";
 import Button from "@/components/Button";
 import Link from "next/link";
+import { useModal } from "@/hooks/useModal";
+import WithDrawal from "@/modals/savings/Withdraw";
 
 // --- 1. Type Definitions ---
 
@@ -69,15 +65,9 @@ interface TransactionItemProps {
 
 const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
   const isFailed = transaction.status === "failed";
-  const iconColor = isFailed
-    ? " bg-[#FEE4E2]"
-    : "bg-[#C1FFC7] ";
-  const iconTextColor = isFailed
-    ? " text-red-500"
-    : "text-success";
-  const iconBorderColor = isFailed
-    ? "bg-[#FEF3F2]"
-    : "bg-[#E1FFEF] ";
+  const iconColor = isFailed ? " bg-[#FEE4E2]" : "bg-[#C1FFC7] ";
+  const iconTextColor = isFailed ? " text-red-500" : "text-success";
+  const iconBorderColor = isFailed ? "bg-[#FEF3F2]" : "bg-[#E1FFEF] ";
   const amountColor = isFailed ? "text-gray-900" : "text-green-600";
   const Icon = isFailed ? AlertCircle : CheckCircle;
 
@@ -87,11 +77,9 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
       <div className="flex items-center space-x-3">
         {/* Icon Circle */}
         <div className={`p-1 rounded-full ${iconBorderColor}`}>
-          <div
-          className={`p-2 rounded-full ${iconColor}`}
-        >
-          <Icon className={`w-4 h-4 ${iconTextColor}`} />
-        </div>
+          <div className={`p-2 rounded-full ${iconColor}`}>
+            <Icon className={`w-4 h-4 ${iconTextColor}`} />
+          </div>
         </div>
         {/* Text Details */}
         <div>
@@ -114,6 +102,16 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
 
 const SavingPlanDetails: React.FC = () => {
   const { balance, percentageToSave, recentTransactions } = mockData;
+
+  const { openModal, closeModal } = useModal();
+
+  const handleOpenSettings = () => {
+    openModal({
+      title: "Withdraw",
+      size: "md",
+      component: <WithDrawal closeModal={closeModal} />,
+    });
+  };
 
   return (
     <div className="p-4 sm:p-6">
@@ -142,6 +140,7 @@ const SavingPlanDetails: React.FC = () => {
             icon={<Plus className="w-5 h-5" />}
             size="sm"
             className="transition duration-200"
+            onClick={handleOpenSettings}
           >
             Withdraw
           </Button>

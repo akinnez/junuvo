@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 // Define the structure for each option
-interface SelectOption {
-  value: string;
-  label: string;
-}
 
 // Define the props for the component
 interface SelectTypeProps {
-  options: SelectOption[];
+  options: Option[];
   defaultValue: string;
   onSelect: (value: string) => void;
 }

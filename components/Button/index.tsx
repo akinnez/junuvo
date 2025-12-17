@@ -42,11 +42,11 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       className={clsx(
-        className,
         baseStyles,
         variants[variant],
         sizes[size],
-        isDisabled && "opacity-60 cursor-not-allowed"
+        isDisabled && "opacity-60 cursor-not-allowed",
+        className
       )}
       disabled={isDisabled}
       {...props}

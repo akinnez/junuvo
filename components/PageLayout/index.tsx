@@ -13,7 +13,7 @@ export interface PageLayoutProps {
   showButton?: boolean;
   showNotice?: boolean;
   buttonFn?: () => void;
-  buttonLabel?: string;
+  buttonLabel?: React.ReactNode;
   notice?: string;
   buttonStyle?: string;
 }
@@ -39,8 +39,10 @@ export default function PageLayout({
           <h1 className="text-2xl font-bold">{title}</h1>
           <span className="text-sm text-gray-500">{description}</span>
         </div>
+
+        {/* Resolve this */}
         {showButton && (
-          <Button onClick={buttonFn} className={buttonStyle}>
+          <Button size="sm" onClick={buttonFn} className={buttonStyle}>
             {buttonLabel}
           </Button>
         )}

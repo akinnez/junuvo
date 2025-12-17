@@ -1,6 +1,6 @@
 // /hooks/useUploadManager.js
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Subject, BehaviorSubject, scan, tap, merge, of } from 'rxjs';
+import { Subject, scan, tap, merge, of } from 'rxjs';
 import { switchMap, delay } from 'rxjs/operators';
 
 // Initial state for the combined upload process
