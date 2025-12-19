@@ -66,7 +66,7 @@ const PassengerList: React.FC<PassengerListProps> = ({
               )}
               <div className="text-xs truncate text-gray-600">
                 {passenger.isFilled ? (
-                  <p className="space-y-1">
+                  <div className="space-y-1">
                     <span className="block font-semibold text-gray-800 capitalize">
                       {passenger.title} {passenger.lastName}{" "}
                       {passenger.middleName} {passenger.firstName}
@@ -80,7 +80,7 @@ const PassengerList: React.FC<PassengerListProps> = ({
                         {passenger.type}
                       </span>
                     </p>
-                  </p>
+                  </div>
                 ) : (
                   "Details pending"
                 )}
@@ -130,7 +130,7 @@ const PassengerList: React.FC<PassengerListProps> = ({
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }
           >
-            Proceed to Next Step
+Continue Booking
           </Button>
         </Link>
       </div>

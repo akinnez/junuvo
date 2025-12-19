@@ -14,28 +14,6 @@ interface iflight {
   returnDate?: string;
 }
 
-// const option: Option[] = [
-//   {
-//     icon: "/images/flags/eu.svg",
-//     label: "MTN",
-//     value: "mtn",
-//   },
-//   {
-//     icon: "/images/flags/eu.svg",
-//     label: "Airtel",
-//     value: "airtel",
-//   },
-//   {
-//     icon: "/images/flags/eu.svg",
-//     label: "Glo",
-//     value: "glo",
-//   },
-//   {
-//     icon: "/images/flags/eu.svg",
-//     label: "9Mobile",
-//     value: "9mobile",
-//   },
-// ];
 
 function FlightComponent({ type }: { type: string }) {
   const [selectedAcc, setSelectedAcc] = useState<string>("");

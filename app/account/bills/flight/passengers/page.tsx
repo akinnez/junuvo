@@ -15,7 +15,7 @@ const LOCAL_STORAGE_KEY = "flightAppPassengers";
 const loadPassengersFromStorage = (N: number): PassengerData[] => {
   if (typeof window === "undefined") return [];
 
-  const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+  const savedData = sessionStorage.getItem(LOCAL_STORAGE_KEY);
   if (savedData) {
     try {
       const data: PassengerData[] = JSON.parse(savedData);
@@ -23,8 +23,6 @@ const loadPassengersFromStorage = (N: number): PassengerData[] => {
       if (data.length === N) {
         return data.map((p) => ({
           ...p,
-          // Ensure age is stored as a number/null, not just string
-          age: p.age ? Number(p.age) : null,
         }));
       }
     } catch (e) {
@@ -35,8 +33,19 @@ const loadPassengersFromStorage = (N: number): PassengerData[] => {
   // Fallback: Generate initial empty passenger list
   return Array.from({ length: N }, (_, i) => ({
     id: i + 1,
-    name: "",
-    age: null,
+    email: '',
+    firstName: '',
+    lastName:'',
+    phone:'',
+    address:'',
+    city:'',
+    dob:'',
+    gender:'',
+    middleName:'',
+    nationality:'',
+    posterCode:'',
+    title:'',
+    type:'',
     isFilled: false,
   }));
 };
@@ -53,7 +62,7 @@ export default function App() {
   // 1. Load data from localStorage and initialize on component mount
   useEffect(() => {
     // Check if N is already saved in storage
-    const savedN = localStorage.getItem("flightAppN");
+    const savedN = sessionStorage.getItem("flightAppN");
     const initialN = savedN ? parseInt(savedN, 10) : DEFAULT_N;
 
     setN(initialN);
@@ -64,8 +73,8 @@ export default function App() {
   // 2. Persist data to localStorage whenever passengers or N changes
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(passengers));
-      localStorage.setItem("flightAppN", String(N));
+      sessionStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(passengers));
+    
     }
   }, [passengers, N, isLoaded]);
 

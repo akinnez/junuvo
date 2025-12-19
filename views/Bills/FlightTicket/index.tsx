@@ -123,6 +123,7 @@ export const FlightOneWayCard: React.FC<{ flight: FlightData }> = ({
   );
 };
 
+
 export const FlightRoundCard: React.FC<{ flight: FlightDataInfo }> = ({
   flight,
 }) => {
@@ -143,16 +144,27 @@ export const FlightRoundCard: React.FC<{ flight: FlightDataInfo }> = ({
     logoUrl,
   } = flight;
 
+ const { openModal, closeModal } = useModal();
+
+  const handleOpenSettings = () => {
+    openModal({
+      title: "Flight Details",
+      size: "md",
+      component: <FlightOneWayModal flight={flight} closeModal={closeModal} />,
+    });
+  };
+
   // Function to handle the View Details click (placeholder)
   const handleViewDetails = () => {
+    handleOpenSettings()
     console.log(`Viewing details for flight ${flightNumber} on ${returnDate}`);
     // In a real app, this would navigate to a detail page or open a modal
   };
 
   return (
     <Card
-      className="!shadow-2xs !p-5 overflow-hidden w-full hover:shadow-primary hover:!shadow transition-shadow  duration-300 !cursor-pointer"
-      onClick={handleViewDetails}
+      className="!shadow-xs !p-5 overflow-hidden w-full hover:shadow-primary hover:!shadow transition-shadow  duration-300 !cursor-pointer"
+      onClick={handleOpenSettings}
     >
       {/* --- Airline and Class --- */}
       <div className="space-y-2">
@@ -287,3 +299,4 @@ export const FlightRoundCard: React.FC<{ flight: FlightDataInfo }> = ({
     </Card>
   );
 };
+ 

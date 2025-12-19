@@ -53,6 +53,12 @@ function SearchFlightComponent() {
   // } = form;
 
   function onSubmit() {
+    const totalPassanger =
+      Number(selectedAdult) +
+      Number(selectedChildren) +
+      Number(selectedInfants);
+    sessionStorage.setItem("flightAppN", String(totalPassanger));
+
     // const payload = {
     //   debitAccount: selectedAcc,
     //   provider: selectedProvider,
