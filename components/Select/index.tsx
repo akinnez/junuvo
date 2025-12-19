@@ -28,6 +28,7 @@ export type CustomSelectProps = {
   listClass?: string; // Dropdown list container class
   disabled?: boolean;
   searchable?: boolean;
+  required?: boolean;
   // Optional custom renderers for flexibility
   renderOption?: (option: Option, isSelected: boolean) => React.ReactNode;
 };
@@ -72,6 +73,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   listClass = "",
   disabled = false,
   searchable = true,
+  required,
   renderOption = DefaultOptionRenderer,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -255,9 +257,14 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
       ref={comboboxRef}
       onKeyDown={handleKeyDown}
     >
-      <label htmlFor={id} className="text-sm font-semibold text-gray-900 mb-2">
-        {label}
-      </label>
+      {label && (
+        <label
+          htmlFor={id}
+          className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-x-2"
+        >
+          {label} {required && <sup className="text-red-600">*</sup>}
+        </label>
+      )}
 
       {/* Combobox Button - The main control */}
       <button

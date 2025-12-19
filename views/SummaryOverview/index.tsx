@@ -12,6 +12,7 @@ export default function SummaryOverview({
   currency = "NGN",
   children,
   className,
+  handleSubmit,
 }: {
   amount?: string | number;
   createdAt?: string;
@@ -19,12 +20,13 @@ export default function SummaryOverview({
   currency?: string;
   className?: string;
   children: React.ReactNode;
+  handleSubmit?: () => void;
 }) {
   return (
     <CardPageLayout
       title="Transaction Summary"
       description="Here is the summary of the transaction to be made"
-      className="max-w-md"
+      className="max-w-sm"
     >
       <div className="text-center space-y-3 mb-5">
         <p className="text-xs text-gray-600 font-medium">You are sending</p>
@@ -43,7 +45,9 @@ export default function SummaryOverview({
       >
         {children}
       </Card>
-      <Button className="w-full">Proceed</Button>
+      <Button className="w-full" onClick={handleSubmit}>
+        Proceed
+      </Button>
     </CardPageLayout>
   );
 }

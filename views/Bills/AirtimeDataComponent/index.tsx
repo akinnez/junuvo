@@ -3,6 +3,7 @@ import Button from "@/components/Button";
 import CustomForm from "@/components/CustomForm";
 import CustomInput from "@/components/CustomInput";
 import FormSelect from "@/components/FormSelect";
+import { formattedAmount } from "@/lib/currency-formatter";
 import { airtimeSchema } from "@/schema/airtimeData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useParams } from "next/navigation";
@@ -13,25 +14,67 @@ interface airtime {
   amount: string;
   phone: string;
 }
+function DataLLabelComponent({
+  label,
+  amount,
+}: {
+  label: string;
+  amount: string;
+}) {
+  return (
+    <div className="flex justify-between items-center w-full font-medium text-xs">
+      <p>{label}</p>
+      <p className="bg-[#ECF0FE] py-1 px-3 rounded-full ml-5">
+        {formattedAmount("NGN", amount)}
+      </p>
+    </div>
+  );
+}
+const dataOption: Option[] = [
+  {
+    label: <DataLLabelComponent label="MTN 100MB - 7 Days" amount="200" />,
+    value: "weekly100m",
+  },
+  {
+    label: <DataLLabelComponent label="MTN 200MB - 30 Days" amount="200" />,
+    value: "monthly200m",
+  },
+  {
+    label: <DataLLabelComponent label="MTN 500MB - 30 Days" amount="1000" />,
+    value: "monthly500m",
+  },
+  {
+    label: <DataLLabelComponent label="MTN 1GB - 7 Days" amount="1500" />,
+    value: "weekly1g",
+  },
+  {
+    label: <DataLLabelComponent label="MTN 1GB - 30 Days" amount="1500" />,
+    value: "monthly1g",
+  },
+  {
+    label: <DataLLabelComponent label="MTN 2GB - 7 Days" amount="1500" />,
+    value: "weekly2g",
+  },
+];
 
 const option: Option[] = [
   {
-    icon: "/images/flags/eu.svg",
+    icon: "/images/bills/mtn.png",
     label: "MTN",
     value: "mtn",
   },
   {
-    icon: "/images/flags/eu.svg",
+    icon: "/images/bills/airtel.png",
     label: "Airtel",
     value: "airtel",
   },
   {
-    icon: "/images/flags/eu.svg",
+    icon: "/images/bills/glo.png",
     label: "Glo",
     value: "glo",
   },
   {
-    icon: "/images/flags/eu.svg",
+    icon: "/images/bills/9mobile.png",
     label: "9Mobile",
     value: "9mobile",
   },
@@ -63,8 +106,6 @@ function AirtelDataComponent({ type }: { type: string }) {
       network: selectedNetwork,
       ...values,
     };
-
-    console.log(payload);
 
     router.push(`/account/bills/summary/internet/${type}`);
   }
@@ -104,9 +145,9 @@ function AirtelDataComponent({ type }: { type: string }) {
           label="Data Plan"
           name="plan"
           value={selectedPlan}
-          options={[]}
+          options={dataOption}
           onChange={setSelectedPlan}
-          searchable={false}
+          searchable={true}
         />
       )}
 

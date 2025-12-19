@@ -9,18 +9,21 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, type = "text", error, className, ...props }, ref) => {
+  ({ label, type = "text", error, className, required, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const isPassword = type === "password";
     const inputType = isPassword ? (showPassword ? "text" : "password") : type;
 
     return (
-      <>
+      <div>
         {label && (
-          <label className="block font-semibold text-sm text-gray-900 mb-2">
-            {label}
-          </label>
+          <div className="flex gap-x-2 items-center">
+            <label className="block font-semibold text-sm text-gray-900 mb-2">
+              {label}
+            </label>
+            {required && <sup className="text-red-600">*</sup>}
+          </div>
         )}
         <div className="relative flex items-center">
           <input
@@ -29,7 +32,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {...props}
             className={clsx(
               className,
-              "p-4 w-full rounded-md border outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary transition placeholder:text-sm placeholder:text-[#989A9F] placeholder:font-medium",
+              "py-3 px-4 w-full rounded-md border outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary transition placeholder:text-sm placeholder:text-[#989A9F] placeholder:font-medium",
               { "border-red-600": error },
               { "border-[#ccc]": !error },
               { "pr-10": isPassword },
@@ -62,7 +65,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {error}
           </div>
         )}
-      </>
+      </div>
     );
   }
 );

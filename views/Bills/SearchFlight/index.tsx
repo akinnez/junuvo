@@ -1,71 +1,67 @@
 "use client";
 import Button from "@/components/Button";
-import CustomForm from "@/components/CustomForm";
-import FormSelect from "@/components/FormSelect";
+// import CustomForm from "@/components/CustomForm";
 import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
-import { electricitySchema } from "@/schema/electricity";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { CustomSelect } from "@/components/Select";
+
+// import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 
-interface electricity {
-  amount: string;
-  meterNo: string;
-}
+// interface electricity {
+//   class: string;
+// }
 
 const option: Option[] = [
   {
-    icon: "/images/flags/eu.svg",
-    label: "MTN",
-    value: "mtn",
+    label: "One",
+    value: "1",
   },
   {
-    icon: "/images/flags/eu.svg",
-    label: "Airtel",
-    value: "airtel",
+    label: "Two",
+    value: "2",
   },
   {
-    icon: "/images/flags/eu.svg",
-    label: "Glo",
-    value: "glo",
+    label: "Three",
+    value: "3",
   },
   {
-    icon: "/images/flags/eu.svg",
-    label: "9Mobile",
-    value: "9mobile",
+    label: "Four",
+    value: "4",
   },
 ];
 
 function SearchFlightComponent() {
-  const [selectedAcc, setSelectedAcc] = useState<string>("");
-  const [selectedProvider, setSelectedProvider] = useState<string>("");
+  const [selectedAdult, setSelectedAdult] = useState<string>("");
+  const [selectedChildren, setSelectedChildren] = useState<string>("");
+  const [selectedInfants, setSelectedInfants] = useState<string>("");
+  const [selectedClass, setSelectedClass] = useState<string>("");
 
   const router = useRouter();
 
-  const form = useForm<electricity>({
-    resolver: zodResolver(electricitySchema),
-    defaultValues: {
-      amount: "",
-      meterNo: "",
-    },
-  });
+  // const form = useForm<electricity>({
+  //   resolver: zodResolver(electricitySchema),
+  //   defaultValues: {
+  //     class: "firstClass",
+  //   },
+  // });
 
-  const {
-    formState: { errors },
-  } = form;
+  // const {
+  //   formState: { errors },
+  // } = form;
 
-  function onSubmit(values: electricity) {
-    const payload = {
-      debitAccount: selectedAcc,
-      provider: selectedProvider,
-      ...values,
-    };
+  function onSubmit() {
+    // const payload = {
+    //   debitAccount: selectedAcc,
+    //   provider: selectedProvider,
+    //   ...values,
+    // };
 
-    console.log(payload);
+    // console.log(payload);
 
-    router.push(`/account/bills/summary/electricity`);
+    router.push(`/account/bills/flight/tickets`);
   }
 
   return (
@@ -78,58 +74,50 @@ function SearchFlightComponent() {
         description="Select your desired type to begin"
         className="max-w-md"
       >
-        <CustomForm
-          className="space-y-5"
-          successFunction={onSubmit}
-          form={form}
-        >
-          <FormSelect
-            id="debitAccount"
-            form={form}
+        <div className="space-y-5">
+          <CustomSelect
+            id="adults"
             label="Adults"
-            name="debitAccount"
-            value={selectedAcc}
-            options={[
-              {
-                label: "Savings",
-                value: "savings",
-              },
-            ]}
-            onChange={setSelectedAcc}
+            name="adults"
+            value={selectedAdult}
+            options={option}
+            onChange={setSelectedAdult}
             searchable={false}
           />
-          <FormSelect
-            id="provider"
-            form={form}
+          <CustomSelect
+            id="children"
             label="Children"
-            name="provider"
-            value={selectedProvider}
+            name="children"
+            value={selectedChildren}
             options={option}
-            onChange={setSelectedProvider}
+            onChange={setSelectedChildren}
             searchable={false}
           />
-          <FormSelect
-            id="provider"
-            form={form}
+          <CustomSelect
+            id="infants"
             label="Infants"
-            name="provider"
-            value={selectedProvider}
+            name="infants"
+            value={selectedInfants}
             options={option}
-            onChange={setSelectedProvider}
+            onChange={setSelectedInfants}
             searchable={false}
           />
-          <FormSelect
-            id="provider"
-            form={form}
+          <CustomSelect
+            id="class"
             label="Class Type"
-            name="provider"
-            value={selectedProvider}
-            options={option}
-            onChange={setSelectedProvider}
+            name="class"
+            value={selectedClass}
+            options={[
+              { label: "First Class", value: "firstClass" },
+              { label: "Econony", value: "economy" },
+            ]}
+            onChange={setSelectedClass}
             searchable={false}
           />
-          <Button className="w-full">Proceed</Button>
-        </CustomForm>
+          <Button className="w-full" onClick={onSubmit}>
+            Proceed
+          </Button>
+        </div>
       </CardPageLayout>
     </PageLayout>
   );

@@ -14,16 +14,30 @@ export interface FlightDataInfo {
   duration: string; // e.g., "1hr:15m"
   layovers: number; // e.g., 1
   logoUrl: string; // URL for the airline logo
+  departureAirportName?: string;
+  arrivalAirportName?: string;
+  plane_name?: string;
+  layover_location?: string;
+  layover_time?: string;
 }
 
-export interface FlightData extends Omit<FlightDataInfo,'returnDate'> {}
-
-
+export interface FlightData extends Omit<FlightDataInfo, "returnDate"> {}
 
 export interface PassengerData {
   id: number;
-  name: string;
-  age: number | null;
+  firstName: string;
+  lastName: string;
+  middleName?: string;
+  dob?:string;
+  nationality?:string;
+  gender?:string;
+  phone:string;
+  email: string;
+  city?:string;
+  posterCode?:string;
+  address?:string;
+ type?:string;
+  title?:string;
   isFilled: boolean;
 }
 
@@ -31,5 +45,4 @@ export interface PassengerListProps {
   passengers: PassengerData[];
   onEdit: (index: number) => void;
   N: number;
-  onNChange: (newN: number) => void;
 }

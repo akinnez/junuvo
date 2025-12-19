@@ -72,7 +72,9 @@ const Modal = ({
         </div>
 
         {/* Body */}
-        <div className="overflow-y-auto max-h-[70vh]">{children}</div>
+        <div className="overflow-y-auto overflow-x-hidden max-h-[70vh]">
+          {children}
+        </div>
       </div>
     </div>,
     document.body

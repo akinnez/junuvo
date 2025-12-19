@@ -3,50 +3,49 @@ import Button from "@/components/Button";
 import CustomForm from "@/components/CustomForm";
 import CustomInput from "@/components/CustomInput";
 import FormSelect from "@/components/FormSelect";
-import { electricitySchema } from "@/schema/electricity";
+import { flightSchema } from "@/schema/flight";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-interface electricity {
-  amount: string;
-  meterNo: string;
+interface iflight {
+  departureDate: string;
+  returnDate?: string;
 }
 
-const option: Option[] = [
-  {
-    icon: "/images/flags/eu.svg",
-    label: "MTN",
-    value: "mtn",
-  },
-  {
-    icon: "/images/flags/eu.svg",
-    label: "Airtel",
-    value: "airtel",
-  },
-  {
-    icon: "/images/flags/eu.svg",
-    label: "Glo",
-    value: "glo",
-  },
-  {
-    icon: "/images/flags/eu.svg",
-    label: "9Mobile",
-    value: "9mobile",
-  },
-];
+// const option: Option[] = [
+//   {
+//     icon: "/images/flags/eu.svg",
+//     label: "MTN",
+//     value: "mtn",
+//   },
+//   {
+//     icon: "/images/flags/eu.svg",
+//     label: "Airtel",
+//     value: "airtel",
+//   },
+//   {
+//     icon: "/images/flags/eu.svg",
+//     label: "Glo",
+//     value: "glo",
+//   },
+//   {
+//     icon: "/images/flags/eu.svg",
+//     label: "9Mobile",
+//     value: "9mobile",
+//   },
+// ];
 
 function FlightComponent({ type }: { type: string }) {
   const [selectedAcc, setSelectedAcc] = useState<string>("");
   const [selectedProvider, setSelectedProvider] = useState<string>("");
 
   const router = useRouter();
-  const form = useForm<electricity>({
-    resolver: zodResolver(electricitySchema),
+  const form = useForm<iflight>({
+    resolver: zodResolver(flightSchema),
     defaultValues: {
-      amount: "",
-      meterNo: "",
+      departureDate: "",
     },
   });
 
@@ -54,34 +53,29 @@ function FlightComponent({ type }: { type: string }) {
     formState: { errors },
   } = form;
 
-  function onSubmit(values: electricity) {
-    const payload = {
-      debitAccount: selectedAcc,
-      provider: selectedProvider,
-      ...values,
-    };
-
-    console.log(payload);
-
+  function onSubmit(values: any) {
+    console.log(values);
     router.push(`/account/bills/flight/search`);
   }
 
-  if (!["one-way", "round"].includes(type)) {
-    return router.push(`/account/bills/flight/round?type=one-way`);
-  }
+  useEffect(() => {
+    if (!["one-way", "round"].includes(type)) {
+      return router.push(`/account/bills/flight/route?type=one-way`);
+    }
+  }, [type]);
 
   return (
     <CustomForm className="space-y-5" successFunction={onSubmit} form={form}>
       <FormSelect
-        id="debitAccount"
+        id="departure"
         form={form}
         label="Departure"
-        name="debitAccount"
+        name="departure"
         value={selectedAcc}
         options={[
           {
-            label: "Savings",
-            value: "savings",
+            label: "Lagos",
+            value: "lagos",
           },
         ]}
         onChange={setSelectedAcc}
@@ -93,26 +87,34 @@ function FlightComponent({ type }: { type: string }) {
         label="Destination"
         name="provider"
         value={selectedProvider}
-        options={option}
+        options={[
+          {
+            label: "United State of America",
+            value: "usa",
+          },
+          {
+            label: "Egypt",
+            value: "egypt",
+          },
+        ]}
         onChange={setSelectedProvider}
-        searchable={false}
+        searchable={true}
       />
 
       <CustomInput
         type="date"
-        id="meterNo"
+        id="departureDate"
         label="Departure Date"
         form={form}
-        name="meterNo"
+        name="departureDate"
       />
       {type == "round" && (
         <CustomInput
           type="date"
-          id="meterName"
+          id="returnDate"
           label="Return Date"
           form={form}
-          name="amount"
-          placeholder="Enter Meter Name"
+          name="returnDate"
         />
       )}
       <Button className="w-full">Proceed</Button>

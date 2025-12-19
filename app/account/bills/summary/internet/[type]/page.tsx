@@ -1,6 +1,9 @@
 "use client";
 import PageLayout from "@/components/PageLayout";
+import { useModal } from "@/hooks/useModal";
 import { formattedAmount } from "@/lib/currency-formatter";
+import InternetSuccess from "@/modals/bills/internet";
+import TransactionPin from "@/modals/transactions/TransactionPin";
 import SummaryOverview from "@/views/SummaryOverview";
 import { useParams } from "next/navigation";
 
@@ -15,6 +18,16 @@ const data = {
 
 function BillSummary() {
   const { type } = useParams();
+  const { openModal, closeModal } = useModal();
+
+  const handleOpenSettings = () => {
+    openModal({
+      size: "sm",
+      component: (
+        <TransactionPin closeModal={closeModal} Component={InternetSuccess} />
+      ),
+    });
+  };
   return (
     <PageLayout title="Summary" description="Review your transaction details">
       <SummaryOverview
@@ -23,6 +36,7 @@ function BillSummary() {
         destination={`MTN Airtime`}
         currency="NGN"
         className="!p-0"
+        handleSubmit={handleOpenSettings}
       >
         <div className="space-y-5 p-5 bg-gray-200 rounded-sm">
           <h3 className="font-bold">Details Breakdown</h3>

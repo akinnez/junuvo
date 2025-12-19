@@ -1,8 +1,38 @@
 "use client";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
+import { CustomSelect } from "@/components/Select";
 import { PassengerData } from "@/types/flight";
 import { ArrowLeft } from "lucide-react";
+
 import { useState } from "react";
 
+const titleOptions: Option[] = [
+  { label: "Mr", value: "mr" },
+  { label: "Mrs", value: "mrs" },
+  { label: "Miss", value: "miss" },
+  { label: "Master", value: "master" },
+];
+const typeOptions: Option[] = [
+  { label: "Adult", value: "adult" },
+  { label: "Children", value: "children" },
+  { label: "Infant", value: "infant" },
+];
+const nationalityOptions: Option[] = [
+  { label: "Nigeria", value: "nigeria" },
+  { label: "United State of America", value: "usa" },
+  { label: "United Kindom", value: "uk" },
+];
+const genderOptions: Option[] = [
+  { label: "Female", value: "female" },
+  { label: "Male", value: "male" },
+  { label: "I prefer not to say", value: "notSpecify" },
+];
+const cityOptions: Option[] = [
+  { label: "Ibadan", value: "ibadan" },
+  { label: "Oyo", value: "oyo" },
+  { label: "Iseyin", value: "iseyin" },
+];
 interface PassengerFormProps {
   passenger: PassengerData;
   onSave: (data: Omit<PassengerData, "id">) => void;
@@ -14,50 +44,83 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
   onSave,
   onBack,
 }) => {
-  const [name, setName] = useState(passenger.name);
-  const [age, setAge] = useState<string>(
-    passenger.age ? String(passenger.age) : ""
+  const [passengerType, setPassengerType] = useState("");
+  const [nationality, setNationality] = useState("");
+  const [gender, setGender] = useState("");
+  const [city, setCity] = useState("");
+  const [title, setTitle] = useState("");
+  const [dob, setDOB] = useState("");
+  const [address, setAddress] = useState("");
+  const [posterCode, setPosterCode] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const [firstName, setFirstName] = useState(passenger.firstName);
+  const [lastName, setLastName] = useState<string>(passenger.lastName || "");
+  const [middleName, setMiddleName] = useState<string>(
+    passenger.lastName || ""
   );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !age) {
-      // Replaced alert() with a console log for a better developer experience in this environment.
-      console.error("Please fill in both Name and Age.");
-      return;
-    }
-    const ageNumber = parseInt(age, 10);
-    if (isNaN(ageNumber) || ageNumber < 1) {
-      // Replaced alert() with a console log for a better developer experience in this environment.
-      console.error("Please enter a valid age.");
-      return;
-    }
 
     onSave({
-      name: name.trim(),
-      age: ageNumber,
+      firstName,
+      lastName,
+      email,
+      phone,
+      city,
+      gender,
+      middleName,
+      nationality,
+      address,
+      dob,
+      posterCode,
+      title,
+      type: passengerType,
       isFilled: true,
     });
   };
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-lg w-full max-w-lg mx-auto">
-      <div className="flex items-center justify-between mb-6 border-b pb-4">
-        <h2 className="text-2xl font-bold text-indigo-700">
+      <div className="flex items-center justify-between mb-6 ">
+        <h2 className="text-xl font-bold text-button">
           Editing Passenger {passenger.id}
         </h2>
         <button
           onClick={onBack}
-          className="text-gray-500 hover:text-gray-700 transition duration-150 flex items-center"
+          className="text-gray-500 hover:text-gray-700 transition duration-150 flex items-center text-xs font-semibold"
         >
-          <ArrowLeft size={18} className="mr-1" />
+          <ArrowLeft size={14} className="mr-1" />
           Back to List
         </button>
       </div>
-      <CustomForm></CustomForm>
+      {/* <CustomForm></CustomForm> */}
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label
+        <div className="grid grid-cols-2 gap-5">
+          <CustomSelect
+            id="passengerType"
+            name="passengerType"
+            label="Passenger Type"
+            value={passengerType}
+            options={typeOptions}
+            onChange={setPassengerType}
+            searchable={false}
+            required
+          />
+          <CustomSelect
+            id="title"
+            name="title"
+            label="Title"
+            value={title}
+            options={titleOptions}
+            onChange={setTitle}
+            searchable={false}
+            required
+          />
+
+          {/* <label
             htmlFor="name"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
@@ -71,34 +134,102 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
             placeholder="e.g., Jane Doe"
             required
-          />
+          /> */}
         </div>
-
-        <div>
-          <label
-            htmlFor="age"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Age
-          </label>
-          <input
-            id="age"
-            type="number"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
-            placeholder="e.g., 35"
-            min="1"
+        <div className="grid grid-cols-2 gap-5">
+          <Input
+            id="lastName"
+            label="Last Name"
+            placeholder="Enter last name"
             required
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          <Input
+            id="firstName"
+            label="First Name"
+            placeholder="Enter first name"
+            required
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-5">
+          <Input
+            id="middleName"
+            label="Middle Name"
+            placeholder="Enter middle name"
+            onChange={(e) => setMiddleName(e.target.value)}
+          />
+          <Input
+            type="date"
+            id="dob"
+            label="Date of Birth"
+            placeholder="Enter first name"
+            onChange={(e) => setDOB(e.target.value)}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-5">
+          <CustomSelect
+            id="nationality"
+            name="nationality"
+            label="Nationality"
+            value={nationality}
+            options={nationalityOptions}
+            onChange={setNationality}
+            searchable
+          />
+          <CustomSelect
+            id="gender"
+            name="gender"
+            label="Gender"
+            value={gender}
+            options={genderOptions}
+            onChange={setGender}
+            searchable={false}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-5">
+          <Input
+            id="phoneNumber"
+            label="Phone Number"
+            placeholder="Enter Phone Number"
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          <Input
+            id="email"
+            label="Email Address"
+            placeholder="Enter Email Address"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="grid grid-cols-1 gap-5">
+          <Input
+            id="address"
+            label="Address"
+            placeholder="Enter Address"
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </div>
+        <div className="grid grid-cols-2 items-center gap-5">
+          <CustomSelect
+            id="city"
+            name="city"
+            label="City"
+            value={city}
+            options={cityOptions}
+            onChange={setCity}
+            searchable
+          />
+          <Input
+            id="posterCode"
+            label="Poster Code"
+            placeholder="Enter poster code"
+            onChange={(e) => setPosterCode(e.target.value)}
           />
         </div>
 
-        <button
-          type="submit"
-          className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 transform hover:scale-[1.01]"
-        >
-          Save Details
-        </button>
+        <Button type="submit" className="w-full">
+          Continue Booking
+        </Button>
       </form>
     </div>
   );

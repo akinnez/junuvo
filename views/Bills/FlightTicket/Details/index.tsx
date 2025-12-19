@@ -1,52 +1,28 @@
-import Card from "@/components/Card";
-import { formattedAmount } from "@/lib/currency-formatter";
 import { FlightData, FlightDataInfo } from "@/types/flight";
 import Image from "next/image";
 import React from "react";
-import { useModal } from "@/hooks/useModal";
-import FlightOneWayModal from "@/modals/bills/flight/FlightOneWayModal";
 
 // The core reusable component
-export const FlightOneWayCard: React.FC<{ flight: FlightData }> = ({
-  flight,
-}) => {
+export const FlightOneWayCardModal: React.FC<{
+  flight: FlightData;
+}> = ({ flight }) => {
   const {
     departureDate: date,
     airlineName,
-    flightNumber,
-    price,
-    currency,
+    plane_name,
+    layover_location,
+    layover_time,
     classType,
     departureTime,
     arrivalTime,
-    departureAirportCode,
-    arrivalAirportCode,
+    departureAirportName,
+    arrivalAirportName,
     duration,
-    layovers,
     logoUrl,
   } = flight;
 
-  const { openModal, closeModal } = useModal();
-
-  const handleOpenSettings = () => {
-    openModal({
-      title: "Flight Details",
-      size: "md",
-      component: <FlightOneWayModal flight={flight} closeModal={closeModal} />,
-    });
-  };
-
-  // Function to handle the View Details click (placeholder)
-  const handleViewDetails = () => {
-    handleOpenSettings();
-    console.log(`Viewing details for flight ${flightNumber} on ${date}`);
-    // In a real app, this would navigate to a detail page or open a modal
-  };
-
   return (
-    <Card className="!shadow-xs !p-5 overflow-hidden w-full hover:shadow-primary hover:!shadow transition-shadow  duration-300">
-      <p className="text-xs font-semibold text-gray-700 mb-2">{date}</p>
-
+    <div>
       {/* --- Airline and Class --- */}
       <div className="">
         <div className="flex items-center justify-between space-x-3">
@@ -59,26 +35,7 @@ export const FlightOneWayCard: React.FC<{ flight: FlightData }> = ({
               height={23}
               loading="lazy"
             />
-            <p className="text-xs font-semibold text-gray-600">
-              {airlineName} {flightNumber}
-            </p>
-            <span
-              className={`px-2 py-1 text-[10px] font-medium rounded-md uppercase ${
-                classType === "ECONOMY"
-                  ? "bg-gray-100 text-gray-600"
-                  : classType === "BUSINESS"
-                  ? "bg-blue-100 text-button"
-                  : classType === "FIRST"
-                  ? "bg-green-100 text-success"
-                  : "bg-red-100 text-red-600"
-              }`}
-            >
-              {classType}
-            </span>
           </div>
-          <p className="text-xs font-medium text-button">
-            {formattedAmount(currency, price)}
-          </p>
         </div>
       </div>
 
@@ -87,11 +44,12 @@ export const FlightOneWayCard: React.FC<{ flight: FlightData }> = ({
         {/* --- Times, Duration, and Airports --- */}
         <div className="flex justify-between items-center gap-5 my-4">
           {/* Departure Info */}
-          <div className="text-left">
+          <div className="text-left w-full max-w-[800px]">
             <p className="text-xs font-semibold text-gray-900">
               {departureTime}
             </p>
-            <p className="text-[10px] text-gray-500">{departureAirportCode}</p>
+            <p className="text-[10px] font-semibold text-gray-900">{date}</p>
+            <p className="text-[10px] text-gray-500">{departureAirportName}</p>
           </div>
           <div className="w-full h-4 bg-gray-50 border-t border-[#BAD6FF]"></div>
           <div className="h-10">
@@ -100,26 +58,37 @@ export const FlightOneWayCard: React.FC<{ flight: FlightData }> = ({
           {/* Duration Indicator */}
           <div className="w-full h-4 bg-gray-50 border-t border-[#BAD6FF]"></div>
           {/* Arrival Info */}
-          <div className="">
+          <div className="w-full max-w-[800px]">
             <p className="text-xs font-bold text-gray-900">{arrivalTime}</p>
-            <p className="text-[10px] text-gray-500">{arrivalAirportCode}</p>
+            <p className="text-[10px] font-semibold text-gray-900">{date}</p>
+            <p className="text-[10px] text-gray-500">{arrivalAirportName}</p>
           </div>
         </div>
       </div>
 
-      {/* --- Layovers and View Details --- */}
-      <div className="flex justify-between items-center pt-3 text-[10px]">
-        <p className="text-blue-500">
-          No of Layovers: <span className="font-semibold">{layovers}</span>
-        </p>
-        <button
-          onClick={handleViewDetails}
-          className="text-[#860495] font-bold focus:outline-none focus:ring-2 cursor-pointer"
-        >
-          View details
-        </button>
+      <div className="flex justify-between text-button items-center pt-3 text-[10px] font-semibold">
+        <span>{plane_name}</span>
+        <span>{duration}</span>
       </div>
-    </Card>
+      <span
+        className={`text-[10px] font-semibold ${
+          classType === "ECONOMY"
+            ? " text-gray-600"
+            : classType === "BUSINESS"
+            ? "text-primary"
+            : classType === "FIRST"
+            ? "text-button"
+            : "text-red-600"
+        }`}
+      >
+        <span className="capitalize">{classType.toLowerCase()}</span> Class
+      </span>
+      {/* --- Layovers and View Details --- */}
+      <div className="flex gap-10 items-center pt-3 text-[10px]">
+        <p className="text-blue-500">{layover_time} Layovers</p>
+        <p className="text-[#860495] font-bold">{layover_location}</p>
+      </div>
+    </div>
   );
 };
 
@@ -131,9 +100,12 @@ export const FlightRoundCard: React.FC<{ flight: FlightDataInfo }> = ({
     returnDate,
     airlineName,
     flightNumber,
-    price,
-    currency,
-    // classType,
+    arrivalAirportName,
+    departureAirportName,
+    layover_location,
+    layover_time,
+    plane_name,
+    classType,
     departureTime,
     arrivalTime,
     departureAirportCode,
@@ -150,15 +122,9 @@ export const FlightRoundCard: React.FC<{ flight: FlightDataInfo }> = ({
   };
 
   return (
-    <Card
-      className="!shadow-2xs !p-5 overflow-hidden w-full hover:shadow-primary hover:!shadow transition-shadow  duration-300 !cursor-pointer"
-      onClick={handleViewDetails}
-    >
+    <div>
       {/* --- Airline and Class --- */}
       <div className="space-y-2">
-        <p className="text-xs font-medium text-button">
-          {formattedAmount(currency, price)}
-        </p>
         <div className="space-y-2">
           <Image
             alt={`${airlineName} logo`}
@@ -167,9 +133,9 @@ export const FlightRoundCard: React.FC<{ flight: FlightDataInfo }> = ({
             height={23}
             loading="lazy"
           />
-          <p className="text-xs font-semibold text-gray-600">
+          {/* <p className="text-xs font-semibold text-gray-600">
             {airlineName} {flightNumber}
-          </p>
+          </p> */}
           {/* <span
               className={`px-2 py-1 text-[10px] font-medium rounded-md uppercase ${
                 classType === "ECONOMY"
@@ -195,8 +161,11 @@ export const FlightRoundCard: React.FC<{ flight: FlightDataInfo }> = ({
               <p className="text-xs font-semibold text-gray-900">
                 {departureTime}
               </p>
+              <p className="text-xs font-semibold text-gray-900">
+                {departureDate}
+              </p>
               <p className="text-[10px] text-gray-500">
-                {departureAirportCode}
+                {departureAirportName}
               </p>
             </div>
             <div className="w-full h-4 bg-gray-50 border-t border-[#BAD6FF]"></div>
@@ -210,7 +179,10 @@ export const FlightRoundCard: React.FC<{ flight: FlightDataInfo }> = ({
             {/* Arrival Info */}
             <div className="">
               <p className="text-xs font-bold text-gray-900">{arrivalTime}</p>
-              <p className="text-[10px] text-gray-500">{arrivalAirportCode}</p>
+              <p className="text-xs font-semibold text-gray-900">
+                {arrivalTime}
+              </p>
+              <p className="text-[10px] text-gray-500">{arrivalAirportName}</p>
             </div>
           </div>
         </div>
@@ -284,6 +256,6 @@ export const FlightRoundCard: React.FC<{ flight: FlightDataInfo }> = ({
           No of Layovers: <span className="font-semibold">{layovers}</span>
         </p>
       </div>
-    </Card>
+    </div>
   );
 };

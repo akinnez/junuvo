@@ -6,7 +6,7 @@ import FormSelect from "@/components/FormSelect";
 import { electricitySchema } from "@/schema/electricity";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface electricity {
@@ -16,24 +16,9 @@ interface electricity {
 
 const option: Option[] = [
   {
-    icon: "/images/flags/eu.svg",
-    label: "MTN",
-    value: "mtn",
-  },
-  {
-    icon: "/images/flags/eu.svg",
-    label: "Airtel",
-    value: "airtel",
-  },
-  {
-    icon: "/images/flags/eu.svg",
-    label: "Glo",
-    value: "glo",
-  },
-  {
-    icon: "/images/flags/eu.svg",
-    label: "9Mobile",
-    value: "9mobile",
+    icon: "/images/IBDEC.jpeg",
+    label: "IBEDC",
+    value: "ibedc",
   },
 ];
 
@@ -54,6 +39,10 @@ function ElectricityComponent({ type }: { type: string }) {
   const {
     formState: { errors },
   } = form;
+
+  useEffect(() => {
+    sessionStorage.setItem("bill_type", type);
+  }, [type]);
 
   function onSubmit(values: electricity) {
     const payload = {

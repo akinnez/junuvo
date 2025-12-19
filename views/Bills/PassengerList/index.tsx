@@ -2,6 +2,7 @@
 import Button from "@/components/Button";
 import { PassengerListProps } from "@/types/flight";
 import { CheckCircle, SquarePen, Users } from "lucide-react";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const PassengerList: React.FC<PassengerListProps> = ({
@@ -66,10 +67,19 @@ const PassengerList: React.FC<PassengerListProps> = ({
               <div className="text-xs truncate text-gray-600">
                 {passenger.isFilled ? (
                   <p className="space-y-1">
-                    <span className="block font-semibold text-gray-800">
-                      {passenger.name}
+                    <span className="block font-semibold text-gray-800 capitalize">
+                      {passenger.title} {passenger.lastName}{" "}
+                      {passenger.middleName} {passenger.firstName}
                     </span>
-                    <span className="block ">Age: {passenger.age}</span>
+                    <span className="block text-xs">{passenger.email}</span>
+                    <p className="flex gap-x-5 items-center">
+                      <span className="block text-xs capitalize">
+                        {passenger.gender}
+                      </span>
+                      <span className="block text-xs capitalize py-1 px-2 rounded-full bg-blue-100 text-button">
+                        {passenger.type}
+                      </span>
+                    </p>
                   </p>
                 ) : (
                   "Details pending"
@@ -111,16 +121,18 @@ const PassengerList: React.FC<PassengerListProps> = ({
 
       {/* Next button for overall flow */}
       <div className="mt-8 text-center">
-        <Button
-          disabled={!isComplete}
-          className={
-            isComplete
-              ? "bg-blue-600 text-white hover:bg-blue-700 shadow-xl"
-              : "bg-gray-300 text-gray-500 cursor-not-allowed"
-          }
-        >
-          Proceed to Next Step
-        </Button>
+        <Link href={"/account/bills/summary/flight"}>
+          <Button
+            disabled={!isComplete}
+            className={
+              isComplete
+                ? "bg-blue-600 text-white hover:bg-blue-700 shadow-xl"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+            }
+          >
+            Proceed to Next Step
+          </Button>
+        </Link>
       </div>
     </>
   );
