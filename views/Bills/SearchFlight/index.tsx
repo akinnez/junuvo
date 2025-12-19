@@ -8,13 +8,12 @@ import { CustomSelect } from "@/components/Select";
 // import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-// import { useForm } from "react-hook-form";
-
-// interface electricity {
-//   class: string;
-// }
 
 const option: Option[] = [
+  {
+    label: "None",
+    value: "0",
+  },
   {
     label: "One",
     value: "1",

@@ -49,3 +49,32 @@ export const flightData: FlightDataInfo[] = [
     logoUrl: "/images/ET.png",
   },
 ];
+
+
+
+export const titleOptions: Option[] = [
+  { label: "Mr", value: "mr" },
+  { label: "Mrs", value: "mrs" },
+  { label: "Miss", value: "miss" },
+  { label: "Master", value: "master" },
+];
+export const typeOptions: Option[] = [
+  { label: "Adult", value: "adult" },
+  { label: "Children", value: "children" },
+  { label: "Infant", value: "infant" },
+];
+export const nationalityOptions: Option[] = [
+  { label: "Nigeria", value: "nigeria" },
+  { label: "United State of America", value: "usa" },
+  { label: "United Kindom", value: "uk" },
+];
+export const genderOptions: Option[] = [
+  { label: "Female", value: "female" },
+  { label: "Male", value: "male" },
+  { label: "I prefer not to say", value: "notSpecify" },
+];
+export const cityOptions: Option[] = [
+  { label: "Ibadan", value: "ibadan" },
+  { label: "Oyo", value: "oyo" },
+  { label: "Iseyin", value: "iseyin" },
+];

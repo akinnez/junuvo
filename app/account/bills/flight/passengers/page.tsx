@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { PassengerData } from "@/types/flight";
 import PassengerForm from "@/views/Bills/PassengerForm";
 import PassengerList from "@/views/Bills/PassengerList";
@@ -33,19 +33,19 @@ const loadPassengersFromStorage = (N: number): PassengerData[] => {
   // Fallback: Generate initial empty passenger list
   return Array.from({ length: N }, (_, i) => ({
     id: i + 1,
-    email: '',
-    firstName: '',
-    lastName:'',
-    phone:'',
-    address:'',
-    city:'',
-    dob:'',
-    gender:'',
-    middleName:'',
-    nationality:'',
-    posterCode:'',
-    title:'',
-    type:'',
+    email: "",
+    firstName: "",
+    lastName: "",
+    phone: "",
+    address: "",
+    city: "",
+    dob: "",
+    gender: "",
+    middleName: "",
+    nationality: "",
+    posterCode: "",
+    title: "",
+    type: "",
     isFilled: false,
   }));
 };
@@ -74,7 +74,6 @@ export default function App() {
   useEffect(() => {
     if (isLoaded) {
       sessionStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(passengers));
-    
     }
   }, [passengers, N, isLoaded]);
 

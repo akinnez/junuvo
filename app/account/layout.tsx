@@ -16,7 +16,7 @@ export default function RootAccountLayout({
       <div className="col-span-1 sticky top-0 h-screen">
         <SidebarMain />
       </div>
-      <div className="col-span-4 px-5">{children}</div>
+      <div className="col-span-4 px-5 bg-secondary">{children}</div>
     </div>
   );
 }
