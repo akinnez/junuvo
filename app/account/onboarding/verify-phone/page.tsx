@@ -4,6 +4,7 @@ import CustomForm from "@/components/CustomForm";
 import CustomInput from "@/components/CustomInput";
 // import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 type verifyType = {
@@ -55,14 +56,16 @@ function VerifyPhoneNumber() {
             placeholder="Enter your phone number"
           />
           <div>
-            <Button
-              className="w-full "
-              // disabled={isPending}
-              variant={"primary"}
-              // loading={isPending}
-            >
-              Login
-            </Button>
+            <Link href={"/account/onboarding/verify-phone/confirmOTP"}>
+              <Button
+                className="w-full "
+                // disabled={isPending}
+                variant={"primary"}
+                // loading={isPending}
+              >
+                Continue
+              </Button>
+            </Link>
           </div>
         </CustomForm>
       </div>

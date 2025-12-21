@@ -1,6 +1,7 @@
 "use client";
 // import { Input } from "@/components";
 import Button from "@/components/Button";
+import { useRouter } from "next/navigation";
 import React, { useState, useEffect, useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
@@ -76,6 +77,7 @@ const useRxFormWatcher = (control: any) => {
 // --- Main Application Component ---
 
 const AddBvn = () => {
+  const router = useRouter();
   const name = "Gabriel"; // Name should be dynamic
 
   const {
@@ -98,10 +100,11 @@ const AddBvn = () => {
 
   const onSubmit = (data: any) => {
     console.log("Form Submitted:", data);
+    router.push("/account/onboarding/verify-phone");
     // Simulate API call delay
     return new Promise((resolve) => {
       setTimeout(() => {
-        alert("KYC Data Submitted successfully! Check console for data.");
+        alert("KYC Data Submitted successfully!");
         resolve(data);
       }, 1500);
     });

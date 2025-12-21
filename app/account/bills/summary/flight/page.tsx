@@ -4,8 +4,6 @@ import { CustomSelect } from "@/components/Select";
 import { useModal } from "@/hooks/useModal";
 import { formattedAmount } from "@/lib/currency-formatter";
 import { flightData } from "@/lib/mock-flight-data";
-import PostPaidSuccess from "@/modals/bills/electricity/PostPaidSuccess";
-import PrePaidSuccess from "@/modals/bills/electricity/PrepaidSuccess";
 import FlightBookingSuccess from "@/modals/bills/flight/FlightBookingSuccess";
 import TransactionPin from "@/modals/transactions/TransactionPin";
 import SummaryOverview from "@/views/SummaryOverview";
@@ -110,45 +108,44 @@ function BillSummary() {
               </div>
             </div>
           </div>
-          {
-            type == 'round' && <div>
-            <div className="my-4">
-              {/* --- Times, Duration, and Airports --- */}
-              <div className="flex justify-between items-center gap-5 my-4">
-                {/* Departure Info */}
-                <div className="text-left">
-                  <p className="text-xs font-semibold text-gray-900">
-                    {departureTime}
-                  </p>
-                  <p className="text-[10px] text-gray-500">
-                    {departureAirportCode}
-                  </p>
-                </div>
-                <div className="w-full h-4 bg-gray-50 border-t border-[#BAD6FF]"></div>
-                <div className="h-10">
-                  <p className="text-xs text-gray-700 mt-2 font-medium flex flex-col gap-0.5">
-                    <span>{duration}</span>
-                    <span className="text-button text-xs font-semibold">
-                      1 stop
-                    </span>
-                  </p>
-                </div>
-                {/* Duration Indicator */}
-                <div className="w-full h-4 bg-gray-50 border-t border-[#BAD6FF]"></div>
-                {/* Arrival Info */}
-                <div className="">
-                  <p className="text-xs font-bold text-gray-900">
-                    {arrivalTime}
-                  </p>
-                  <p className="text-[10px] text-gray-500">
-                    {arrivalAirportCode}
-                  </p>
+          {type == "round" && (
+            <div>
+              <div className="my-4">
+                {/* --- Times, Duration, and Airports --- */}
+                <div className="flex justify-between items-center gap-5 my-4">
+                  {/* Departure Info */}
+                  <div className="text-left">
+                    <p className="text-xs font-semibold text-gray-900">
+                      {departureTime}
+                    </p>
+                    <p className="text-[10px] text-gray-500">
+                      {departureAirportCode}
+                    </p>
+                  </div>
+                  <div className="w-full h-4 bg-gray-50 border-t border-[#BAD6FF]"></div>
+                  <div className="h-10">
+                    <p className="text-xs text-gray-700 mt-2 font-medium flex flex-col gap-0.5">
+                      <span>{duration}</span>
+                      <span className="text-button text-xs font-semibold">
+                        1 stop
+                      </span>
+                    </p>
+                  </div>
+                  {/* Duration Indicator */}
+                  <div className="w-full h-4 bg-gray-50 border-t border-[#BAD6FF]"></div>
+                  {/* Arrival Info */}
+                  <div className="">
+                    <p className="text-xs font-bold text-gray-900">
+                      {arrivalTime}
+                    </p>
+                    <p className="text-[10px] text-gray-500">
+                      {arrivalAirportCode}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          }
-          
+          )}
 
           <p className="flex justify-between">
             <span className="text-sm font-medium text-gray-600">
@@ -173,4 +170,4 @@ function BillSummary() {
 }
 
 export default BillSummary;
-3
+3;

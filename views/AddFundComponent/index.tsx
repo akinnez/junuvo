@@ -15,6 +15,8 @@ export default function AddFundComponent() {
   const [values, setValues] = useState<string>("bankTransfer");
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [amountReceived, setAmountReceived] = useState<string>("NGN");
+  const [debit, setDEBIT] = useState<string>("");
+  const [credit, setCREDIT] = useState<string>("");
 
   const isPending = false;
   const form = useForm<any>({
@@ -63,8 +65,14 @@ export default function AddFundComponent() {
                 form={form}
                 label="Select Account to debit"
                 name="accountDebit"
-                options={[]}
-                onChange={(e) => console.log(e)}
+                options={[
+                  {
+                    label: "Savings",
+                    value: "savings",
+                  },
+                ]}
+                value={debit}
+                onChange={setDEBIT}
                 error={errors.type?.message as string}
                 searchable={false}
               />
@@ -73,8 +81,14 @@ export default function AddFundComponent() {
                 form={form}
                 label="Select Account to credit"
                 name="accountCredit"
-                options={[]}
-                onChange={(e) => console.log(e)}
+                options={[
+                  {
+                    label: "Main Account",
+                    value: "mainAccount",
+                  },
+                ]}
+                value={credit}
+                onChange={setCREDIT}
                 error={errors.type?.message as string}
                 searchable={false}
               />

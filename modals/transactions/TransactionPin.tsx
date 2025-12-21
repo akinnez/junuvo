@@ -40,7 +40,7 @@ export default function TransactionPin({
 
   const handleOpenSettings = () => {
     openModal({
-      size: "md",
+      size: "sm",
       component: <Component closeModal={closeModal} />,
     });
   };
