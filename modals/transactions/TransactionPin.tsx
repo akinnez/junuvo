@@ -19,13 +19,17 @@ const PinSchema = z.object({
 });
 
 export default function TransactionPin({
+  title,
+  description,
   closeModal,
   Component,
 }: {
   closeModal: any;
   Component: any;
+  title?: string;
+  description?: string;
 }) {
-  const { openModal, closeModal: exitModal } = useModal();
+  const { openModal } = useModal();
   const {
     handleSubmit,
     setValue,
@@ -40,7 +44,9 @@ export default function TransactionPin({
 
   const handleOpenSettings = () => {
     openModal({
-      size: "md",
+      title,
+      description,
+      size: "sm",
       component: <Component closeModal={closeModal} />,
     });
   };

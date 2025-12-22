@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import Image from "next/image";
+import Link from "next/link";
 
 function Onboarding() {
   return (
@@ -17,7 +18,9 @@ function Onboarding() {
       <p className="text-center text-gray-600 mb-8">
         Let&#39;s get you started by completing your KYC
       </p>
-      <Button className="w-full mt-6">Complete your KYC</Button>
+      <Link href={"/account/onboarding/addBVN"}>
+        <Button className="w-full mt-6">Complete your KYC</Button>
+      </Link>
     </div>
   );
 }

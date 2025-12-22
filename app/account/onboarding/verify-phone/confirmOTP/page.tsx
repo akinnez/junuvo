@@ -32,8 +32,9 @@ export default function ConfirmOTP() {
   const pin = watch("pin");
 
   const onSubmit = (data: PinFormValues) => {
-    router.push("");
-    alert("OTP validated: " + data.pin);
+    sessionStorage.setItem("onboarding_kyc", JSON.stringify(true));
+    router.push("/account/dashboard");
+    // alert("OTP validated: " + data.pin);
   };
 
   const handleResendOTP = () => {

@@ -8,6 +8,7 @@ type ModalConfig = {
   component: React.ReactNode;
   size?: "sm" | "md" | "lg" | "xl" | "full";
   title?: string;
+  description?: string;
 };
 
 interface ModalContextType {
@@ -34,6 +35,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
           onClose={closeModal}
           size={config.size}
           title={config.title}
+          description={config.description}
         >
           {config.component}
         </Modal>

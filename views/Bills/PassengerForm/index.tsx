@@ -2,37 +2,18 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { CustomSelect } from "@/components/Select";
+import {
+  cityOptions,
+  genderOptions,
+  nationalityOptions,
+  titleOptions,
+  typeOptions,
+} from "@/lib/mock-flight-data";
 import { PassengerData } from "@/types/flight";
 import { ArrowLeft } from "lucide-react";
 
 import { useState } from "react";
 
-const titleOptions: Option[] = [
-  { label: "Mr", value: "mr" },
-  { label: "Mrs", value: "mrs" },
-  { label: "Miss", value: "miss" },
-  { label: "Master", value: "master" },
-];
-const typeOptions: Option[] = [
-  { label: "Adult", value: "adult" },
-  { label: "Children", value: "children" },
-  { label: "Infant", value: "infant" },
-];
-const nationalityOptions: Option[] = [
-  { label: "Nigeria", value: "nigeria" },
-  { label: "United State of America", value: "usa" },
-  { label: "United Kindom", value: "uk" },
-];
-const genderOptions: Option[] = [
-  { label: "Female", value: "female" },
-  { label: "Male", value: "male" },
-  { label: "I prefer not to say", value: "notSpecify" },
-];
-const cityOptions: Option[] = [
-  { label: "Ibadan", value: "ibadan" },
-  { label: "Oyo", value: "oyo" },
-  { label: "Iseyin", value: "iseyin" },
-];
 interface PassengerFormProps {
   passenger: PassengerData;
   onSave: (data: Omit<PassengerData, "id">) => void;

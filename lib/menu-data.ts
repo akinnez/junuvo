@@ -27,7 +27,7 @@ export const MENU_ITEMS: MenuItem[] = [
     { id: 'stocks', label: 'Stocks', icon: Banknote, href: '/account/bills/stocks' },
   ] },
   { id: 'transactions', label: 'Transactions', icon: ScrollText, href: '/account/transactions' },
-  { id: 'cards', label: 'Cards', icon: CreditCard, href: '/account/cards' },
+  { id: 'cards', label: 'Cards', icon: CreditCard, href: '/account/card/virtual' },
   { id: 'savings', label: 'Savings', icon: PiggyBank, href: '/account/savings' },
   { id: 'loan', label: 'Loan', icon: Handshake, href: '/account/loan' },
   { id: 'refer-earn', label: 'Refer & earn', icon: Users, href: '/account/refer' },

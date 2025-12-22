@@ -1,4 +1,4 @@
- export  const formattedAmount=(currencyCode:string,amount:string|number | bigint) => new Intl.NumberFormat(
+ export  const formattedAmount=(currencyCode:'USD'|'NGN', amount:string|number | bigint) => new Intl.NumberFormat(
     currencyCode == "NGN" ? "en-NG" : "en-US",
     {
       style: "currency",

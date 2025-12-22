@@ -8,6 +8,7 @@ import {
 import Button from "@/components/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
+import { useRouter } from "next/navigation";
 
 type PinFormValues = {
   pin: string;
@@ -28,6 +29,7 @@ const PinSchema = z
   });
 
 export default function CreateTransactionPinPage() {
+  const router = useRouter();
   const {
     handleSubmit,
     setValue,
@@ -43,6 +45,7 @@ export default function CreateTransactionPinPage() {
 
   const onSubmit = (data: PinFormValues) => {
     alert("PIN validated: " + data.pin);
+    router.push("/auth/login");
   };
 
   return (

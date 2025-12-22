@@ -8,6 +8,7 @@ import { loginSchema } from "@/schema";
 import CustomForm from "@/components/CustomForm";
 import CustomInput from "@/components/CustomInput";
 import Button from "@/components/Button";
+import Link from "next/link";
 
 type loginType = {
   email: string;
@@ -88,14 +89,16 @@ function Login() {
               </a>
             </div>
             <div>
-              <Button
-                className="w-full "
-                disabled={isPending}
-                variant={"primary"}
-                loading={isPending}
-              >
-                Login
-              </Button>
+              <Link href={"/account/dashboard"}>
+                <Button
+                  className="w-full "
+                  disabled={isPending}
+                  variant={"primary"}
+                  loading={isPending}
+                >
+                  Login
+                </Button>
+              </Link>
             </div>
           </CustomForm>
         </div>

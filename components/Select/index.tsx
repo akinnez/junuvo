@@ -24,6 +24,7 @@ export type CustomSelectProps = {
   value?: string | undefined; // Controlled value
   onChange: (value: string) => void;
   // Custom classes for styling different parts
+  header?: string;
   className?: string; // Wrapper class
   buttonClass?: string; // Select button class
   listClass?: string; // Dropdown list container class
@@ -65,6 +66,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   id,
   name,
   label,
+  header,
   options,
   placeholder = "Select an option",
   value,
@@ -280,8 +282,8 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
         aria-haspopup="listbox"
         aria-activedescendant={activeId}
         className={`
-          flex justify-between items-center w-full px-4 py-2 text-left
-          border rounded-xl shadow-sm transition-all duration-150 group
+          flex justify-between items-center w-full text-left
+          border rounded-md p-4 shadow-sm transition-all duration-150 group
           ${
             disabled
               ? "bg-gray-100 text-gray-500 cursor-not-allowed"
@@ -319,6 +321,10 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
           // Match the width of the parent combobox container
           style={{ minWidth: comboboxRef.current?.offsetWidth }}
         >
+          {/* Optional Header section  */}
+          {header && (
+            <div className="text-tertiary font-semibold mb-3">{header}</div>
+          )}
           {/* Optional Search Input */}
           {searchable && (
             <SearchInput label={label} searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchInputRef={searchInputRef} />
