@@ -5,19 +5,35 @@ import Input from "@/components/Input";
 import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
 import { CustomSelect } from "@/components/Select";
+import { useModal } from "@/hooks/useModal";
 import { cityOptions, nationalityOptions } from "@/lib/mock-flight-data";
-import { useRouter } from "next/navigation";
+import PhysicalCardCreation from "@/modals/cards/PhysicalCardCreation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function KYC() {
   const [nationality, setNationality] = useState("");
   const [city, setCity] = useState("");
-  const router = useRouter();
+
+  const { push } = useRouter();
+  const { cardType } = useParams();
+  const { openModal, closeModal } = useModal();
+
+  const handleSetPin = () => {
+    openModal({
+      size: "sm",
+      component: <PhysicalCardCreation closeModal={closeModal} />,
+    });
+  };
 
   const handleSubmit = () => {
     sessionStorage.setItem("set_card", JSON.stringify(true));
-    router.push("/account/card");
+    if (cardType == "physical") {
+      return handleSetPin();
+    }
+    return push("/account/card/virtual");
   };
+
   return (
     <PageLayout
       title="KYC Verification"

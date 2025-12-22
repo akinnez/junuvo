@@ -9,10 +9,10 @@ export function CardPageLayout({
   className,
 }: PageLayoutProps & { className?: string }) {
   return (
-    <div className="grid grid-cols-3 !bg-white border border-gray-100 p-5 rounded-xl">
-      <div className="col-span-1 ">
+    <div className="grid grid-cols-3 rounded-xl">
+      <div className="col-span-1 space-y-1.5">
         <h3 className="text-gray-900 font-bold">{title}</h3>
-        <span className="text-gray-500 font-semibold text-sm">
+        <span className="text-gray-500 font-semibold !text-xs">
           {description}
         </span>
       </div>

@@ -2,10 +2,13 @@ import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
 import { useModal } from "@/hooks/useModal";
 import { formattedAmount } from "@/lib/currency-formatter";
 import { transactions } from "@/lib/mock-card";
+import CancelCard from "@/modals/cards/CancelCard";
 import CardFunding from "@/modals/cards/CardFunding";
 import CardDetailsModal from "@/modals/cards/DetailsCardModal";
 import FreezeCard from "@/modals/cards/FreezeCard";
 import WithdrawCard from "@/modals/cards/WithdrawCard";
+import NewTransactionPin from "@/modals/transactions/NewTransactionPin";
+import TransactionPin from "@/modals/transactions/TransactionPin";
 import { SettingOption } from "@/types/card";
 import {
   ChevronRight,
@@ -21,10 +24,33 @@ import {
   Trash2,
 } from "lucide-react";
 import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 
 export default function HasCardPage() {
   const { closeModal: successModal, openModal } = useModal();
+  const router = useRouter();
+  const { cardType } = useParams();
 
+  const handleSetPin = () => {
+    openModal({
+      size: "sm",
+      component: (
+        <TransactionPin
+          title="Create your Transaction PIN"
+          description="Secure your account on every transactions"
+          Component={NewTransactionPin}
+          closeModal={successModal}
+        />
+      ),
+    });
+  };
+  const handleCancel = () => {
+    openModal({
+      title: "Cancel Card",
+      size: "md",
+      component: <CancelCard closeModal={successModal} />,
+    });
+  };
   const handleOpenDetails = () => {
     openModal({
       title: "Details",
@@ -60,21 +86,22 @@ export default function HasCardPage() {
       title: "Set Transaction Limit",
       description: "Set daily transaction limit",
       color: "text-blue-600",
-      handleClick: handleFreezeCard,
+      handleClick: () =>
+        router.push(`/account/card/${cardType}/settings/transaction-limit`),
     },
     {
       icon: <MessageSquareText className="text-white fill-button" size={20} />,
       title: "SMS Alert Subscription",
       description: "Manage your card transaction alerts",
       color: "text-blue-600",
-      handleClick: handleFreezeCard,
+      handleClick: () => router.push(`/account/card/${cardType}/settings/sms`),
     },
     {
       icon: <Lock size={20} className="text-button" />,
       title: "Manage PIN",
       description: "Check or change your card PIN",
       color: "text-blue-600",
-      handleClick: handleFreezeCard,
+      handleClick: handleSetPin,
     },
     {
       icon: <CircleAlert size={20} className="text-white fill-button" />,
@@ -102,7 +129,7 @@ export default function HasCardPage() {
       title: "Cancel Virtual Card",
       description: "Cancel and delete the card",
       color: "text-blue-600",
-      handleClick: handleFreezeCard,
+      handleClick: handleCancel,
     },
   ];
 
@@ -155,22 +182,33 @@ export default function HasCardPage() {
             </div>
 
             {/* Quick Actions */}
-            <div className="flex justify-between px-2">
+            <div
+              className={`flex ${
+                cardType == "virtual"
+                  ? "justify-between"
+                  : "justify-center gap-7"
+              } px-2`}
+            >
               <ActionButton
                 icon={<Settings size={20} className="text-button" />}
                 label="Details"
                 handleSubmit={handleOpenDetails}
               />
-              <ActionButton
-                icon={<Plus size={20} className="text-button" />}
-                label="Add Money"
-                handleSubmit={handleOpenSettings}
-              />
-              <ActionButton
-                icon={<Download size={20} className="text-button" />}
-                label="Withdraw"
-                handleSubmit={handleWithdrawSettings}
-              />
+              {cardType == "virtual" && (
+                <>
+                  <ActionButton
+                    icon={<Plus size={20} className="text-button" />}
+                    label="Add Money"
+                    handleSubmit={handleOpenSettings}
+                  />
+                  <ActionButton
+                    icon={<Download size={20} className="text-button" />}
+                    label="Withdraw"
+                    handleSubmit={handleWithdrawSettings}
+                  />
+                </>
+              )}
+
               <ActionButton
                 icon={<Settings size={20} className="text-button" />}
                 label="Settings"
@@ -215,31 +253,33 @@ export default function HasCardPage() {
         </div>
 
         {/* Bottom Section: Settings Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {settings.map((item, idx) => (
-            <div
-              key={idx}
-              className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 hover:shadow-md transition-shadow cursor-pointer group"
-              onClick={item.handleClick}
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full  flex items-center justify-center">
-                  {item.icon}
+        {cardType == "virtual" && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {settings.map((item, idx) => (
+              <div
+                key={idx}
+                className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 hover:shadow-md transition-shadow cursor-pointer group"
+                onClick={item.handleClick}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full  flex items-center justify-center">
+                    {item.icon}
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-gray-800">
+                      {item.title}
+                    </h4>
+                    <p className="text-xs text-gray-400">{item.description}</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-gray-800">
-                    {item.title}
-                  </h4>
-                  <p className="text-xs text-gray-400">{item.description}</p>
-                </div>
+                <ChevronRight
+                  size={18}
+                  className="text-gray-300 group-hover:text-blue-500 transition-colors"
+                />
               </div>
-              <ChevronRight
-                size={18}
-                className="text-gray-300 group-hover:text-blue-500 transition-colors"
-              />
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </CardPageLayout>
   );

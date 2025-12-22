@@ -3,6 +3,8 @@ import Button from "@/components/Button";
 import PageLayout from "@/components/PageLayout";
 import HasCardPage from "@/views/Cards/HasCard";
 import NoCardPage from "@/views/Cards/Onboarding";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface CardNavInt {
@@ -22,7 +24,8 @@ const cardNav: CardNavInt[] = [
 ];
 
 export default function CardPage() {
-  const [tab, setTab] = useState("virtual");
+  const { cardType } = useParams();
+  const [tab, setTab] = useState(cardType);
   const [hasCard, setHasCard] = useState(false);
 
   useEffect(() => {
@@ -41,17 +44,18 @@ export default function CardPage() {
     >
       <div className="flex gap-5 transition duration-300">
         {cardNav.map((nav) => (
-          <Button
-            key={nav.value}
-            onClick={() => setTab(nav.value)}
-            className={`!px-20  !text-[#232323] ${
-              nav.value == tab
-                ? "!border !border-button !text-button !bg-[#DEE7FF]"
-                : "!border-none !bg-white"
-            } `}
-          >
-            {nav.label} Card
-          </Button>
+          <Link href={`/account/card/${nav.value}`} key={nav.value}>
+            <Button
+              onClick={() => setTab(nav.value)}
+              className={`!px-20  !text-[#232323] ${
+                nav.value == tab
+                  ? "!border !border-button !text-button !bg-[#DEE7FF]"
+                  : "!border-none !bg-white"
+              } `}
+            >
+              {nav.label} Card
+            </Button>
+          </Link>
         ))}
       </div>
       <div className="my-5">

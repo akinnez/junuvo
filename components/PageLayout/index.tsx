@@ -6,8 +6,8 @@ import Button from "../Button";
 
 export interface PageLayoutProps {
   children: React.ReactNode;
-  title: string;
-  description: string;
+  title: string | React.ReactNode;
+  description: string | React.ReactNode;
   isBack?: boolean;
   isCardAllow?: boolean;
   showButton?: boolean;

@@ -3,101 +3,187 @@ import { formattedAmount } from "@/lib/currency-formatter";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 interface CardReqInt {
   link: string;
-  cardType: "Naira Card" | "Dollar Card";
+  type: "Naira Card" | "Dollar Card";
 }
 
-const cards: CardReqInt[] = [
-  {
-    cardType: "Naira Card",
-    link: `/account/card/create/naira`,
-  },
-  {
-    cardType: "Dollar Card",
-    link: "/account/card/create/dollar",
-  },
-];
-
 export default function NoCardPage() {
+  const { cardType } = useParams();
+
+  const cards: any = [
+    {
+      type: "Naira Card",
+      link: `/account/card/${cardType}/create/naira`,
+    },
+    ...(cardType === "virtual"
+      ? [
+          {
+            type: "Dollar Card",
+            link: `/account/card/${cardType}/create/dollar`,
+          },
+        ]
+      : []),
+  ];
   return (
-    <div className="grid grid-cols-5 gap-3 mt-5">
-      <div className="col-span-3 grid grid-cols-2 gap-5 h-32">
-        {cards.map((card) => (
-          <DisplayedCard
-            key={card.cardType}
-            cardType={card.cardType}
-            link={card.link}
-          />
+    <div className={`grid grid-cols-5 gap-3 mt-5`}>
+      <div
+        className={`${
+          cardType == "physical"
+            ? "col-span-2 w-full max-w-[300px]"
+            : "col-span-3 grid grid-cols-2"
+        }  gap-5 h-32`}
+      >
+        {cards.map((card: CardReqInt, i: number) => (
+          <DisplayedCard key={i} type={card.type} link={card.link} />
         ))}
       </div>
       <div className="col-span-2">
-        <Card className="!py-3 !px-4">
-          <div className="text-center space-y-2 mb-10">
-            <h2 className="text-xl font-bold text-[#232323]">
-              About Junuvo Virtual Card
-            </h2>
-            <span className="text-gray-500">
-              Take control of your money and pave your way to a brighter
-              financial future
-            </span>
-          </div>
-          <div className="flex justify-between gap-2">
-            <div>
-              <h1 className="text-[#232323] text-sm font-bold">
-                Card Creation Fee
-              </h1>
-              <span className="text-gray-500 text-xs">
-                A non refundable fee would be deducted for card Issuance
-              </span>
-            </div>
-            <div className="text-[#232323] text-sm font-bold">
-              {formattedAmount("USD", 1)}
-            </div>
-          </div>
-          <div className="flex justify-between gap-2 mt-5">
-            <div>
-              <h1 className="text-[#232323] text-sm font-bold">
-                Cross Border Fee
-              </h1>
-              <span className="text-gray-500 text-xs">
-                A fee charged for cross border payment
-              </span>
-            </div>
-            <div className="text-[#232323] text-sm font-bold">2.5%</div>
-          </div>
-          <div className="flex justify-between gap-2 mt-5">
-            <div>
-              <h1 className="text-[#232323] text-sm font-bold">
-                Domestic Failed Fee
-              </h1>
-              <span className="text-gray-500 text-xs">
-                A fee you will be charged per transaction value for failed
-                transactions due to insufficient funds withIn the US
-              </span>
-            </div>
-            <div className="text-[#232323] text-sm font-bold">
-              {formattedAmount("USD", 0.06)}
-            </div>
-          </div>
-          <div className="flex justify-between gap-2 mt-5">
-            <div>
-              <h1 className="text-[#232323] text-sm font-bold">
-                International Failed Fee
-              </h1>
-              <span className="text-gray-500 text-xs">
-                A fee you will be charged per transaction value for failed
-                transactions due to insufficient funds outside the US
-              </span>
-            </div>
-            <div className="text-[#232323] text-sm font-bold">
-              {formattedAmount("USD", 0.4)}
-            </div>
-          </div>
-        </Card>
+        {cardType == "virtual" ? (
+          <VirtualCardDetails />
+        ) : (
+          <PhysicalCardDetails />
+        )}
       </div>
     </div>
+  );
+}
+
+function PhysicalCardDetails() {
+  return (
+    <Card className="!py-3 !px-4">
+      <div className="text-center space-y-2 mb-10">
+        <h2 className="text-xl font-bold text-[#232323]">
+          About Junuvo Physical Card
+        </h2>
+        <span className="text-gray-500">
+          Take control of your money and pave your way to a brighter financial
+          future
+        </span>
+      </div>
+      <div className="flex justify-between gap-2">
+        <div>
+          <h1 className="text-[#232323] text-sm font-bold">
+            Card Creation Fee
+          </h1>
+          <span className="text-gray-500 text-xs">
+            A non refundable fee would be deducted for card Issuance
+          </span>
+        </div>
+        <div className="text-[#232323] text-sm font-bold">
+          {formattedAmount("NGN", 1460)}
+        </div>
+      </div>
+      <div className="flex justify-between gap-2 mt-5">
+        <div>
+          <h1 className="text-[#232323] text-sm font-bold">
+            Authorisation Fee
+          </h1>
+          <span className="text-gray-500 text-xs">
+            A fee charged for cross border payment
+          </span>
+        </div>
+        <div className="text-[#232323] text-sm font-bold">
+          {formattedAmount("NGN", 5)}
+        </div>
+      </div>
+      <div className="flex justify-between gap-2 mt-5">
+        <div>
+          <h1 className="text-[#232323] text-sm font-bold">
+            ATM Withdrawal Fee
+          </h1>
+          <span className="text-gray-500 text-xs">
+            A fee you will be charged per transaction value for failed
+            transactions due to insufficient funds withIn the US
+          </span>
+        </div>
+        <div className="text-[#232323] text-sm font-bold">
+          {formattedAmount("NGN", 35)}
+        </div>
+      </div>
+      <div className="flex justify-between gap-2 mt-5">
+        <div>
+          <h1 className="text-[#232323] text-sm font-bold">
+            Quarterly Maintenance Fee
+          </h1>
+          <span className="text-gray-500 text-xs">
+            A fee you will be charged per transaction value for failed
+            transactions due to insufficient funds outside the US
+          </span>
+        </div>
+        <div className="text-[#232323] text-sm font-bold">
+          {formattedAmount("USD", 50)}
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+function VirtualCardDetails() {
+  return (
+    <Card className="!py-3 !px-4">
+      <div className="text-center space-y-2 mb-10">
+        <h2 className="text-xl font-bold text-[#232323]">
+          About Junuvo Virtual Card
+        </h2>
+        <span className="text-gray-500">
+          Take control of your money and pave your way to a brighter financial
+          future
+        </span>
+      </div>
+      <div className="flex justify-between gap-2">
+        <div>
+          <h1 className="text-[#232323] text-sm font-bold">
+            Card Creation Fee
+          </h1>
+          <span className="text-gray-500 text-xs">
+            A non refundable fee would be deducted for card Issuance
+          </span>
+        </div>
+        <div className="text-[#232323] text-sm font-bold">
+          {formattedAmount("USD", 1)}
+        </div>
+      </div>
+      <div className="flex justify-between gap-2 mt-5">
+        <div>
+          <h1 className="text-[#232323] text-sm font-bold">Cross Border Fee</h1>
+          <span className="text-gray-500 text-xs">
+            A fee charged for cross border payment
+          </span>
+        </div>
+        <div className="text-[#232323] text-sm font-bold">2.5%</div>
+      </div>
+      <div className="flex justify-between gap-2 mt-5">
+        <div>
+          <h1 className="text-[#232323] text-sm font-bold">
+            Domestic Failed Fee
+          </h1>
+          <span className="text-gray-500 text-xs">
+            A fee you will be charged per transaction value for failed
+            transactions due to insufficient funds withIn the US
+          </span>
+        </div>
+        <div className="text-[#232323] text-sm font-bold">
+          {formattedAmount("USD", 0.06)}
+        </div>
+      </div>
+      <div className="flex justify-between gap-2 mt-5">
+        <div>
+          <h1 className="text-[#232323] text-sm font-bold">
+            International Failed Fee
+          </h1>
+          <span className="text-gray-500 text-xs">
+            A fee you will be charged per transaction value for failed
+            transactions due to insufficient funds outside the US
+          </span>
+        </div>
+        <div className="text-[#232323] text-sm font-bold">
+          {formattedAmount("USD", 0.4)}
+        </div>
+      </div>
+    </Card>
   );
 }
 
@@ -114,9 +200,9 @@ function DisplayedCard(card: CardReqInt) {
         />
       </div>
       <div className="mt-5 flex justify-between items-center">
-        <h3 className="font-bold text-gray-800">{card.cardType}</h3>
+        <h3 className="font-bold text-gray-800">{card.type}</h3>
         <Link
-          href={card.link}
+          href={card.link || ""}
           className="flex gap-1 text-xs !text-button font-semibold"
         >
           Request card <ChevronRight className="h-4 w-4" />
