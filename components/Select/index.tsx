@@ -6,8 +6,9 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { ChevronDown, Check, Search, X } from "lucide-react";
+import { ChevronDown, Check, } from "lucide-react";
 import Image from "next/image";
+import SearchInput from "../SearchInput";
 
 /**
  * --- 1. Type Definitions ---
@@ -320,18 +321,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
         >
           {/* Optional Search Input */}
           {searchable && (
-            <div className="p-2 border-b border-gray-100 flex items-center space-x-2">
-              <Search className="w-4 h-4 text-gray-400 ml-1" />
-              <input
-                ref={searchInputRef}
-                type="text"
-                placeholder={`Search ${label}...`}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full py-1 text-sm border-none focus:ring-0 focus:outline-none"
-                aria-label={`Search ${label} options`}
-              />
-            </div>
+            <SearchInput label={label} searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchInputRef={searchInputRef} />
           )}
 
           <ul
