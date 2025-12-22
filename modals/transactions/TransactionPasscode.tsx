@@ -6,19 +6,17 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import Button from "@/components/Button";
-import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useModal } from "@/hooks/useModal";
 
 type PinFormValues = {
   pin: string;
 };
-
 const PinSchema = z.object({
-  pin: z.string().regex(/^\d{4}$/, "PIN must be exactly 4 digits."), // Enforce 4 digits
+  pin: z.string().regex(/^\d{6}$/, "PIN must be exactly 6 digits."),
 });
-
-export default function TransactionPin({
+export default function TransactionPasscode({
   label,
   caption,
   title,
@@ -34,6 +32,7 @@ export default function TransactionPin({
   description?: string;
 }) {
   const { openModal } = useModal();
+
   const {
     handleSubmit,
     setValue,
@@ -50,7 +49,7 @@ export default function TransactionPin({
     openModal({
       title,
       description,
-      size: "sm",
+      size: "md",
       component: <Component closeModal={closeModal} />,
     });
   };
@@ -64,7 +63,7 @@ export default function TransactionPin({
     <div>
       <div className="mb-10">
         <h1 className="text-xl font-bold">
-          {label ? label : "Enter Transaction PIN"}
+          {label ? label : "Enter Transaction Passcode"}
         </h1>
         <span className="text-xs text-gray-500">
           {caption
@@ -72,15 +71,15 @@ export default function TransactionPin({
             : "Enter your transactional PIN to perform this transaction"}
         </span>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 ">
-        <div className="w-full px-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div className="w-full">
           <InputOTP
-            maxLength={4}
+            maxLength={6}
             value={pin}
             onChange={(val) => setValue("pin", val, { shouldValidate: true })}
           >
-            <InputOTPGroup className="!flex !gap-7 w-full">
-              {[0, 1, 2, 3].map((i) => (
+            <InputOTPGroup className="!flex !gap-4 w-full">
+              {[0, 1, 2, 3, 4, 5].map((i) => (
                 <InputOTPSlot
                   key={i}
                   index={i}
@@ -93,7 +92,6 @@ export default function TransactionPin({
             <p className="text-red-500 text-xs mt-1">{errors.pin.message}</p>
           )}
         </div>
-
         <Button
           type="submit"
           size="md"
