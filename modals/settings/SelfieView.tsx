@@ -1,9 +1,11 @@
 "use client";
 import SelfieModal from "@/views/Settings/SelfieSettings";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function SelfieView({ closeModal }: { closeModal: any }) {
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const { push } = useRouter();
 
   const handleSelfieCapture = async (imageBlob: Blob) => {
     setIsModalOpen(false);
@@ -14,6 +16,7 @@ export default function SelfieView({ closeModal }: { closeModal: any }) {
       const formData = new FormData();
       formData.append("selfie", file);
       console.log(file);
+      push("/account/settings/employment_details");
       closeModal();
       // 2. Send to Server Action or API
       //   const result = await uploadSelfieAction(formData);

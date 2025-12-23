@@ -1,21 +1,15 @@
 "use client";
 
 import Button from "@/components/Button";
-import { useModal } from "@/hooks/useModal";
 import { formattedAmount } from "@/lib/currency-formatter";
-import SelfieView from "./SelfieView";
+import { useRouter } from "next/navigation";
 
-export default function UpgradeTierTwo({ closeModal }: { closeModal: any }) {
-  const { openModal } = useModal();
+export default function UpgradeTierThree({ closeModal }: { closeModal: any }) {
+  const { push } = useRouter();
 
   const handleOpenSelfie = () => {
     closeModal();
-    openModal({
-      title: "Take your selfie",
-      description: "Take your picture and capture your picture",
-      size: "md",
-      component: <SelfieView closeModal={closeModal} />,
-    });
+    push("/account/settings/address-proof");
   };
 
   return (
@@ -73,23 +67,9 @@ export default function UpgradeTierTwo({ closeModal }: { closeModal: any }) {
 
 const requirement = [
   {
-    label: "Selfie",
-    description: "Take your selfie",
-    status: "pending",
-  },
-  {
-    label: "Employment Information",
-    description: "Supply your employment information",
-    status: "pending",
-  },
-  {
-    label: "Source of Income",
-    description: "Enter your source of income",
-    status: "pending",
-  },
-  {
-    label: "Expected Monthly Income",
-    description: "Provide your expected monthly income",
+    label: "Proof of Address Verification",
+    description:
+      "Utility bill such as power bill, waste bill or water bill not older than 3 months or Rent agreement or Proof of Tax remittance",
     status: "pending",
   },
 ];

@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BehaviorSubject, Subject, from, of } from "rxjs";
 import { catchError, tap, takeUntil } from "rxjs/operators";
-import { Camera, CheckCircle, RefreshCcw } from "lucide-react";
+import Button from "@/components/Button";
 
 type CaptureState = "IDLE" | "LOADING" | "STREAMING" | "CAPTURED" | "ERROR";
 
@@ -106,7 +106,7 @@ const SelfieModal = ({
             ref={videoRef}
             autoPlay
             playsInline
-            className={`h-[215px] w-[215px] transform scale-x-100  object-cover transition-opacity duration-500 rounded-full ${
+            className={`h-[215px] w-[215px] transform scale-x-[1]  object-cover transition-opacity duration-500 rounded-full ${
               state === "STREAMING" ? "opacity-100" : "opacity-0 absolute"
             }`}
           />
@@ -122,28 +122,22 @@ const SelfieModal = ({
         {/* Actions */}
         <div className="p-6">
           {state === "STREAMING" && (
-            <button
-              onClick={captureImage}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-4 font-semibold text-white transition-all hover:bg-blue-700 active:scale-[0.98]"
-            >
-              <Camera size={20} /> Take Selfie
-            </button>
+            <Button onClick={captureImage} className="w-full">
+              Capture
+            </Button>
           )}
 
           {state === "CAPTURED" && (
-            <div className="flex gap-3">
-              <button
+            <div className="flex gap-5">
+              <Button
                 onClick={() => startCamera()}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 py-3 font-medium text-slate-600 hover:bg-slate-50"
+                className="!border !border-button !bg-white !text-button w-full"
               >
-                <RefreshCcw size={18} /> Retake
-              </button>
-              <button
-                onClick={handleConfirm}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-green-600 py-3 font-semibold text-white hover:bg-green-700"
-              >
-                <CheckCircle size={18} /> Confirm
-              </button>
+                Retake
+              </Button>
+              <Button onClick={handleConfirm} className="w-full">
+                Proceed
+              </Button>
             </div>
           )}
         </div>

@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp, CheckCircle2 } from "lucide-react";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
 import { useModal } from "@/hooks/useModal";
 import UpgradeTierTwo from "@/modals/settings/UpgradeTierTwo";
+import UpgradeTierThree from "@/modals/settings/UpgradeTierThree";
 
 // --- Types ---
 interface Requirement {
@@ -26,7 +27,7 @@ const TIERS_DATA: Tier[] = [
   {
     id: 1,
     title: "Tier 1",
-    isCurrent: true,
+    isCurrent: false,
     singleLimit: "₦0.00",
     dailyLimit: "₦0.00",
     requirements: [
@@ -38,7 +39,7 @@ const TIERS_DATA: Tier[] = [
   {
     id: 2,
     title: "Tier 2",
-    isCurrent: false,
+    isCurrent: true,
     singleLimit: "₦50,000.00",
     dailyLimit: "₦200,000.00",
     requirements: [{ label: "ID Card Upload", isDone: false }],
@@ -55,17 +56,32 @@ const TIERS_DATA: Tier[] = [
 
 export default function AccountTiers() {
   const [expandedTier, setExpandedTier] = useState<number | null>(1);
+  const [currentTier, setCurrentTier] = useState<number>(1);
+
   const { openModal, closeModal } = useModal();
 
-  const handleTierSettings = () => {
+  useEffect(() => {
+    const getCurrentTier = sessionStorage.getItem("currentTier");
+    if (getCurrentTier) {
+      setCurrentTier(Number(getCurrentTier));
+    }
+  });
+
+  const handleTier2Settings = () => {
     openModal({
-      title: "Upgrade to Tier 2",
+      title: `Upgrade to Tier ${currentTier + 1}`,
       description:
         "Complete the verification checks below to upgrade your account",
       size: "md",
-      component: <UpgradeTierTwo closeModal={closeModal} />,
+      component:
+        currentTier == 1 ? (
+          <UpgradeTierTwo closeModal={closeModal} />
+        ) : (
+          <UpgradeTierThree closeModal={closeModal} />
+        ),
     });
   };
+
   return (
     <CardPageLayout
       title="Account Tiers"
@@ -87,11 +103,12 @@ export default function AccountTiers() {
               onClick={() =>
                 setExpandedTier(expandedTier === tier.id ? null : tier.id)
               }
+              disabled={expandedTier === currentTier}
               className="w-full flex items-center justify-between p-5 text-left"
             >
               <div className="flex items-center gap-3">
                 <span className="font-bold text-slate-800">{tier.title}</span>
-                {tier.isCurrent && (
+                {tier.id == currentTier && (
                   <span className="bg-[#D1FAE5] text-[#10B981] text-[10px] font-bold px-2 py-0.5 rounded-full">
                     Current Tier
                   </span>
@@ -164,7 +181,7 @@ export default function AccountTiers() {
 
         {/* Action Button */}
         <button
-          onClick={handleTierSettings}
+          onClick={handleTier2Settings}
           className="w-full bg-[#005BAB] text-white font-bold py-4 rounded-xl mt-4 hover:bg-[#004a8c] transition-colors shadow-sm"
         >
           Upgrade your account
