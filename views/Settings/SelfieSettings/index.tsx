@@ -1,17 +1,16 @@
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import { BehaviorSubject, Subject, from, of } from "rxjs";
-import { catchError, switchMap, tap, takeUntil } from "rxjs/operators";
-import { Camera, CheckCircle, RefreshCcw, ShieldCheck, X } from "lucide-react";
+import { catchError, tap, takeUntil } from "rxjs/operators";
+import { Camera, CheckCircle, RefreshCcw } from "lucide-react";
 
 type CaptureState = "IDLE" | "LOADING" | "STREAMING" | "CAPTURED" | "ERROR";
 
 const SelfieModal = ({
   isOpen,
-  onClose,
   onUpload,
 }: {
   isOpen: boolean;
-  onClose: () => void;
   onUpload: (blob: Blob) => void;
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -31,6 +30,14 @@ const SelfieModal = ({
       stopCamera();
     };
   }, [isOpen]);
+
+  const handleConfirm = () => {
+    canvasRef.current?.toBlob(
+      (blob) => blob && onUpload(blob),
+      "image/jpeg",
+      0.9
+    );
+  };
 
   const startCamera = () => {
     state$.current.next("LOADING");
@@ -69,7 +76,8 @@ const SelfieModal = ({
       canvas.height = video.videoHeight;
 
       const ctx = canvas.getContext("2d");
-      ctx?.drawImage(video, 0, 0);
+      ctx?.setTransform(1, 0, 0, 1, 0, 0);
+      ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       state$.current.next("CAPTURED");
       stopCamera();
@@ -84,31 +92,13 @@ const SelfieModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b p-5">
-          <div>
-            <h3 className="text-lg font-bold text-slate-800">
-              Identity Verification
-            </h3>
-            <p className="text-xs text-slate-500">
-              Tier 2 Upgrade • Secure Process
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="rounded-full p-2 hover:bg-slate-100"
-          >
-            <X size={20} className="text-slate-400" />
-          </button>
-        </div>
-
+    <div>
+      <div className="w-full overflow-hidden rounded-3xl bg-white shadow-2xl">
         {/* Camera Viewfinder */}
-        <div className="relative aspect-square bg-slate-900 overflow-hidden">
+        <div className="relative bg-white overflow-hidden flex justify-center items-center">
           {state === "LOADING" && (
             <div className="flex h-full items-center justify-center text-white">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-button border-t-transparent" />
             </div>
           )}
 
@@ -116,24 +106,17 @@ const SelfieModal = ({
             ref={videoRef}
             autoPlay
             playsInline
-            className={`h-full w-full object-cover transition-opacity duration-500 ${
+            className={`h-[215px] w-[215px] transform scale-x-100  object-cover transition-opacity duration-500 rounded-full ${
               state === "STREAMING" ? "opacity-100" : "opacity-0 absolute"
             }`}
           />
 
           <canvas
             ref={canvasRef}
-            className={`h-full w-full object-cover ${
+            className={`h-[215px] w-[215px] object-cover ${
               state === "CAPTURED" ? "block" : "hidden"
             }`}
           />
-
-          {/* Fintech "Guide" Overlay */}
-          {state === "STREAMING" && (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-              <div className="h-64 w-64 rounded-[4rem] border-2 border-dashed border-white/50 ring-[1000px] ring-black/40" />
-            </div>
-          )}
         </div>
 
         {/* Actions */}
@@ -156,24 +139,13 @@ const SelfieModal = ({
                 <RefreshCcw size={18} /> Retake
               </button>
               <button
-                onClick={() => {
-                  canvasRef.current?.toBlob(
-                    (blob) => blob && onUpload(blob),
-                    "image/jpeg",
-                    0.9
-                  );
-                }}
+                onClick={handleConfirm}
                 className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-green-600 py-3 font-semibold text-white hover:bg-green-700"
               >
                 <CheckCircle size={18} /> Confirm
               </button>
             </div>
           )}
-
-          <div className="mt-4 flex items-center justify-center gap-2 text-[10px] uppercase tracking-wider text-slate-400">
-            <ShieldCheck size={14} className="text-green-500" />
-            End-to-end encrypted verification
-          </div>
         </div>
       </div>
     </div>
