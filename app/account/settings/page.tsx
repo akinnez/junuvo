@@ -11,6 +11,8 @@ import Link from "next/link";
 import ProfileSettingsPage from "@/views/Settings/ProfilePage";
 import SecurityPage from "@/views/Settings/Security";
 import AccountTiers from "@/views/Settings/Tiers";
+import Support from "@/views/Settings/Support";
+import Preferences from "@/views/Settings/Preferences";
 
 // --- Types ---
 interface PersonalDetailProps {
@@ -82,8 +84,8 @@ export default function SettingsPage() {
 
         {activeTab == "Profile" && <ProfileSettingsPage />}
         {activeTab == "Security" && <SecurityPage />}
-        {activeTab == "Support" && <ProfileSettingsPage />}
-        {activeTab == "Preferences" && <ProfileSettingsPage />}
+        {activeTab == "Support" && <Support />}
+        {activeTab == "Preferences" && <Preferences />}
         {activeTab == "Tier Management" && <AccountTiers />}
       </Card>
     </PageLayout>

@@ -5,11 +5,14 @@ import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
 import { formattedAmount } from "@/lib/currency-formatter";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
 const LimitSettings = () => {
   const [webLimit, setWebLimit] = useState(200000);
   const maxLimit = 200000;
+
+  const { cardType } = useParams();
 
   return (
     <PageLayout title={"Set Transaction Limit"} description="">
@@ -90,7 +93,9 @@ const LimitSettings = () => {
           </section>
 
           {/* Save Button */}
-          <Link href={"/account/card/settings/transaction-limit/kyc"}>
+          <Link
+            href={`/account/card/${cardType}/settings/transaction-limit/kyc`}
+          >
             <Button className="w-full">Save</Button>
           </Link>
 
