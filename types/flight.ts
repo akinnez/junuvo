@@ -5,7 +5,7 @@ export interface FlightDataInfo {
   airlineName: string; // e.g., "EgyptAir"
   flightNumber: string; // e.g., "MS-867"
   price: number; // e.g., 95645.00
-  currency: string; // e.g., "₦"
+  currency: 'NGN' | 'USD'; // e.g., "₦"
   classType: "ECONOMY" | "BUSINESS" | "FIRST";
   departureTime: string; // e.g., "19:20"
   arrivalTime: string; // e.g., "20:35"

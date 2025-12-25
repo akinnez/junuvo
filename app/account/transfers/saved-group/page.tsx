@@ -2,8 +2,6 @@
 import Button from "@/components/Button";
 import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
-import { CustomSelect } from "@/components/Select";
-import { formattedAmount } from "@/lib/currency-formatter";
 import DebitAccountComponent from "@/views/DebitAccountComponent";
 
 export default function Recipient() {

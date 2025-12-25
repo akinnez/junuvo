@@ -1,0 +1,2 @@
+[alias]
+cpm = "!f(){ git add -A && git commit \"$@\"&& git push; }; f"

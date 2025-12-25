@@ -33,13 +33,13 @@ export default function DebitAccountComponent({ type }: { type: string }) {
       <p className="flex justify-between">
         <span className="text-sm font-medium text-gray-600">Amount</span>
         <span className="text-sm font-semibold text-[#232323] flex gap-1 items-center">
-          {formattedAmount(data.currency, data.amount)}
+          {formattedAmount("NGN", data.amount)}
         </span>
       </p>
       <p className="flex justify-between">
         <span className="text-sm font-medium text-gray-600">Fees</span>
         <span className="text-sm font-semibold text-[#232323] flex gap-1 items-center">
-          {formattedAmount(data.currency, data.fees)}
+          {formattedAmount("NGN", data.fees)}
         </span>
       </p>
 

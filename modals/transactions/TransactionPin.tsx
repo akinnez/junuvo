@@ -22,6 +22,7 @@ export default function TransactionPin({
   label,
   caption,
   title,
+  size,
   description,
   closeModal,
   Component,
@@ -29,6 +30,7 @@ export default function TransactionPin({
   closeModal: any;
   Component: any;
   label?: string;
+  size?: "sm" | "md" | "lg" | "xl" | "full";
   caption?: string;
   title?: string;
   description?: string;
@@ -50,7 +52,7 @@ export default function TransactionPin({
     openModal({
       title,
       description,
-      size: "sm",
+      size: size ? size : "sm",
       component: <Component closeModal={closeModal} />,
     });
   };

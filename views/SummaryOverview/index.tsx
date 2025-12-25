@@ -17,7 +17,7 @@ export default function SummaryOverview({
   amount?: string | number;
   createdAt?: string;
   destination?: string;
-  currency?: string;
+  currency?: "NGN" | "USD";
   className?: string;
   children: React.ReactNode;
   handleSubmit?: () => void;
@@ -26,17 +26,15 @@ export default function SummaryOverview({
     <CardPageLayout
       title="Transaction Summary"
       description="Here is the summary of the transaction to be made"
-      className="max-w-sm"
+      className="max-w-md"
     >
       <div className="text-center space-y-3 mb-5">
         <p className="text-xs text-gray-600 font-medium">You are sending</p>
-        <span className="block font-semibold text-[#232323]">
-          {destination}
-        </span>
+        <span className="block font-semibold text-tertiary">{destination}</span>
         <span className="text-xs block text-gray-600 font-medium">
           {createdAt}
         </span>
-        <span className="block text-4xl font-bold text-[#232323]">
+        <span className="block text-4xl font-bold text-tertiary">
           {formattedAmount(currency, amount as string)}
         </span>
       </div>

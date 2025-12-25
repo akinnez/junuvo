@@ -8,17 +8,13 @@ export default function SearchInput({
   searchInputRef,
   setSearchTerm,
 }: {
-  label: string;
+  label?: string;
   searchTerm: string;
-   searchInputRef?:RefObject<HTMLInputElement | null>
+  searchInputRef?: RefObject<HTMLInputElement | null>;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 }) {
-
-  
- 
-
   return (
-    <div className="p-2 border-b border-gray-100 flex items-center space-x-2">
+    <div className="p-2 border border-gray-100 flex items-center space-x-2 rounded-md">
       <Search className="w-4 h-4 text-gray-400 ml-1" />
       <input
         ref={searchInputRef}

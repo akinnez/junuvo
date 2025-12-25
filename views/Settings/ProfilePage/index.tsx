@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Camera, ChevronRight } from "lucide-react";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
-import PageLayout from "@/components/PageLayout";
 import Card from "@/components/Card";
 import Image from "next/image";
 import Button from "@/components/Button";
 import Link from "next/link";
+import { useModal } from "@/hooks/useModal";
+import DeleteModal from "@/modals/settings/DeleteModal";
 
 // --- Types ---
 interface PersonalDetailProps {
@@ -23,28 +24,15 @@ const DetailItem = ({ label, value }: PersonalDetailProps) => (
   </div>
 );
 
-const TabButton = ({
-  label,
-  isActive,
-  onClick,
-}: {
-  label: string;
-  isActive?: boolean;
-  onClick: () => void;
-}) => (
-  <button
-    onClick={onClick}
-    className={`px-2.5 py-1.5 text-xs  transition-colors ${
-      isActive
-        ? "text-button bg-blue-50 border font-bold border-button rounded-sm"
-        : "text-gray-500 hover:text-gray-700 font-semibold"
-    }`}
-  >
-    {label}
-  </button>
-);
-
 export default function ProfileSettingsPage() {
+  const { openModal, closeModal } = useModal();
+
+  const handleDeleteModal = () => {
+    openModal({
+      size: "sm",
+      component: <DeleteModal closeModal={closeModal} />,
+    });
+  };
   return (
     <CardPageLayout
       title="My Profile"
@@ -126,6 +114,7 @@ export default function ProfileSettingsPage() {
         <Button
           size="sm"
           className="!text-red-500 !text-xs !font-semibold !bg-transparent"
+          onClick={handleDeleteModal}
         >
           Delete Account
         </Button>
@@ -133,3 +122,5 @@ export default function ProfileSettingsPage() {
     </CardPageLayout>
   );
 }
+
+DeleteModal;

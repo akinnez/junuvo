@@ -9,4 +9,5 @@
   --color-quinary: var(--color-quinary-gray);
   --color-septenary: var(--color-secondary-main);
   --color-avatar: var(--color-avatar-main);
+  --color-error: var(--color-error)
 }
