@@ -1,5 +1,6 @@
 import PageLayout from "@/components/PageLayout";
 import { formattedAmount } from "@/lib/currency-formatter";
+import { CurrencyType } from "@/types/currencyType";
 import SummaryOverview from "@/views/SummaryOverview";
 
 const data = {
@@ -34,7 +35,7 @@ function ConvertSummary() {
             </span>
             <span className="text-sm font-semibold text-[#232323] flex gap-1 items-center">
               {formattedAmount(
-                data.currencyType as string,
+                data.currencyType as CurrencyType,
                 data.amountToReceive
               )}
             </span>
@@ -42,7 +43,7 @@ function ConvertSummary() {
           <p className="flex justify-between">
             <span className="text-sm font-medium text-gray-600">Fees</span>
             <span className="text-sm font-semibold text-[#232323] flex gap-1 items-center">
-              {formattedAmount(data.currencyType as string, data.fees)}
+              {formattedAmount(data.currencyType as CurrencyType, data.fees)}
             </span>
           </p>
         </div>
