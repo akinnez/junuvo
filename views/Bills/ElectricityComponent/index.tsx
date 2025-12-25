@@ -120,17 +120,13 @@
 
 "use client";
 import Button from "@/components/Button";
-import CustomForm from "@/components/CustomForm";
-import CustomInput from "@/components/CustomInput";
-import FormSelect from "@/components/FormSelect";
+
 import Input from "@/components/Input";
 import { CustomSelect } from "@/components/Select";
-import { electricitySchema } from "@/schema/electricity";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 interface electricity {
   amount: string;
@@ -145,7 +141,7 @@ const option: Option[] = [
   },
 ];
 
-export default function ElectricityComponent() {
+export default function ElectricityComponent({ type }: { type: string }) {
   const [selectedAcc, setSelectedAcc] = useState<string>("");
   const [selectedProvider, setSelectedProvider] = useState<string>("");
 
@@ -208,6 +204,14 @@ export default function ElectricityComponent() {
         name="meterNo"
         placeholder="Enter Meter Number"
       />
+      {type == "postpaid" && (
+        <Input
+          id="meterName"
+          label="Meter Name"
+          name="meterName"
+          placeholder="Enter Meter Name"
+        />
+      )}
       <div>
         <Input
           id="amount"
