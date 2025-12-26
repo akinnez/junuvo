@@ -4,6 +4,7 @@ import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
 import { formattedAmount } from "@/lib/currency-formatter";
 import { safeBtoa } from "@/lib/encode";
+import { CurrencyType } from "@/types/currencyType";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -50,7 +51,7 @@ function SetGoalsComp() {
             <Card className="!p-5 space-y-3 !shadow">
               <p className="text-xs font-semibold">{plans.savingType}</p>
               <h2 className="text-2xl font-bold">
-                {formattedAmount(plans.currency, plans.amount)}
+                {formattedAmount(plans.currency as CurrencyType, plans.amount)}
               </h2>
               <div className="text-[10px] flex justify-between">
                 <span className="text-gray-600">Auto-withdrawal</span>

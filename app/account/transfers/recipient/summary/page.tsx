@@ -2,6 +2,7 @@
 import Card from "@/components/Card";
 import PageLayout from "@/components/PageLayout";
 import { formattedAmount } from "@/lib/currency-formatter";
+import { CurrencyType } from "@/types/currencyType";
 import SummaryOverview from "@/views/SummaryOverview";
 import Link from "next/link";
 
@@ -22,7 +23,7 @@ function RecipientSummary() {
         amount={data.amount}
         createdAt={data.createdAt}
         destination={data.destination}
-        currency={data.currency}
+        currency={data.currency as CurrencyType}
       >
         <Card className="space-y-5 !px-5 !bg-gray-200 !shadow-none !rounded-sm">
           <p className="flex justify-between">
@@ -50,7 +51,7 @@ function RecipientSummary() {
           <p className="flex justify-between">
             <span className="text-sm font-medium text-gray-600">Fees</span>
             <span className="text-sm font-semibold text-[#232323] flex gap-1 items-center">
-              {formattedAmount(data.currency, data.fees)}
+              {formattedAmount(data.currency as CurrencyType, data.fees)}
             </span>
           </p>
 

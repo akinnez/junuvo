@@ -1,5 +1,6 @@
 import { formattedAmount } from "@/lib/currency-formatter";
 import { CustomSelect } from "../Select";
+import { CurrencyType } from "@/types/currencyType";
 
 const option = [
   {
@@ -67,7 +68,7 @@ export default function InputDropdown({
           />
           {bal && (
             <span className="text-[10px] text-gray-400 float-end pr-2 mt-1">
-              Bal: {formattedAmount(`${selectOption}`, 0)}
+              Bal: {formattedAmount(`${selectOption}` as CurrencyType, 0)}
             </span>
           )}
         </div>

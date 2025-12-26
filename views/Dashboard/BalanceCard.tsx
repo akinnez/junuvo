@@ -16,6 +16,7 @@ import Button from "@/components/Button";
 import { Copy, Share2, CornerRightUp, CopyIcon } from "lucide-react"; // Example Lucide icons
 import Image from "next/image";
 import { formattedAmount } from "@/lib/currency-formatter";
+import { CurrencyType } from "@/types/currencyType";
 
 // Note: You would import the BalanceCardProps interface here
 // or define it directly above the component.
@@ -55,7 +56,7 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
 
           {/* Balance Amount */}
           <h3 className="text-3xl font-semibold mb-2 tracking-wide text-secondary">
-            {formattedAmount(currencyCode, amount)}
+            {formattedAmount(currencyCode as CurrencyType, amount)}
           </h3>
 
           {/* Ledger Balance and Details */}

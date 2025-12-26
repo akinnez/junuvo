@@ -1,6 +1,7 @@
 // components/SpendingTrend.tsx
 import { CustomSelect } from "@/components/Select";
 import { formattedAmount } from "@/lib/currency-formatter";
+import { CurrencyType } from "@/types/currencyType";
 import { DollarSign, Wallet } from "lucide-react"; // Example icons for visual flair
 
 // Define the data for the trend display
@@ -47,7 +48,10 @@ const SpendingTrend = () => {
               <p className="text-sm font-medium text-gray-700">Money In</p>
             </div>
             <p className="text-xl  text-green-500">
-              {formattedAmount(trendData.currencySymbol, trendData.moneyOut)}
+              {formattedAmount(
+                trendData.currencySymbol as CurrencyType,
+                trendData.moneyOut
+              )}
             </p>
           </div>
 
@@ -59,7 +63,10 @@ const SpendingTrend = () => {
               <p className="text-sm font-medium text-gray-700">Money Out</p>
             </div>
             <p className="text-xl text-red-500">
-              {formattedAmount(trendData.currencySymbol, trendData.moneyOut)}
+              {formattedAmount(
+                trendData.currencySymbol as CurrencyType,
+                trendData.moneyOut
+              )}
             </p>
           </div>
         </div>

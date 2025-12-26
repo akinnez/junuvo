@@ -1,5 +1,6 @@
 import Card from "@/components/Card";
 import { formattedAmount } from "@/lib/currency-formatter";
+import { CurrencyType } from "@/types/currencyType";
 import { Edit } from "lucide-react";
 
 interface InterestRate {
@@ -41,7 +42,7 @@ function PersonalSummary({ data }: { data?: InterestRate }) {
           </span>
           <span className="text-xs font-semibold text-[#232323] flex gap-1 items-center">
             {formattedAmount(
-              (data?.currency as string) || "NGN",
+              (data?.currency as CurrencyType) || "NGN",
               data?.savingsAmount || 0
             )}
           </span>

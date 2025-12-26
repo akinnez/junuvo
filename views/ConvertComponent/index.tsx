@@ -7,6 +7,7 @@ import { X, Minus, Equal } from "lucide-react";
 import React, { useState } from "react";
 import Button from "@/components/Button";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
+import { CurrencyType } from "@/types/currencyType";
 
 export default function ConvertComponent() {
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
@@ -55,7 +56,7 @@ export function CurrencyOption({
           </span>
           <span className="text-sm font-semibold text-gray-800 flex gap-1 items-center">
             <Minus className="h-4 w-4" />{" "}
-            {formattedAmount(selectedCurrency as string, 0)}
+            {formattedAmount(selectedCurrency as CurrencyType, 0)}
           </span>
         </p>
         <p className="flex justify-between">
@@ -64,7 +65,7 @@ export function CurrencyOption({
           </span>
           <span className="text-sm font-semibold text-gray-800 flex gap-1 items-center">
             <Equal className="h-4 w-4" />{" "}
-            {formattedAmount(selectedCurrency as string, 0)}
+            {formattedAmount(selectedCurrency as CurrencyType, 0)}
           </span>
         </p>
         <p className="flex justify-between">
@@ -73,7 +74,7 @@ export function CurrencyOption({
           </span>
           <span className="text-sm font-semibold text-gray-800 flex gap-1 items-center">
             <X className="h-4 w-4" />{" "}
-            {formattedAmount(selectedCurrency as string, 0)}
+            {formattedAmount(selectedCurrency as CurrencyType, 0)}
           </span>
         </p>
       </Card>
