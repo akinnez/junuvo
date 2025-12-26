@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { Eye, EyeOff } from "lucide-react";
 import React, { useState, InputHTMLAttributes, forwardRef } from "react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -56,7 +57,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               tabIndex={-1}
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              {showPassword ? "🙈" : "👁️"}
+              {showPassword ? <EyeOff /> : <Eye />}
             </button>
           )}
         </div>
