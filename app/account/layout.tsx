@@ -1,3 +1,4 @@
+import Navbar from "@/components/NavBar";
 import { SidebarMain } from "@/components/Sidebar-main";
 import type { Metadata } from "next";
 
@@ -16,7 +17,10 @@ export default function RootAccountLayout({
       <div className="col-span-1 sticky top-0 h-screen">
         <SidebarMain />
       </div>
-      <div className="col-span-4 px-5 bg-secondary">{children}</div>
+      <div className="col-span-4 bg-secondary">
+        <Navbar />
+        <div className="px-5">{children}</div>
+      </div>
     </div>
   );
 }

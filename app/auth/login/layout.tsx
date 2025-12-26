@@ -28,7 +28,7 @@ export default function AuthLayout({
 
         <div className="mt-6 text-center bg-white/30 p-5 rounded-full text-sm text-white/90 max-w-[265px] w-full mx-auto">
           Don’t have an account?{" "}
-          <Link href={routes.createUser} className="!text-button">
+          <Link href={routes.createUser} className="!text-[#00ADEF]">
             Sign Up
           </Link>
         </div>

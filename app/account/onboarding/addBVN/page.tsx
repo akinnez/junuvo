@@ -91,6 +91,7 @@ const AddBvn = () => {
     defaultValues: {
       bvn: "",
       dob: "",
+      phone: "",
     },
   });
 
@@ -111,6 +112,7 @@ const AddBvn = () => {
   };
 
   const currentBvn = watch("bvn");
+  const phone = watch("phone");
 
   // Inline SVG Icons
   const ArrowLeft = (props: any) => (
@@ -230,6 +232,52 @@ const AddBvn = () => {
           )}
           {errors.bvn && (
             <p className="mt-1 text-sm text-red-600">{errors.bvn.message}</p>
+          )}
+        </div>
+
+        <div>
+          <div>
+            <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Phone Number
+            </label>
+
+            <Controller
+              name="phone"
+              control={control}
+              rules={{
+                required: "Phone Number is required",
+                // pattern: {
+                //   // Simple pattern for DD/MM/YY format (not fully validated date)
+                //   value: /^\d{4}\/\d{2}\/\d{2}$/,
+                //   message: "Format must be DD/MM/YY",
+                // },
+              }}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  id="phone"
+                  type="text"
+                  placeholder="Enter your phone number"
+                  className={`w-full p-3 border rounded-lg text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150
+                      ${errors.phone ? "border-red-500" : "border-gray-300"}`}
+                  maxLength={11}
+                />
+              )}
+            />
+          </div>
+          <div className="flex items-center text-xs gap-1 mt-1">
+            <p className=" text-red-500">**</p>
+            <p className="text-gray-400">
+              This must be the phone number attached to your BVN
+            </p>
+          </div>
+          {errors.dob && (
+            <p className="mt-1 text-sm text-red-600">
+              {errors?.phone?.message}
+            </p>
           )}
         </div>
 
