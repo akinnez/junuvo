@@ -1,6 +1,6 @@
-import AirtimeDataComp from "@/views/Bills/AirtimeLayoutComp";
 import FlightLayoutComp from "@/views/Bills/FlightLayoutComp";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Flight - MyJunuvo ",
@@ -13,8 +13,10 @@ export default function FlightLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <FlightLayoutComp>
-      <div className="py-5">{children}</div>
-    </FlightLayoutComp>
+    <Suspense>
+      <FlightLayoutComp>
+        <div className="py-5">{children}</div>
+      </FlightLayoutComp>
+    </Suspense>
   );
 }

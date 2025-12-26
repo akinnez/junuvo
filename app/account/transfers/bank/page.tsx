@@ -1,7 +1,7 @@
 "use client";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
 import SelectTypeAddForm from "@/views/SelectTypeAddFormComponent";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import PageLayout from "@/components/PageLayout";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -14,6 +14,14 @@ const SavedBeneficiaryComponent = dynamic(
 );
 
 function Beneficiary() {
+  return (
+    <Suspense>
+      <BeneficiaryPage />
+    </Suspense>
+  );
+}
+
+function BeneficiaryPage() {
   const [values, setValues] = useState<string>("newBeneficiary");
   const [beneficiary, setBeneficiary] = useState<any>(null);
 

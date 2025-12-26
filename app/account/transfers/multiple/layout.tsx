@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import MultipleComponent from ".";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Multiple Transfer - MyJunuvo ",
@@ -12,8 +13,10 @@ export default function MultipleTransferLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <MultipleComponent>
-      <div className="py-5">{children}</div>
-    </MultipleComponent>
+    <Suspense>
+      <MultipleComponent>
+        <div className="py-5">{children}</div>
+      </MultipleComponent>
+    </Suspense>
   );
 }

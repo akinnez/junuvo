@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
 import { formattedAmount } from "@/lib/currency-formatter";
+import { CurrencyType } from "@/types/currencyType";
 
 export default function Recipient() {
   const list = [
@@ -46,7 +47,9 @@ export default function Recipient() {
               <h3>
                 {list.firstName} {list.otherName} {list.lastName}
               </h3>
-              <p>{formattedAmount(list.currency, list.amount)}</p>
+              <p>
+                {formattedAmount(list.currency as CurrencyType, list.amount)}
+              </p>
               <p>
                 {list.bank} - {list.accountNo}
               </p>

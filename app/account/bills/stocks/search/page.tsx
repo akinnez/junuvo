@@ -2,25 +2,20 @@
 
 import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
-import { useModal } from "@/hooks/useModal";
-import { formattedAmount } from "@/lib/currency-formatter";
-import SearchStock from "@/modals/bills/stocks/SearchStock";
-import { ArrowDown, ArrowUp, ChevronRight } from "lucide-react";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { Deals } from "../page";
+import { Suspense } from "react";
 
 export default function StockExchangeSearch() {
+  return (
+    <Suspense>
+      <StockExchange />
+    </Suspense>
+  );
+}
+function StockExchange() {
   const search = useSearchParams();
   const result = search.get("type") ?? "";
-  const { closeModal, openModal } = useModal();
-  //   const handleOpenSearchStock = () => {
-  //     openModal({
-  //       title: "Search Stocks",
-  //       size: "md",
-  //       component: <SearchStock closeModal={closeModal} />,
-  //     });
-  //   };
 
   return (
     <PageLayout

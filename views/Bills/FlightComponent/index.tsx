@@ -5,7 +5,7 @@ import CustomInput from "@/components/CustomInput";
 import FormSelect from "@/components/FormSelect";
 import { flightSchema } from "@/schema/flight";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -14,10 +14,16 @@ interface iflight {
   returnDate?: string;
 }
 
-
-function FlightComponent({ type }: { type: string }) {
+function FlightComponent() {
   const [selectedAcc, setSelectedAcc] = useState<string>("");
   const [selectedProvider, setSelectedProvider] = useState<string>("");
+
+  const searchParams = useSearchParams();
+  const params = searchParams.get("type");
+
+  useEffect(() => {
+    params && sessionStorage.setItem("bill_type", params);
+  }, [params]);
 
   const router = useRouter();
   const form = useForm<iflight>({
@@ -37,13 +43,13 @@ function FlightComponent({ type }: { type: string }) {
   }
 
   useEffect(() => {
-    if (!["one-way", "round"].includes(type)) {
+    if (!["one-way", "round"].includes(params as string)) {
       return router.push(`/account/bills/flight/route?type=one-way`);
     }
-  }, [type]);
+  }, [params]);
 
   return (
-    <CustomForm className="space-y-5" successFunction={onSubmit} form={form}>
+    <CustomForm className="space-y-7" successFunction={onSubmit} form={form}>
       <FormSelect
         id="departure"
         form={form}
@@ -86,7 +92,7 @@ function FlightComponent({ type }: { type: string }) {
         form={form}
         name="departureDate"
       />
-      {type == "round" && (
+      {params == "round" && (
         <CustomInput
           type="date"
           id="returnDate"

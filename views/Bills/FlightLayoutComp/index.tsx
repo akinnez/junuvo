@@ -3,7 +3,7 @@ import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
 import SelectTypeAddForm from "@/views/SelectTypeAddFormComponent";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 const options = [
   {
@@ -39,24 +39,26 @@ function FlightLayoutComp({ children }: { children: React.ReactNode }) {
     console.log("Selected option:", values);
   };
   return (
-    <PageLayout
-      isBack={false}
-      title="Book a Flight"
-      description="Enter details to book flights"
-    >
-      <CardPageLayout
-        title="Choose type"
-        description="Select your desired type to begin"
-        className="max-w-md"
+    <Suspense>
+      <PageLayout
+        isBack={false}
+        title="Book a Flight"
+        description="Enter details to book flights"
       >
-        <SelectTypeAddForm
-          options={options}
-          defaultValue={val}
-          onSelect={handleSelectionChange}
-        />
-        {children}
-      </CardPageLayout>
-    </PageLayout>
+        <CardPageLayout
+          title="Choose type"
+          description="Select your desired type to begin"
+          className="max-w-md"
+        >
+          <SelectTypeAddForm
+            options={options}
+            defaultValue={val}
+            onSelect={handleSelectionChange}
+          />
+          {children}
+        </CardPageLayout>
+      </PageLayout>
+    </Suspense>
   );
 }
 export default FlightLayoutComp;
