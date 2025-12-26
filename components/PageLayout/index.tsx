@@ -32,7 +32,7 @@ export default function PageLayout({
   notice,
 }: PageLayoutProps) {
   return (
-    <div className="py-7">
+    <div className="pt-3 pb-7">
       {isBack && <BackButton />}
       <div className="flex justify-between items-center">
         <div className="my-2">

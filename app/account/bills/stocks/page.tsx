@@ -7,9 +7,19 @@ import { formattedAmount } from "@/lib/currency-formatter";
 import SearchStock from "@/modals/bills/stocks/SearchStock";
 import { ArrowDown, ArrowUp, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import HasStock from "./HasStock";
+import NoStock from "./NoStock";
+import { useEffect, useState } from "react";
 
 export default function StockExchange() {
   const { closeModal, openModal } = useModal();
+  const [hasStock, setHasStock] = useState(false);
+
+  useEffect(() => {
+    const isStock = JSON.parse(sessionStorage.getItem("stock") as string);
+    setHasStock(isStock);
+  });
+
   const handleOpenSearchStock = () => {
     openModal({
       title: "Search Stocks",
@@ -26,29 +36,10 @@ export default function StockExchange() {
       showButton={true}
       buttonLabel="Search Stocks"
       buttonFn={handleOpenSearchStock}
+      isCardAllow={false}
     >
-      <CardPageLayout
-        title="Most Popular"
-        description="The most commonly traded stocks in the Junuvo community"
-        className="max-w-sm space-y-5"
-      >
-        {stocks.map((stock, idx) => {
-          const { abbr, currencyType, icon, isGainOrLoss, label, price, loss } =
-            stock;
-          return (
-            <Deals
-              key={idx}
-              icon={icon}
-              abbr={abbr}
-              currencyType={currencyType as "NGN" | "USD"}
-              isGainOrLoss={isGainOrLoss}
-              label={label}
-              priceLossOrGain={loss as string}
-              price={price}
-            />
-          );
-        })}
-      </CardPageLayout>
+      {hasStock && <HasStock />}
+      {!hasStock && <NoStock />}
     </PageLayout>
   );
 }
@@ -71,7 +62,7 @@ export function Deals({
   priceLossOrGain: string;
 }) {
   return (
-    <div className="flex justify-between items-center p-2 shadow">
+    <div className="flex justify-between items-center p-2 shadow hover:shadow-2xs">
       <div className="flex items-center gap-2">
         <div className="h-6 w-6 rounded-full shadow">
           <Image src={icon} alt={label} width={24} height={24} />
@@ -104,33 +95,3 @@ export function Deals({
     </div>
   );
 }
-
-const stocks = [
-  {
-    icon: "/images/icons/www.png",
-    label: "American Airlines Group Inc",
-    abbr: "AAL",
-    price: "23.67",
-    currencyType: "USD",
-    isGainOrLoss: "loss",
-    loss: "0.08",
-  },
-  {
-    icon: "/images/icons/chart.svg",
-    label: "American Airlines Group Inc",
-    abbr: "AAL",
-    price: "23.67",
-    currencyType: "USD",
-    isGainOrLoss: "gain",
-    loss: "0.08",
-  },
-  {
-    icon: "/images/icons/smartphone.png",
-    label: "American Airlines Group Inc",
-    abbr: "AAL",
-    price: "23.67",
-    currencyType: "USD",
-    isGainOrLoss: "loss",
-    loss: "0.08",
-  },
-];

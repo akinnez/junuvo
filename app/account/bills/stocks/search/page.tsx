@@ -2,8 +2,14 @@
 
 import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
+import { useModal } from "@/hooks/useModal";
+import { formattedAmount } from "@/lib/currency-formatter";
+import SearchStock from "@/modals/bills/stocks/SearchStock";
+import { ArrowDown, ArrowUp, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { Deals } from "../page";
+import Link from "next/link";
 import { Suspense } from "react";
 
 export default function StockExchangeSearch() {
@@ -16,6 +22,14 @@ export default function StockExchangeSearch() {
 function StockExchange() {
   const search = useSearchParams();
   const result = search.get("type") ?? "";
+  const { closeModal, openModal } = useModal();
+  //   const handleOpenSearchStock = () => {
+  //     openModal({
+  //       title: "Search Stocks",
+  //       size: "md",
+  //       component: <SearchStock closeModal={closeModal} />,
+  //     });
+  //   };
 
   return (
     <PageLayout
@@ -31,16 +45,21 @@ function StockExchange() {
           const { abbr, currencyType, icon, isGainOrLoss, label, price, loss } =
             stock;
           return (
-            <Deals
+            <Link
               key={idx}
-              icon={icon}
-              abbr={abbr}
-              currencyType={currencyType as "NGN" | "USD"}
-              isGainOrLoss={isGainOrLoss}
-              label={label}
-              priceLossOrGain={loss as string}
-              price={price}
-            />
+              href={`/account/bills/stocks/details?abbr=${abbr}`}
+              className="block"
+            >
+              <Deals
+                icon={icon}
+                abbr={abbr}
+                currencyType={currencyType as "NGN" | "USD"}
+                isGainOrLoss={isGainOrLoss}
+                label={label}
+                priceLossOrGain={loss as string}
+                price={price}
+              />
+            </Link>
           );
         })}
       </CardPageLayout>

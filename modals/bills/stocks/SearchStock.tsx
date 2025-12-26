@@ -7,11 +7,13 @@ import { useState } from "react";
 
 export default function SearchStock({ closeModal }: { closeModal: any }) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [cardType, setCardType] = useState<string | null>(null);
 
   const { push } = useRouter();
   const handleClick = (val: string) => {
-    closeModal();
+    setCardType(val);
     push(`/account/bills/stocks/search?type=${val}`);
+    closeModal();
   };
 
   return (
@@ -32,7 +34,7 @@ export default function SearchStock({ closeModal }: { closeModal: any }) {
               src={src}
               value={value}
               handleClick={handleClick}
-              cardType={value}
+              cardType={cardType}
             />
           );
         })}

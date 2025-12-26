@@ -9,6 +9,7 @@ import BuyStockSuccess from "./BuyStockSuccess";
 export default function BuyStock({ closeModal }: { closeModal: any }) {
   const { openModal } = useModal();
   const handleClick = () => {
+    sessionStorage.setItem("stock", `${true}`);
     closeModal();
     openModal({
       size: "sm",

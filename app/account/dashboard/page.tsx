@@ -38,7 +38,7 @@ export default function Dashboard() {
     );
   }
   return (
-    <div className="py-10">
+    <div className="pt-5 pb-10">
       <div className="flex justify-between items-center">
         <div>
           <p className="font-medium text-sm text-gray-600">Good Morning,</p>
