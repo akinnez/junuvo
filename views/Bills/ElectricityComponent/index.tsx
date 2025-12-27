@@ -128,10 +128,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface electricity {
-  amount: string;
-  meterNo: string;
-}
+// interface electricity {
+//   amount: string;
+//   meterNo: string;
+// }
 
 const option: Option[] = [
   {
