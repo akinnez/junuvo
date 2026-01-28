@@ -21,7 +21,7 @@ export default function AvailableLoan({ closeModal }: { closeModal: any }) {
           {formattedAmount("NGN", 120000)}
         </h3>
         <div className="">
-          <Link href={"/account/loan/get-fund"} onClick={closeModal}>
+          <Link href={"/${params.appType}loan/get-fund"} onClick={closeModal}>
             <Button size="sm" className="w-full">
               Get Funds
             </Button>

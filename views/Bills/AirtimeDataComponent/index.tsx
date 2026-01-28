@@ -107,7 +107,7 @@ function AirtelDataComponent({ type }: { type: string }) {
       ...values,
     };
 
-    router.push(`/account/bills/summary/internet/${type}`);
+    router.push(`/${params.appType}bills/summary/internet/${type}`);
   }
 
   return (

@@ -18,6 +18,7 @@ export default function ConvertComponent() {
       description="Select your desired account to make transactions"
       title="Choose account to begin"
       isBack={false}
+      className="max-w-sm"
     >
       <CurrencyOption
         selectedCurrency={selectedCurrency}

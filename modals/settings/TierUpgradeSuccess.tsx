@@ -14,7 +14,7 @@ export default function TierUpgradeSuccess({
         You have successfully upgraded your tier
       </span>
       <div className="my-5">
-        <Link href={"/account/dashboard"}>
+        <Link href={"/${params.appType}dashboard"}>
           <Button size="sm" className="w-full" onClick={closeModal}>
             Return to dashboard
           </Button>

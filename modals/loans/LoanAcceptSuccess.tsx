@@ -7,7 +7,7 @@ export default function LoanAcceptSuccess({ closeModal }: { closeModal: any }) {
       <h3 className="text-3xl font-bold text-[#1E1E1E]">Congratulations</h3>
       <span className="text-gray-700">Your savings plan has been created</span>
       <div className="my-5">
-        <Link href={"/account/loan"}>
+        <Link href={"/${params.appType}loan"}>
           <Button className="w-full !py-4" onClick={closeModal}>
             Dismiss
           </Button>

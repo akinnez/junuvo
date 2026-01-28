@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Gilroy_Medium, Gilroy_ExtraBold } from "@/fonts";
 import "./styles/globals.css";
 import { ModalProvider } from "@/hooks/useModal";
+import { NotificationProvider } from "@/components/Snackbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,6 +25,7 @@ export default function RootLayout({
         className={`${Gilroy_Medium.variable} ${Gilroy_ExtraBold.variable} antialiased`}
       >
         <ModalProvider>{children}</ModalProvider>
+        <NotificationProvider />
       </body>
     </html>
   );

@@ -16,13 +16,13 @@ export default function NoCardPage() {
   const cards: any = [
     {
       type: "Naira Card",
-      link: `/account/card/${cardType}/create/naira`,
+      link: `/${params.appType}card/${cardType}/create/naira`,
     },
     ...(cardType === "virtual"
       ? [
           {
             type: "Dollar Card",
-            link: `/account/card/${cardType}/create/dollar`,
+            link: `/${params.appType}card/${cardType}/create/dollar`,
           },
         ]
       : []),

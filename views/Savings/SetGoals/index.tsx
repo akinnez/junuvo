@@ -32,7 +32,7 @@ function SetGoalsComp() {
       title="Savings"
       description="Create a saving plan as desired"
       showButton={true}
-      buttonFn={() => router.push("/account/savings/create")}
+      buttonFn={() => router.push("/${params.appType}savings/create")}
       buttonLabel="Create plan"
       buttonStyle="w-[327px] !px-5 !py-2.5"
       isBack={false}

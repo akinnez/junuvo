@@ -29,12 +29,12 @@ function FlightLayoutComp({ children }: { children: React.ReactNode }) {
     setValue(params as string);
 
     if (!["one-way", "round"].includes(params as string)) {
-      return router.push(`/account/bills/flight/round?type=one-way`);
+      return router.push(`/${params.appType}bills/flight/round?type=one-way`);
     }
   }, [path]);
 
   const handleSelectionChange = (values: string) => {
-    router.push(`/account/bills/flight/route?type=${values}`);
+    router.push(`/${params.appType}bills/flight/route?type=${values}`);
     setValue(values);
     console.log("Selected option:", values);
   };

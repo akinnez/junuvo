@@ -53,7 +53,7 @@
 
 //     console.log(payload);
 
-//     router.push(`/account/bills/summary/electricity`);
+//     router.push(`/${params.appType}bills/summary/electricity`);
 //   }
 
 //   return (
@@ -168,7 +168,7 @@ export default function ElectricityComponent({ type }: { type: string }) {
 
   //     console.log(payload);
 
-  //     router.push(`/account/bills/summary/electricity`);
+  //     router.push(`/${params.appType}bills/summary/electricity`);
   //   }
 
   return (
@@ -223,7 +223,7 @@ export default function ElectricityComponent({ type }: { type: string }) {
           Avail Bal: N220.00
         </div>
       </div>
-      <Link href={`/account/bills/summary/electricity`}>
+      <Link href={`/${params.appType}bills/summary/electricity`}>
         <Button className="w-full">Continue</Button>
       </Link>
     </>

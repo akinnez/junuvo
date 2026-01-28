@@ -11,7 +11,7 @@ export default function StatementAccount({ closeModal }: { closeModal: any }) {
         Your statement of account has been sent to email
       </span>
       <div className="my-5">
-        <Link href={"/account/dashboard"} onClick={closeModal}>
+        <Link href={"/${params.appType}dashboard"} onClick={closeModal}>
           <Button className="!text-button !bg-[#ECF2FE] w-full !py-4">
             Return to dashboard
           </Button>

@@ -1,8 +1,9 @@
 "use client";
-import { routes } from "@/routes";
+
 import Stepper from "../Stepper";
 import Link from "next/link";
 import Image from "next/image";
+import { authRoutes } from "@/config/routes";
 
 function Sidebar() {
   return (
@@ -35,7 +36,7 @@ export function SidebarFooter() {
   return (
     <div className="py-5 px-7 rounded-full bg-primary md:bg-white/30 text-sm text-white/90 max-w-[224px] w-full mx-auto md:mx-0">
       Already a member?{" "}
-      <Link href={routes.loginUser} className="!text-button">
+      <Link href={authRoutes.login} className="!text-button">
         Login
       </Link>
     </div>

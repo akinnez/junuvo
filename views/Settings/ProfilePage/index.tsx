@@ -82,7 +82,7 @@ export default function ProfileSettingsPage() {
             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
               Personal Details
             </span>
-            <Link href={"/account/settings/edit"}>
+            <Link href={"/${params.appType}settings/edit"}>
               <button className="text-blue-500 text-[10px] font-bold flex items-center cursor-pointer">
                 Edit <ChevronRight size={10} />
               </button>

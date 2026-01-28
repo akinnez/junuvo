@@ -9,7 +9,7 @@ export default function PinSuccess({ closeModal }: { closeModal: any }) {
         You have successfully changed your PIN
       </span>
       <div className="my-5">
-        <Link href={"/account/dashboard"} onClick={closeModal}>
+        <Link href={"/${params.appType}dashboard"} onClick={closeModal}>
           <Button size="sm" className="w-full">
             Return to dashboard
           </Button>

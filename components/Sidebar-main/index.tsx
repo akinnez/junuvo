@@ -59,7 +59,7 @@ export const NavItem = ({
   return <div className="cursor-default">{renderItemContent()}</div>;
 };
 
-export function SidebarMain() {
+export function SidebarMain({ appType }: { appType: string }) {
   // Simple state to manage which collapsible menu is open.
   const [openParent, setOpenParent] = useState<string | null>();
 
@@ -82,7 +82,7 @@ export function SidebarMain() {
       {/* </div> */}
 
       <nav className="flex-1 space-y-1 overflow-y-auto">
-        {MENU_ITEMS.map((item) => (
+        {MENU_ITEMS(appType).map((item) => (
           <div key={item.id} onClick={() => handleParentToggle(item.id)}>
             <NavItem item={item} isActive={item.id === openParent} />
           </div>

@@ -30,7 +30,7 @@ function AirtimeDataComp({ children }: { children: React.ReactNode }) {
   }, [path]);
 
   const handleSelectionChange = (values: string) => {
-    router.push(`/account/bills/internet/${values}`);
+    router.push(`/${params.appType}bills/internet/${values}`);
     setValue(values);
     console.log("Selected option:", values);
   };

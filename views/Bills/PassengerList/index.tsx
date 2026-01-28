@@ -121,7 +121,7 @@ const PassengerList: React.FC<PassengerListProps> = ({
 
       {/* Next button for overall flow */}
       <div className="mt-8 text-center">
-        <Link href={"/account/bills/summary/flight"}>
+        <Link href={"/${params.appType}bills/summary/flight"}>
           <Button
             disabled={!isComplete}
             className={
@@ -130,7 +130,7 @@ const PassengerList: React.FC<PassengerListProps> = ({
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }
           >
-Continue Booking
+            Continue Booking
           </Button>
         </Link>
       </div>

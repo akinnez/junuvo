@@ -87,14 +87,17 @@ export default function HasCardPage() {
       description: "Set daily transaction limit",
       color: "text-blue-600",
       handleClick: () =>
-        router.push(`/account/card/${cardType}/settings/transaction-limit`),
+        router.push(
+          `/${params.appType}card/${cardType}/settings/transaction-limit`
+        ),
     },
     {
       icon: <MessageSquareText className="text-white fill-button" size={20} />,
       title: "SMS Alert Subscription",
       description: "Manage your card transaction alerts",
       color: "text-blue-600",
-      handleClick: () => router.push(`/account/card/${cardType}/settings/sms`),
+      handleClick: () =>
+        router.push(`/${params.appType}card/${cardType}/settings/sms`),
     },
     {
       icon: <Lock size={20} className="text-button" />,

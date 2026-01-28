@@ -80,7 +80,9 @@ function SmartSavingComponent({ accountType }: { accountType: string }) {
         form={form}
         name="suggestContribution"
       />
-      <Link href={`/account/savings/create/${accountType}/contribution`}>
+      <Link
+        href={`/${params.appType}savings/create/${accountType}/contribution`}
+      >
         <Button className="w-full">Continue</Button>
       </Link>
     </CustomForm>

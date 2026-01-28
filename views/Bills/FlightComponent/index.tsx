@@ -39,12 +39,12 @@ function FlightComponent() {
 
   function onSubmit(values: any) {
     console.log(values);
-    router.push(`/account/bills/flight/search`);
+    router.push(`/${params.appType}bills/flight/search`);
   }
 
   useEffect(() => {
     if (!["one-way", "round"].includes(params as string)) {
-      return router.push(`/account/bills/flight/route?type=one-way`);
+      return router.push(`/${params.appType}bills/flight/route?type=one-way`);
     }
   }, [params]);
 

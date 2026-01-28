@@ -10,7 +10,7 @@ export default function PostPaidSuccess({ closeModal }: { closeModal: any }) {
         <Button size="sm" className="!text-[#262626] !bg-[#F0F2F5] w-full">
           Share Receipt
         </Button>
-        <Link href={"/account/dashboard"} onClick={closeModal}>
+        <Link href={"/${params.appType}dashboard"} onClick={closeModal}>
           <Button size="sm" className="w-full">
             Return to dashboard
           </Button>

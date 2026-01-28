@@ -41,7 +41,7 @@ const ContributionSettingsForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     console.log("Form Submitted:", data);
-    router.push(`/account/savings/create/smart/summary`);
+    router.push(`/${params.appType}savings/create/smart/summary`);
     // In a real application, you would send this data to an API
     await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API delay
   };

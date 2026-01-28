@@ -16,7 +16,7 @@ export default function SelfieView({ closeModal }: { closeModal: any }) {
       const formData = new FormData();
       formData.append("selfie", file);
       console.log(file);
-      push("/account/settings/employment_details");
+      push("/${params.appType}settings/employment_details");
       closeModal();
       // 2. Send to Server Action or API
       //   const result = await uploadSelfieAction(formData);

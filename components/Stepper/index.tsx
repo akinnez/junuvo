@@ -1,6 +1,7 @@
 "use client";
-import { useCurrentStepValue } from "@/signal_store/services/shared-service";
-import React from "react";
+import { useSessionStorage } from "@/hooks/use-session-storage";
+import { effect } from "nabd";
+import React, { useEffect, useState } from "react";
 
 const steps = [
   {
@@ -21,41 +22,43 @@ const steps = [
 ];
 
 function Stepper() {
-  const currentStep = useCurrentStepValue();
+  const { getFromSession } = useSessionStorage();
+
+  const currentStep = getFromSession("app-step", "1");
 
   return (
     <nav className="flex flex-row md:flex-col gap-5 md:gap-0 md:my-8">
-      {steps.map((step, idx) => (
-        <React.Fragment key={step.label}>
+      {steps.map((step, idx) => {
+        const stepNumber = idx + 1;
+        const isActive = currentStep >= stepNumber;
+        const isCompleted = currentStep > stepNumber;
+        return (
           <div
+            key={step.label}
             className={`flex flex-col md:flex-row  items-center py-2.5 rounded gap-x-1 sm:gap-x-3 `}
           >
             <div
               className={`rounded-full w-12 h-12 flex justify-center items-center  transition-colors duration-200 text-xl ${
-                currentStep >= idx + 1
+                isActive
                   ? "bg-[#00ADEF] text-white font-bold"
                   : "bg-transparent text-gray-400  border border-secondary"
               }
-              ${currentStep > idx + 1 ? "bg-[#00ADEF] text-white" : ""}
+              ${isCompleted ? "bg-[#00ADEF] text-white" : ""}
                                 `}
             >
-              {idx + 1}
+              {stepNumber}
             </div>{" "}
             <div
               className={`flex flex-col gap-y-1 leading-tight text-center md:text-left
-                ${
-                  currentStep >= idx + 1
-                    ? "text-primary md:text-white"
-                    : "md:text-white/50"
-                }
+                ${isActive ? "text-primary md:text-white" : "md:text-white/50"}
                 `}
             >
               <span>{step.label}</span>
               <span className="!text-xs hidden md:block">{step.sublabel}</span>
             </div>
           </div>
-        </React.Fragment>
-      ))}
+        );
+      })}
     </nav>
   );
 }

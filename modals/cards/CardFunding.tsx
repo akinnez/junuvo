@@ -10,7 +10,7 @@ import CardFundingSuccess from "./CardFundingSuccess";
 export default function CardFunding({ closeModal }: { closeModal: any }) {
   const [convertAmount, setConvertAmount] = useState("1");
   const amountInDollar = useMemo(() => {
-    const oneDollar = 1464;
+    const oneDollar = 1431;
     return Number(convertAmount) / oneDollar;
   }, [convertAmount]);
 

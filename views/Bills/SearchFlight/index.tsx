@@ -66,7 +66,7 @@ function SearchFlightComponent() {
 
     // console.log(payload);
 
-    router.push(`/account/bills/flight/tickets`);
+    router.push(`/${params.appType}bills/flight/tickets`);
   }
 
   return (

@@ -9,7 +9,7 @@ export default function UpgradeTierThree({ closeModal }: { closeModal: any }) {
 
   const handleOpenSelfie = () => {
     closeModal();
-    push("/account/settings/address-proof");
+    push("/${params.appType}settings/address-proof");
   };
 
   return (

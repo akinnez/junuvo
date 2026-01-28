@@ -1,6 +1,6 @@
 "use client";
 
-import { GiftcardsIcons } from "@/app/account/bills/giftcard/page";
+import { GiftcardsIcons } from "@/components/GiftcardIcons";
 import SearchInput from "@/components/SearchInput";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -12,7 +12,7 @@ export default function SearchStock({ closeModal }: { closeModal: any }) {
   const { push } = useRouter();
   const handleClick = (val: string) => {
     setCardType(val);
-    push(`/account/bills/stocks/search?type=${val}`);
+    push(`/${params.appType}bills/stocks/search?type=${val}`);
     closeModal();
   };
 

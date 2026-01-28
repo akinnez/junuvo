@@ -1,10 +1,8 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { BehaviorSubject, Subject, from, of } from "rxjs";
-import { catchError, tap, takeUntil } from "rxjs/operators";
+import React, { useEffect, useRef } from "react";
 import Button from "@/components/Button";
-
-type CaptureState = "IDLE" | "LOADING" | "STREAMING" | "CAPTURED" | "ERROR";
+import { useSignal } from "nabd";
+import * as cameraStore from "@/stores/cameraStore";
 
 const SelfieModal = ({
   isOpen,
@@ -16,20 +14,32 @@ const SelfieModal = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // RxJS Subjects for state management
-  const [state, setState] = useState<CaptureState>("IDLE");
-  const state$ = useRef(new BehaviorSubject<CaptureState>("IDLE"));
-  const destroy$ = useRef(new Subject<void>());
+  // Subscribe to Pulse state
+  const state = useSignal(cameraStore.captureState);
 
   useEffect(() => {
-    const sub = state$.current.subscribe(setState);
-    if (isOpen) startCamera();
-
-    return () => {
-      sub.unsubscribe();
-      stopCamera();
-    };
+    if (isOpen) {
+      cameraStore.startCamera().then((stream) => {
+        if (stream && videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      });
+    }
+    return () => cameraStore.stopCamera();
   }, [isOpen]);
+
+  const captureImage = () => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    if (video && canvas) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      cameraStore.setCaptured();
+    }
+  };
 
   const handleConfirm = () => {
     canvasRef.current?.toBlob(
@@ -39,108 +49,58 @@ const SelfieModal = ({
     );
   };
 
-  const startCamera = () => {
-    state$.current.next("LOADING");
-
-    from(
-      navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: "user",
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-        },
-      })
-    )
-      .pipe(
-        tap((stream) => {
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-            state$.current.next("STREAMING");
-          }
-        }),
-        catchError((err) => {
-          console.error(err);
-          state$.current.next("ERROR");
-          return of(null);
-        }),
-        takeUntil(destroy$.current)
-      )
-      .subscribe();
-  };
-
-  const captureImage = () => {
-    if (videoRef.current && canvasRef.current) {
-      const video = videoRef.current;
-      const canvas = canvasRef.current;
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-
-      const ctx = canvas.getContext("2d");
-      ctx?.setTransform(1, 0, 0, 1, 0, 0);
-      ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      state$.current.next("CAPTURED");
-      stopCamera();
-    }
-  };
-
-  const stopCamera = () => {
-    const stream = videoRef.current?.srcObject as MediaStream;
-    stream?.getTracks().forEach((track) => track.stop());
-  };
-
   if (!isOpen) return null;
 
   return (
-    <div>
-      <div className="w-full overflow-hidden rounded-3xl bg-white shadow-2xl">
-        {/* Camera Viewfinder */}
-        <div className="relative bg-white overflow-hidden flex justify-center items-center">
-          {state === "LOADING" && (
-            <div className="flex h-full items-center justify-center text-white">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-button border-t-transparent" />
-            </div>
-          )}
+    <div className="w-full overflow-hidden rounded-3xl bg-white shadow-2xl">
+      <div className="relative h-[250px] flex justify-center items-center bg-gray-50">
+        {state === "LOADING" && (
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent" />
+        )}
 
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            className={`h-[215px] w-[215px] transform scale-x-[1]  object-cover transition-opacity duration-500 rounded-full ${
-              state === "STREAMING" ? "opacity-100" : "opacity-0 absolute"
-            }`}
-          />
+        {/* Viewfinder */}
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          className={`h-[215px] w-[215px] object-cover rounded-full transition-opacity duration-500 ${
+            state === "STREAMING" ? "opacity-100" : "opacity-0 absolute"
+          }`}
+        />
 
-          <canvas
-            ref={canvasRef}
-            className={`h-[215px] w-[215px] object-cover ${
-              state === "CAPTURED" ? "block" : "hidden"
-            }`}
-          />
-        </div>
+        {/* Captured Result */}
+        <canvas
+          ref={canvasRef}
+          className={`h-[215px] w-[215px] object-cover rounded-full ${
+            state === "CAPTURED" ? "block" : "hidden"
+          }`}
+        />
 
-        {/* Actions */}
-        <div className="p-6">
-          {state === "STREAMING" && (
-            <Button onClick={captureImage} className="w-full">
-              Capture
+        {state === "ERROR" && (
+          <p className="text-red-500 text-sm">Failed to access camera</p>
+        )}
+      </div>
+
+      <div className="p-6">
+        {state === "STREAMING" && (
+          <Button onClick={captureImage} className="w-full">
+            Capture Selfie
+          </Button>
+        )}
+
+        {state === "CAPTURED" && (
+          <div className="flex gap-4">
+            <Button
+              onClick={() => cameraStore.startCamera()}
+              className="w-full !bg-white !text-indigo-600 border border-indigo-600"
+            >
+              Retake
             </Button>
-          )}
-
-          {state === "CAPTURED" && (
-            <div className="flex gap-5">
-              <Button
-                onClick={() => startCamera()}
-                className="!border !border-button !bg-white !text-button w-full"
-              >
-                Retake
-              </Button>
-              <Button onClick={handleConfirm} className="w-full">
-                Proceed
-              </Button>
-            </div>
-          )}
-        </div>
+            <Button onClick={handleConfirm} className="w-full">
+              Proceed
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

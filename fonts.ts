@@ -1,6 +1,5 @@
 import localFont from 'next/font/local';
 
-
 export const Gilroy_ExtraBold = localFont({
 	src: './public/fonts/Gilroy-ExtraBold.ttf',
 	variable: '--font-extra-bold',
