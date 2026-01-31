@@ -1,4 +1,5 @@
 import apiStore from "@/api/apiStore";
+import { getDeviceIdentity } from "@/lib/device";
 import {
   loginUser as LoginUser,
   logOutUser,
@@ -12,7 +13,7 @@ import {
   passwordResetInit,
   updatePasscode,
   verifyPassword as VerifyPassword,
-} from "@/api/services/authService";
+} from "@/services/authService";
 import {
   CreatePasscode,
   CreateUser,
@@ -24,31 +25,17 @@ import {
   Response,
   toggleType,
 } from "@/types/auth";
-import {signal } from "nabd";
+import { asReadonly, computed, signal } from "nabd";
 
-
-    const userAgent = signal({
-  deviceName: '',
-  deviceId:'',
-  deviceModel:''
-} )
-
-
-export const device = ()=> {
-  const deviceInfo = navigator.userAgent;
-  userAgent.set({
-     deviceId: deviceInfo.toString(),
-     deviceModel:deviceInfo.toString(),
-     deviceName:deviceInfo.toString()
-  })
-
-return userAgent
-} 
-
-
+const _refreshToken = signal<string | null>(null);
+const computeToken = computed(()=> _refreshToken.set('') )
+export const authRefreshToken = asReadonly(computeToken)
 
 export const loginUser = apiStore({
-  mutation: (data: LoginCred) => LoginUser(data),
+  mutation: (data: LoginCred) => {
+    const payload = { ...data, ...getDeviceIdentity() };
+    return LoginUser(payload);
+  },
   onSuccess: (res: DataResponse<LoginResponse>) => res,
 });
 export const loginPasscode = apiStore({
@@ -91,7 +78,7 @@ export const verifyPassword = apiStore({
 });
 export const refreshToken = apiStore({
   mutation: (deviceId: string) => RefreshToken({ deviceId } as any),
-  onSuccess: (res: Response) => res,
+  onSuccess: (res: DataResponse<{accessToken:string}>) => res,
 });
 
 
@@ -99,3 +86,4 @@ export const logoutUser = apiStore({
   mutation: (deviceId: string) => logOutUser({ deviceId }),
   onSuccess: (res: Response) => res,
 });
+

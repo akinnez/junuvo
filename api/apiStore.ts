@@ -29,6 +29,7 @@ export default function apiStore<TInput, TResult, TState>(
         response: { data },
       } = e;
       error.set(data);
+      isPending.set(false);
       throw data;
     } finally {
       isPending.set(false);

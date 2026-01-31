@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useSessionStorage } from "@/hooks/use-session-storage";
+import { showNotify } from "@/lib/notification";
 
 const accountTypes = [
   {
@@ -38,7 +39,7 @@ export default function Create() {
       setSession("app-step", "2");
       router.push(navigate.createUser(accountValue));
     } else {
-      alert("Please select an account type to proceed.");
+      showNotify.error("Please select an account type to proceed.");
     }
   };
 

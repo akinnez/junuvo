@@ -9,10 +9,10 @@ import CustomForm from "@/components/CustomForm";
 import CustomInput from "@/components/CustomInput";
 import Button from "@/components/Button";
 import { authRoutes } from "@/config/routes";
-import { device, loginUser } from "@/stores/authStore";
+import { loginUser } from "@/stores/authStore";
 import Link from "next/link";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
-import { useSignal } from "nabd";
+import { effect, useSignal } from "nabd";
 import { showNotify } from "@/lib/notification";
 
 type loginType = {
@@ -26,10 +26,10 @@ function Login() {
 
   const loading = useSignal(loginUser.isPending);
   const errordata = useSignal(loginUser.error);
-  const deviceInfo = useSignal(device());
 
   const { appType } = useAppNavigation();
 
+  const router = useRouter();
   const form = useForm<loginType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -41,15 +41,18 @@ function Login() {
     formState: { errors },
   } = form;
 
+  effect(() => {
+    console.log(loading);
+  });
+
   const login = async (val: loginType) => {
-    const payload = { ...val, ...deviceInfo };
+    const payload = { ...val };
     try {
       const userToken = await loginUser.execute(payload);
       const { data, message } = userToken;
       console.log(data);
-    } catch (error) {
-      showNotify.error("Login Failed");
-      console.log(errordata);
+    } catch (error: any) {
+      showNotify.error(error.message || "An error occurred during login.");
     }
   };
 

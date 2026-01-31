@@ -1,4 +1,4 @@
-import { api } from "../api"
+import { api } from "../api/api"
 
 export async function InitiateUpdateUserPhoneNumber(phone:{phone:string}){
    const res = await api.post(`/users/auth/initiate-phone-verification`, phone)

@@ -1,5 +1,5 @@
 import apiStore from "@/api/apiStore";
-import { createWallet, InitiateUpdateUserPhoneNumber } from "@/api/services/onboardingService";
+import { createWallet, InitiateUpdateUserPhoneNumber } from "@/services/onboardingService";
 import { DataResponse, Response } from "@/types/auth";
 import { CreateWallet } from "@/types/onboarding";
 

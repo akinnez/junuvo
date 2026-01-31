@@ -1,6 +1,6 @@
 import apiStore from "@/api/apiStore";
-import { updateUser, createTransactionPin } from "@/api/services/userService";
-import { getUser } from "@/api/services/userService";
+import { updateUser, createTransactionPin } from "@/services/userService";
+import { getUser } from "@/services/userService";
 import { action, invalidate, resource, Signal, signal } from "nabd";
 import { Response } from "@/types/auth";
 

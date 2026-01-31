@@ -1,5 +1,5 @@
 import { LoginCred, Response, toggleType, DataResponse, LoginResponse } from "@/types/auth";
-import { api } from "../api";
+import { api } from "../api/api";
 
 
  export async function createUser(user:any){
@@ -52,6 +52,11 @@ export async function loginUser(user:LoginCred):Promise<DataResponse<LoginRespon
 }
  export async function RefreshToken(deviceId:{deviceId:string}):Promise<DataResponse<any>>{
    const res = await api.post(`/users/auth/refresh`, deviceId)
+   return res.data
+}
+ 
+ export async function decryptPrivateKey(deviceId:{deviceId:string}):Promise<DataResponse<any>>{
+   const res = await api.post(`/api/decrypt`, deviceId)
    return res.data
 }
  

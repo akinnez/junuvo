@@ -1,4 +1,5 @@
 import { authRoutes } from "@/config/routes";
+import { securityContext } from "@/stores/securityStore";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,12 +9,13 @@ export const metadata: Metadata = {
   description: "Login to your account",
 };
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const { createUser } = authRoutes;
+  await securityContext.refetch();
   return (
     <div className="bg-primary flex items-center justify-center py-10 px-5">
       <div className="max-w-[514px] w-full">
