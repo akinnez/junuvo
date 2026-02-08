@@ -8,27 +8,35 @@ import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { useSessionStorage } from "@/hooks/use-session-storage";
 import { showNotify } from "@/lib/notification";
 
-const accountTypes = [
+type accountType = {
+  name: string;
+  description: string;
+  icon: string;
+  value: userType;
+};
+const accountTypes: accountType[] = [
   {
     name: "Personal Account",
     description:
       "Savings account is a basic type of deposit account that enables you to deposit your money while typically earning a small to modest amount of interest",
     icon: "/images/users.svg",
-    value: "personal",
+    value: "CUSTOMER_INDIVIDUAL",
   },
   {
     name: "Corporate Account",
     description:
       "It allows you to deposit and withdraw money as often as you need to, and it provides you with a range of services to help you manage your finances.",
     icon: "/images/briefcase.svg",
-    value: "business",
+    value: "CUSTOMER_BUSINESS",
   },
 ];
 
 export default function Create() {
   const { navigate } = useAppNavigation();
   const router = useRouter();
-  const [accountValue, setAccountValue] = useState("");
+  const [accountValue, setAccountValue] = useState<userType | undefined>(
+    undefined,
+  );
   const { setSession } = useSessionStorage();
 
   useEffect(() => {
@@ -36,8 +44,8 @@ export default function Create() {
   });
   const handleProceed = () => {
     if (accountValue) {
+      router.push(navigate.createUser(accountValue.toLowerCase()));
       setSession("app-step", "2");
-      router.push(navigate.createUser(accountValue));
     } else {
       showNotify.error("Please select an account type to proceed.");
     }
@@ -62,7 +70,7 @@ export default function Create() {
                   "bg-[#E1EDFF] border border-[#7EB0FF]"
                 }
                 `}
-              onClick={() => setAccountValue(account.value)}
+              onClick={() => setAccountValue(account.value as userType)}
             >
               <div className="w-9.5 h-9.5 rounded-full bg-avatar flex justify-center items-center">
                 <Image

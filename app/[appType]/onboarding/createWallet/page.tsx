@@ -1,10 +1,8 @@
 "use client";
 
 import Button from "@/components/Button";
-import { useRouter } from "next/navigation";
-import React from "react";
 import { useForm } from "react-hook-form";
-import { useSignal } from "nabd";
+import { effect, useSignal } from "nabd";
 import CustomForm from "@/components/CustomForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomInput from "@/components/CustomInput";
@@ -15,6 +13,9 @@ import { showNotify } from "@/lib/notification";
 import { AxiosError } from "axios";
 import SuccessComponentModal from "@/modals/SuccessComponentModal";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
+import { user } from "@/stores/userStore";
+import BackButton from "@/components/BackButton";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 type BvnFormValues = {
   bvn: string;
@@ -23,21 +24,28 @@ type BvnFormValues = {
 };
 
 const AddBvn = () => {
-  const router = useRouter();
   const { openModal, closeModal } = useModal();
-  const { appType } = useAppNavigation();
-  const name = "Gabriel";
+  const {
+    appType,
+    navigate: { dashboard },
+  } = useAppNavigation();
+  const { setLocalStorage } = useLocalStorage();
+  const { firstName } = useSignal<User>(user);
 
+  const onClose = () => {
+    setLocalStorage("isWalletCreated", true);
+    closeModal;
+  };
   const handleOpenSettings = () => {
     openModal({
       size: "md",
       component: (
         <SuccessComponentModal
-          onClose={closeModal}
+          onClose={onClose}
           title="Verified"
-          description="Thank you for verifying your BVN. You can proceed to verify your phone number"
-          buttonText="Verify your Phone Number"
-          href={`/${appType}/onboarding/verify-phone`}
+          description="Thank you for verifying your BVN."
+          buttonText="Proceed to dashboard"
+          href={dashboard(appType)}
         />
       ),
     });
@@ -50,23 +58,24 @@ const AddBvn = () => {
     defaultValues: { bvn: "", dateOfBirth: "", phone: "" },
   });
   const {
+    control,
     formState: { errors },
   } = form;
 
   const onSubmit = async (data: BvnFormValues) => {
     try {
-      await kycVerify.execute(data);
+      await kycVerify.execute({ ...data, phone: `+${data.phone}` });
       handleOpenSettings();
     } catch (error: AxiosError | any) {
-      const { message } = error;
-      showNotify.error(message);
+      showNotify.error(error.message);
     }
   };
 
   return (
     <div className="max-w-lg! mx-auto">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold">Hi {name},</h2>
+      <BackButton needText={false} className="shadow-none!" />
+      <div className="mb-8 mt-5">
+        <h2 className="text-2xl font-bold">Hi {firstName},</h2>
         <p className="text-gray-600 text-sm mt-2 font-medium">
           Let&#39;s get your KYC done by providing your Bank Verification Number
           (BVN) and Phone number
@@ -75,22 +84,24 @@ const AddBvn = () => {
 
       <CustomForm form={form} successFunction={onSubmit} className="space-y-6">
         <CustomInput
-          form={form}
+          control={control}
           name="bvn"
           label="BVN"
           placeholder="Enter your BVN"
           type="text"
           maxLength={11}
+          readOnly={loading}
           error={errors.bvn?.message as string}
         />
         <div>
           <CustomInput
-            form={form}
+            control={control}
             name="phone"
             label="Phone Number"
             placeholder="Enter your phone number"
             type="text"
-            maxLength={11}
+            maxLength={14}
+            readOnly={loading}
             error={errors.phone?.message as string}
           />
           <div className="flex items-center text-xs gap-1 mt-1">
@@ -103,9 +114,10 @@ const AddBvn = () => {
 
         <div>
           <CustomInput
-            form={form}
+            control={control}
             name="dateOfBirth"
             label="Date of Birth"
+            readOnly={loading}
             placeholder="DD/MM/YY"
             type="date"
             error={errors.dateOfBirth?.message as string}

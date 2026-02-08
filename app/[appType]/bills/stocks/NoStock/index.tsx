@@ -3,8 +3,13 @@
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
 import { Deals } from "../page";
 import Link from "next/link";
+import { useAppNavigation } from "@/hooks/use-app-navigation";
 
 export default function NoStock() {
+  const {
+    navigate: { stocks: stockLink },
+    appType,
+  } = useAppNavigation();
   return (
     <CardPageLayout
       title="Most Popular"
@@ -17,7 +22,7 @@ export default function NoStock() {
         return (
           <Link
             key={idx}
-            href={`/${params.appType}bills/stocks/details?abbr=${abbr}`}
+            href={`${stockLink(appType)}/details?abbr=${abbr}`}
             className="block"
           >
             <Deals

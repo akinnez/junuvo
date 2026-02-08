@@ -1,3 +1,4 @@
+import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { formattedAmount } from "@/lib/currency-formatter";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Eye } from "lucide-react";
@@ -103,12 +104,11 @@ export const columns = [
     cell: ({ row }) => {
       // console.log("row from action column", row);
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const router = useRouter();
+      // const router = useRouter();
+      const { appType } = useAppNavigation();
       return (
         <div className="flex items-center gap-5 py-2">
-          <Link
-            href={`/${params.appType}transactions/${row.original.transactionId}`}
-          >
+          <Link href={`/${appType}transactions/${row.original.transactionId}`}>
             <Eye className="h-4 w-4" />
           </Link>
         </div>

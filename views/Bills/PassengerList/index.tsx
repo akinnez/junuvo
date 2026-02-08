@@ -1,5 +1,6 @@
 "use client";
 import Button from "@/components/Button";
+import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { PassengerListProps } from "@/types/flight";
 import { CheckCircle, SquarePen, Users } from "lucide-react";
 import Link from "next/link";
@@ -11,11 +12,12 @@ const PassengerList: React.FC<PassengerListProps> = ({
   N,
   //   onNChange,
 }) => {
+  const { appType } = useAppNavigation();
   const [tempN, setTempN] = useState(String(N));
 
   const filledCount = useMemo(
     () => passengers.filter((p) => p.isFilled).length,
-    [passengers]
+    [passengers],
   );
   const isComplete = filledCount === N;
 
@@ -121,7 +123,7 @@ const PassengerList: React.FC<PassengerListProps> = ({
 
       {/* Next button for overall flow */}
       <div className="mt-8 text-center">
-        <Link href={"/${params.appType}bills/summary/flight"}>
+        <Link href={`/${appType}/bills/summary/flight`}>
           <Button
             disabled={!isComplete}
             className={

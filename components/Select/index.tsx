@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { ChevronDown, Check, } from "lucide-react";
+import { ChevronDown, Check } from "lucide-react";
 import Image from "next/image";
 import SearchInput from "../SearchInput";
 
@@ -90,8 +90,8 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
 
   // Determine the currently selected option object
   const selectedOption = useMemo(
-    () => options.find((opt) => opt.value === value),
-    [options, value]
+    () => options?.find((opt) => opt.value === value),
+    [options, value],
   );
 
   // Filter options based on search term
@@ -99,7 +99,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
     if (!searchTerm) return options;
     const lowerSearchTerm = searchTerm.toLowerCase();
 
-    return options.filter((opt) => {
+    return options?.filter((opt) => {
       // Prioritize searching on the string version of the label/value
       const labelText =
         typeof opt.label === "string"
@@ -113,12 +113,16 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   // Reset active index when filtered options change
   useEffect(() => {
     if (isOpen) {
-      const selectedIndex = filteredOptions.findIndex(
-        (opt) => opt.value === value
+      const selectedIndex = filteredOptions?.findIndex(
+        (opt) => opt.value === value,
       );
       // Set active index to selected item, or the first item if nothing is selected
       setActiveIndex(
-        selectedIndex >= 0 ? selectedIndex : filteredOptions.length > 0 ? 0 : -1
+        selectedIndex >= 0
+          ? selectedIndex
+          : filteredOptions?.length > 0
+            ? 0
+            : -1,
       );
     }
   }, [filteredOptions, isOpen, value]);
@@ -150,7 +154,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
       setSearchTerm("");
       buttonRef.current?.focus();
     },
-    [onChange]
+    [onChange],
   );
 
   // // Handle clearing the selected value
@@ -181,7 +185,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   // Keyboard navigation logic
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
-      const listItems = filteredOptions.length;
+      const listItems = filteredOptions?.length;
 
       // Key: Escape - Close dropdown
       if (event.key === "Escape") {
@@ -202,7 +206,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
       if (event.key === " " && event.target === buttonRef.current && !isOpen) {
         event.preventDefault();
         setIsOpen(true);
-        setActiveIndex(filteredOptions.length > 0 ? 0 : -1);
+        setActiveIndex(filteredOptions?.length > 0 ? 0 : -1);
         return;
       }
 
@@ -229,7 +233,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
         return;
       }
     },
-    [isOpen, activeIndex, filteredOptions, handleSelect]
+    [isOpen, activeIndex, filteredOptions, handleSelect],
   );
 
   // --- Rendering Logic ---
@@ -327,7 +331,12 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
           )}
           {/* Optional Search Input */}
           {searchable && (
-            <SearchInput label={label} searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchInputRef={searchInputRef} />
+            <SearchInput
+              label={label}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              searchInputRef={searchInputRef}
+            />
           )}
 
           <ul
@@ -337,8 +346,8 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
             tabIndex={-1} // Focusable by script only
             className="max-h-60 overflow-y-auto p-1 "
           >
-            {filteredOptions.length > 0 ? (
-              filteredOptions.map((opt, index) => {
+            {filteredOptions?.length > 0 ? (
+              filteredOptions?.map((opt, index) => {
                 const isSelected = opt.value === value;
                 const isActive = index === activeIndex;
 

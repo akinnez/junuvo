@@ -1,4 +1,8 @@
-import {authRefreshToken, refreshToken} from "@/stores/authStore";
+'use client'
+import {logoutUser, refreshToken} from "@/stores/authStore";
+import { getDeviceIdentity } from "./device";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useRouter } from "next/navigation";
 
  
  let isRefreshing = false;
@@ -13,6 +17,7 @@ import {authRefreshToken, refreshToken} from "@/stores/authStore";
  };
 
  export const handleApiError = async (apiClient:any,error:any) => {
+
     const originalRequest = error.config;
     const isLoginRequest = originalRequest.url?.includes("/auth/");
     
@@ -22,10 +27,6 @@ import {authRefreshToken, refreshToken} from "@/stores/authStore";
 
     // Check if error is 401 and we haven't retried yet
     if (error.response?.status === 401) {
-    //   if (!authRefreshToken) {
-    //     // logout();  
-    //     return Promise.reject(error);
-    //   }
 
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
@@ -41,11 +42,13 @@ import {authRefreshToken, refreshToken} from "@/stores/authStore";
       isRefreshing = true;
 
       try {
-          const deviceId = localStorage.getItem('deviceId');
-          if (!deviceId) return Promise.reject(error)
+          const device = getDeviceIdentity();
+          console.log(device);
+          
+          if (!device) return Promise.reject(error)
         // IMPORTANT: This call will automatically be encrypted by the request interceptor
         // and decrypted by the response interceptor because it uses apiClient!
-        const res = await refreshToken.execute(deviceId as string);
+        const res = await refreshToken.execute(device);
         const { accessToken: newAccess } = res.data;
         localStorage.setItem('token', JSON.stringify(newAccess));
         processQueue(null, newAccess);
@@ -54,6 +57,9 @@ import {authRefreshToken, refreshToken} from "@/stores/authStore";
         return apiClient(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);
+        console.log('this works');
+        
+       logOut()
         // Logout user or redirect to login
         return Promise.reject(refreshError);
       } finally {
@@ -63,3 +69,10 @@ import {authRefreshToken, refreshToken} from "@/stores/authStore";
 
     return Promise.reject(error);
   }
+
+    const logOut = () => {
+
+      localStorage.removeItem('token')
+      location.href ='/login'
+      return
+    } 

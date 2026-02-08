@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils"; // shadcn utility
 import { MENU_ITEMS } from "@/lib/menu-data";
 import type { MenuItem } from "@/types/menu";
 import Image from "next/image";
 import { AccordionComponent } from "../Accordion";
+import { user } from "@/stores/userStore";
+import { useSignal } from "nabd";
 
 export const NavItem = ({
   item,
@@ -26,7 +28,7 @@ export const NavItem = ({
         "flex items-center space-x-3 p-3 rounded-lg transition-colors",
         isActive
           ? "bg-avatar text-gray-900"
-          : "hover:bg-avatar hover:text-gray-900" // Highlighting the active link
+          : "hover:bg-avatar hover:text-gray-900", // Highlighting the active link
       )}
     >
       <Icon className="h-5 w-5" />
@@ -62,6 +64,7 @@ export const NavItem = ({
 export function SidebarMain({ appType }: { appType: string }) {
   // Simple state to manage which collapsible menu is open.
   const [openParent, setOpenParent] = useState<string | null>();
+  const data = useSignal<User>(user);
 
   const handleParentToggle = (itemId: string) => {
     setOpenParent(openParent === itemId ? null : itemId);
@@ -91,11 +94,26 @@ export function SidebarMain({ appType }: { appType: string }) {
 
       {/* --- User Profile Section --- */}
       <div className="mt-auto pt-4 border-t border-gray-700">
-        <div className="flex items-center justify-between p-2 hover:bg-gray-700/50 rounded-lg cursor-pointer">
-          <div className="flex items-center space-x-3">
+        <div className="flex items-center justify-between hover:bg-gray-700/50 rounded-lg cursor-pointer">
+          <div className="flex items-center space-x-3 gap-x-5">
+            <div className="rounded-full h-10 w-10 bg-gray-300 flex justify-center items-center">
+              {data?.photo ? (
+                <Image
+                  src={data?.photo || ""}
+                  alt="profile"
+                  width={24}
+                  height={24}
+                  className="rounded-full"
+                />
+              ) : (
+                <User size={24} className="text-white" />
+              )}
+            </div>
             <div>
-              <p className="font-semibold text-sm">Alison Eye</p>
-              <p className="text-xs text-gray-400">@thealisoneye</p>
+              <p className="font-semibold text-sm capitalize">
+                {data?.firstName} {data?.lastName}
+              </p>
+              <p className="text-xs text-gray-400">{data?.email}</p>
             </div>
           </div>
           <LogOut className="h-5 w-5 text-gray-400" />

@@ -10,26 +10,27 @@ import { useRouter } from "next/navigation";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSessionStorage } from "@/hooks/use-session-storage";
-import { useEffect } from "react";
-import { verifyEmail, create } from "@/stores/authStore";
+import { useEffect, useState } from "react";
+import { verifyEmail } from "@/stores/authStore";
 import { useSignal } from "nabd";
 import Spinner from "@/components/Spinner";
-// import { CreateUser } from "@/types/auth";
+import { CreateUser } from "@/types/auth";
 import { showNotify } from "@/lib/notification";
 
 type PinFormValues = {
   pin: string;
 };
 const PinSchema = z.object({
-  pin: z.string().regex(/^\d{6}$/, "PIN must be exactly 6 digits."),
+  pin: z.string().regex(/^\d{5}$/, "PIN must be exactly 5 digits."),
 });
 export default function CreatePinPage() {
   const router = useRouter();
+  const [load, setLoading] = useState(false);
   const { setSession, getFromSession } = useSessionStorage();
+
   const loading = useSignal(verifyEmail.isPending);
   const error = useSignal(verifyEmail.error);
-  // const loading_create = useSignal(create.isPending);
-  // const error_create = useSignal(create.error);
+
   useEffect(() => {
     setSession("app-step", "2");
   });
@@ -44,47 +45,31 @@ export default function CreatePinPage() {
   });
 
   const pin = watch("pin");
-  const dataFromSession = getFromSession("create_user");
+  const dataFromSession = JSON.parse(
+    atob(getFromSession("create_user") || "{}"),
+  );
 
   const onSubmit = async (data: PinFormValues) => {
-    // const payload:CreateUser = { ...dataFromSession, code: data.pin };
-    // try {
-    // const { message, success } = await create.execute(payload);
-    //   if (success) {
-    //     showNotify.success(message);
-    //     router.push("transaction_pin");
-    //     setSession("app-step", "3");
-    //     console.log(message);
-    //     return;
-    //   }
-    //   showNotify.error(error?.message || "Failed to create profile");
-    //   return;
-    // } catch (error) {
-    //  showNotify.error("Something went wrong. Please try again.");
-    //   console.log(error);
-    // }
-    showNotify.error("Functionality Disabled");
-    router.push("transaction_pin");
+    setLoading(true);
+    const payload: CreateUser = { ...dataFromSession, code: data.pin };
+    setSession("create_user", btoa(JSON.stringify(payload)));
     setSession("app-step", "3");
-    alert("PIN validated: " + data.pin);
+    router.push("transaction_pin");
+    setLoading(false);
   };
 
   const handleResendOTP = async () => {
     const { email } = dataFromSession;
     // Resent OTP Logic goes here
     try {
-      const { message, success } = await verifyEmail.execute(email);
-      if (success) {
-        showNotify.success(message);
-        return;
-      }
-      showNotify.error(error?.message || "Failed to resend OTP");
+      const { message } = await verifyEmail.execute(email);
+      showNotify.success(message);
       return;
-    } catch (error) {
-      showNotify.error("Something went wrong. Please try again.");
-      console.log(error);
+    } catch (error: any) {
+      showNotify.error(error?.message || "Failed to resend OTP");
     }
   };
+
   return (
     <div className="md:h-[calc(100vh-5rem)] flex justify-center md:items-center">
       <div className="my-10 md:my-0">
@@ -101,16 +86,16 @@ export default function CreatePinPage() {
             </label>
 
             <InputOTP
-              maxLength={6}
+              maxLength={5}
               value={pin}
               onChange={(val) => setValue("pin", val, { shouldValidate: true })}
             >
               <InputOTPGroup>
-                {[0, 1, 2, 3, 4, 5].map((i) => (
+                {[0, 1, 2, 3, 4].map((i) => (
                   <InputOTPSlot
                     key={i}
                     index={i}
-                    className="h-10 w-10 md:h-14 md:w-14 mx-1 md:mx-2 border border-gray-300 rounded-md"
+                    className="h-12 w-12 md:h-16 md:w-16 mx-1 md:mx-2 border border-gray-300 rounded-md text-base md:text-lg"
                   />
                 ))}
               </InputOTPGroup>
@@ -147,10 +132,9 @@ export default function CreatePinPage() {
             </div>
           </div>
           <Button
+            loading={load}
             type="submit"
             size="md"
-            // disabled={loading_create}
-            // loading={loading_create}
             className="w-full text-white mt-10"
           >
             Continue

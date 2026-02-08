@@ -3,6 +3,7 @@ import Button from "@/components/Button";
 import CustomForm from "@/components/CustomForm";
 import CustomInput from "@/components/CustomInput";
 import FormSelect from "@/components/FormSelect";
+import { useAppNavigation } from "@/hooks/use-app-navigation";
 import { flightSchema } from "@/schema/flight";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -21,6 +22,8 @@ function FlightComponent() {
   const searchParams = useSearchParams();
   const params = searchParams.get("type");
 
+  const { appType } = useAppNavigation();
+
   useEffect(() => {
     params && sessionStorage.setItem("bill_type", params);
   }, [params]);
@@ -34,17 +37,18 @@ function FlightComponent() {
   });
 
   const {
+    control,
     formState: { errors },
   } = form;
 
   function onSubmit(values: any) {
     console.log(values);
-    router.push(`/${params.appType}bills/flight/search`);
+    router.push(`/${appType}/bills/flight/search`);
   }
 
   useEffect(() => {
     if (!["one-way", "round"].includes(params as string)) {
-      return router.push(`/${params.appType}bills/flight/route?type=one-way`);
+      return router.push(`/${appType}/bills/flight/route?type=one-way`);
     }
   }, [params]);
 
@@ -52,25 +56,22 @@ function FlightComponent() {
     <CustomForm className="space-y-7" successFunction={onSubmit} form={form}>
       <FormSelect
         id="departure"
-        form={form}
+        control={control}
         label="Departure"
         name="departure"
-        value={selectedAcc}
         options={[
           {
             label: "Lagos",
             value: "lagos",
           },
         ]}
-        onChange={setSelectedAcc}
         searchable={false}
       />
       <FormSelect
         id="provider"
-        form={form}
+        control={control}
         label="Destination"
         name="provider"
-        value={selectedProvider}
         options={[
           {
             label: "United State of America",
@@ -81,7 +82,6 @@ function FlightComponent() {
             value: "egypt",
           },
         ]}
-        onChange={setSelectedProvider}
         searchable={true}
       />
 
@@ -89,7 +89,7 @@ function FlightComponent() {
         type="date"
         id="departureDate"
         label="Departure Date"
-        form={form}
+        control={control}
         name="departureDate"
       />
       {params == "round" && (
@@ -97,7 +97,7 @@ function FlightComponent() {
           type="date"
           id="returnDate"
           label="Return Date"
-          form={form}
+          control={control}
           name="returnDate"
         />
       )}

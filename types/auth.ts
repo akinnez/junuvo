@@ -1,5 +1,4 @@
-export type userType = "CUSTOMER_INDIVIDUAL" | "CUSTOMER_BUSINESS";
-export type toggleType = "ON" | "OFF";
+
 
 //payloads type for authentication operations
 
@@ -39,19 +38,10 @@ export type CreateUser = {
 };
 
 //Response type for authentication actions
-export interface Response {
-  success: boolean;
-  message: string;
-}
 export interface PasscodeUpdate {
   oldPasscode: string;
   newPasscode: string;
 }
-
-export interface DataResponse<T> extends Response {
-  data: T;
-}
-
 export interface LoginResponse {
     accessToken: string;
     meta: {

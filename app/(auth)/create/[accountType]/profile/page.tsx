@@ -4,7 +4,7 @@ import Input from "@/components/Input";
 import { CustomSelect } from "@/components/Select";
 import UploadComponent from "@/components/upload-zone";
 import { useAppNavigation } from "@/hooks/use-app-navigation";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 function BusinessProfile() {
@@ -14,7 +14,7 @@ function BusinessProfile() {
 
   const handleProceed = () => {
     // Logic to handle profile creation can be added here
-    router.push(navigate.createUser(appType) + "/profile_pin");
+    router.push(navigate.createUser(appType) + "/verify_otp");
   };
 
   const handleChange = (field: string, value: string) => {

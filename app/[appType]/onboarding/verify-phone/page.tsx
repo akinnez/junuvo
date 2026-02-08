@@ -9,12 +9,12 @@ import { showNotify } from "@/lib/notification";
 import { passwordInit } from "@/stores/onBoardingStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignal } from "nabd";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
 const PasswordSchema = z.object({
-  phone: z.string().regex(/^\d{11}$/, "Password must be exactly 11 digits."),
+  phone: z.string().regex(/^\d{13}$/, "Password must be exactly 13 digits."),
 });
 
 type verifyType = {
@@ -24,7 +24,6 @@ type verifyType = {
 function VerifyPhoneNumber() {
   const { setSession } = useSessionStorage();
   const { appType } = useAppNavigation();
-
   const router = useRouter();
   const loading = useSignal(passwordInit.isPending);
   const form = useForm<verifyType>({
@@ -34,15 +33,17 @@ function VerifyPhoneNumber() {
     },
   });
   const {
+    control,
     formState: { errors },
   } = form;
 
   const onSubmit = async (data: verifyType) => {
+    const payload = { phone: `+` + data.phone };
     try {
-      const verify = await passwordInit.execute(data);
+      const verify = await passwordInit.execute(payload);
       showNotify.success(verify.message);
       setSession("onboarding_phone", JSON.stringify(data.phone));
-      router.push(`/${appType}/onboarding/verify-phone/confirmOTP`);
+      router.push("confirmOTP");
     } catch (error: any) {
       showNotify.error(
         error?.message || "Failed to initiate phone verification",
@@ -52,10 +53,10 @@ function VerifyPhoneNumber() {
   return (
     <div>
       {/* Back Button */}
-      <BackButton />
+      <BackButton needText={false} className="shadow-none!" />
 
       {/* Header Text */}
-      <div className="mb-8">
+      <div className="mb-8 mt-5">
         <h2 className="text-2xl font-bold text-gray-900">
           Verify Phone number
         </h2>
@@ -68,11 +69,12 @@ function VerifyPhoneNumber() {
       <div className="mt-5">
         <CustomForm form={form} successFunction={onSubmit}>
           <CustomInput
-            form={form}
+            control={control}
             name="phone"
             label="Phone Number"
             type="phone"
-            maxLength={11}
+            maxLength={13}
+            readOnly={loading}
             error={errors.phone?.message as string}
             placeholder="Enter your phone number"
           />

@@ -8,6 +8,7 @@ export const api = axios.create({
   
   headers: {
     Accept: "*/*",
+      "Content-Type": "application/json",
   },
   timeoutErrorMessage: "Connection Timeout",
   timeout: 1000 * 60,
@@ -43,11 +44,10 @@ api.interceptors.request.use(async (config) => {
 api.interceptors.response.use(
  async (response) => {
     if (response.data) {
+      
     const {payload} = response.data;
     // SEND TO SERVER FOR DECRYPTION {
-      const decryptedResponse = await axios.post('/api/decrypt', {
-      encryptedData: payload
-    });
+      const decryptedResponse = await axios.post(`/api/decrypt`, {encryptedData:payload})
         response.data = decryptedResponse.data;    
   }
   return  response

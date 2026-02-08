@@ -1,7 +1,5 @@
 "use client";
 import { useSessionStorage } from "@/hooks/use-session-storage";
-import { effect } from "nabd";
-import React, { useEffect, useState } from "react";
 
 const steps = [
   {

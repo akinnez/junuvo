@@ -1,11 +1,14 @@
 "use client";
 import Button from "@/components/Button";
 import Card from "@/components/Card";
+// import { JunuvoOverlay } from "@/components/Loader";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
+import { accounts } from "@/stores/walletStore";
 import { Copy } from "lucide-react";
+import { useSignal } from "nabd";
 import { useState } from "react";
 
-const accounts = [
+const accountType = [
   {
     id: 1,
     accountType: "Naira Account",
@@ -23,38 +26,10 @@ const accounts = [
   },
 ];
 
-const accountDetails = [
-  {
-    id: 1,
-    accountHolder: "John Doe",
-    accountNumber: "1234567890",
-    bankName: "First Bank",
-    bankCode: "011",
-    accountCode: "NGN",
-  },
-  {
-    id: 2,
-    accountHolder: "John Doe",
-    accountNumber: "1234567890",
-    bankName: "First Bank",
-    bankCode: "010",
-    accountCode: "USD",
-    routingNumber: "021000021",
-  },
-  {
-    id: 3,
-    accountHolder: "John Doe",
-    accountNumber: "1234567890",
-    bankName: "First Bank",
-    bankCode: "012",
-    accountCode: "EUR",
-  },
-];
-
 const accountLabels = [
   {
     label: "Account Holder",
-    value: "accountHolder",
+    value: "accountName",
   },
   {
     label: "Account Number",
@@ -68,6 +43,13 @@ const accountLabels = [
 
 function AccountDetailsComponent() {
   const [id, setId] = useState<number>(1);
+  const details = useSignal(accounts);
+  // const isLoading = useSignal(isAccountLoading);
+
+  // if (isLoading) {
+  //   <JunuvoOverlay isLoading={isLoading} />;
+  // }
+
   return (
     <CardPageLayout
       title="My Accounts"
@@ -75,7 +57,7 @@ function AccountDetailsComponent() {
       className="max-w-md"
     >
       <div className="flex flex-wrap justify-center my-5">
-        {accounts.map((account) => (
+        {accountType.map((account) => (
           <Button
             type="button"
             size="sm"
@@ -91,15 +73,12 @@ function AccountDetailsComponent() {
           </Button>
         ))}
       </div>
-      <Card className="space-y-6 !p-7">
-        <div className="mb-5 text-button font-semibold text-sm uppercase">
-          {accounts.find((account) => account.id === id)?.currency} Account
-        </div>
-        <div>
-          {accountDetails
-            .filter((detail) => detail.id === id)
-            .map((detail) => (
-              <div key={detail.id} className="space-y-4">
+
+      <div>
+        {details &&
+          details?.map((detail: any) => (
+            <Card key={detail.id} className=" !p-7">
+              <div className="space-y-4">
                 {accountLabels.map((label, idx) => (
                   <div className="flex justify-between items-center" key={idx}>
                     <div className="flex flex-col gap-1">
@@ -131,12 +110,12 @@ function AccountDetailsComponent() {
                   </div>
                 )}
               </div>
-            ))}
-          <Button className="!text-xs font-semibold bg-transparent !text-button w-full">
-            SET TRANSACTION LIMIT
-          </Button>
-        </div>
-      </Card>
+              <Button className="!text-xs font-semibold bg-transparent !text-button w-full">
+                SET TRANSACTION LIMIT
+              </Button>
+            </Card>
+          ))}
+      </div>
     </CardPageLayout>
   );
 }

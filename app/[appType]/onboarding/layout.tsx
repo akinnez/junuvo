@@ -18,7 +18,7 @@ export default function OnBoardingAccountLayout({
           KYC UPDATE
         </h1>
         <div className="bg-secondary flex flex-col items-center">
-          <Card className=" p-3!">{children}</Card>
+          <Card className="p-5!">{children}</Card>
         </div>
       </div>
     </div>

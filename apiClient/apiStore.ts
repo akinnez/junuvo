@@ -25,12 +25,13 @@ export default function apiStore<TInput, TResult, TState>(
         [targetSignal], ()=> mutate(targetSignal, data, config)
        );
     } catch (e: any) {
+      const message = e?.response?.data?.message || e?.message || "Something went wrong. Please try again.";
       const {
         response: { data },
       } = e;
-      error.set(data);
+      error.set(message);
       isPending.set(false);
-      throw data;
+      throw data || e;
     } finally {
       isPending.set(false);
     }

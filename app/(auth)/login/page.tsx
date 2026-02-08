@@ -11,9 +11,11 @@ import Button from "@/components/Button";
 import { authRoutes } from "@/config/routes";
 import { loginUser } from "@/stores/authStore";
 import Link from "next/link";
-import { useAppNavigation } from "@/hooks/use-app-navigation";
-import { effect, useSignal } from "nabd";
+import { useSignal } from "nabd";
 import { showNotify } from "@/lib/notification";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useAppNavigation } from "@/hooks/use-app-navigation";
+import { user } from "@/stores/userStore";
 
 type loginType = {
   email: string;
@@ -22,12 +24,13 @@ type loginType = {
 
 function Login() {
   const { forgotPassword } = authRoutes;
-  const navigate = useRouter();
 
   const loading = useSignal(loginUser.isPending);
-  const errordata = useSignal(loginUser.error);
 
-  const { appType } = useAppNavigation();
+  const { setLocalStorage } = useLocalStorage();
+  const {
+    navigate: { dashboard },
+  } = useAppNavigation();
 
   const router = useRouter();
   const form = useForm<loginType>({
@@ -38,19 +41,24 @@ function Login() {
     },
   });
   const {
+    control,
     formState: { errors },
   } = form;
-
-  effect(() => {
-    console.log(loading);
-  });
 
   const login = async (val: loginType) => {
     const payload = { ...val };
     try {
-      const userToken = await loginUser.execute(payload);
-      const { data, message } = userToken;
-      console.log(data);
+      const userData = await loginUser.execute(payload);
+      const { data, message } = userData;
+      showNotify.success(message);
+      const {
+        accessToken,
+        meta: { userType, isWalletCreated },
+      } = data;
+
+      setLocalStorage("token", accessToken);
+      setLocalStorage("isWalletCreated", isWalletCreated);
+      return router.push(dashboard(userType.toLowerCase() as userType));
     } catch (error: any) {
       showNotify.error(error.message || "An error occurred during login.");
     }
@@ -68,7 +76,7 @@ function Login() {
         <div className="mt-5">
           <CustomForm form={form} successFunction={login}>
             <CustomInput
-              form={form}
+              control={control}
               name="email"
               label="Email Address"
               type="email"
@@ -77,7 +85,7 @@ function Login() {
               className="border-none bg-[#F0F2F5] rounded-md"
             />
             <CustomInput
-              form={form}
+              control={control}
               label="Password"
               name="password"
               type="password"

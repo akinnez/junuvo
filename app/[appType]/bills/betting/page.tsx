@@ -1,23 +1,25 @@
 "use client";
 import Button from "@/components/Button";
-// import CustomForm from "@/components/CustomForm";
-// import CustomInput from "@/components/CustomInput";
-// import FormSelect from "@/components/FormSelect";
-import Input from "@/components/Input";
+import CustomForm from "@/components/CustomForm";
+import CustomInput from "@/components/CustomInput";
+import FormSelect from "@/components/FormSelect";
+import { JunuvoOverlay } from "@/components/Loader";
 import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
-import { CustomSelect } from "@/components/Select";
-// import { electricitySchema } from "@/schema/electricity";
-// import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
+import { bettingSchema } from "@/schema/bill/betting";
+import { isPending, provider } from "@/stores/Bills/bettingStore";
+import { user } from "@/stores/userStore";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSignal } from "nabd";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-// import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
-// interface electricity {
-//   amount: string;
-//   meterNo: string;
-// }
+interface Betting {
+  amount: string;
+  service: string;
+  accountId: string;
+  walletId: string;
+}
 
 const option: Option[] = [
   {
@@ -38,37 +40,48 @@ const option: Option[] = [
 ];
 
 export default function Betting() {
-  const [selectedAcc, setSelectedAcc] = useState<string>("");
-  const [selectedProvider, setSelectedProvider] = useState<string>("");
+  const router = useRouter();
+  const loading = useSignal(isPending);
+  const providers = useSignal(provider);
+  const userData = useSignal(user);
+  const bettingOptions = providers?.map((prov: any) => ({
+    label: <div className="capitalize">{prov.name}</div>,
+    value: prov.name,
+    icon: prov.logo,
+  }));
+  const form = useForm<Betting>({
+    resolver: zodResolver(bettingSchema),
+    defaultValues: {
+      amount: "",
+      service: "",
+      accountId: "",
+      walletId: "",
+    },
+  });
 
-  //   const router = useRouter();
+  const {
+    control,
+    formState: { errors },
+  } = form;
+  console.log("User Data:", userData);
+  function onSubmit(values: Betting) {
+    console.log("Form Values:", values);
 
-  //   const form = useForm<electricity>({
-  //     resolver: zodResolver(electricitySchema),
-  //     defaultValues: {
-  //       amount: "",
-  //       meterNo: "",
-  //     },
-  //   });
+    // const payload = {
+    //   debitAccount: selectedAcc,
+    //   provider: selectedProvider,
+    //   ...values,
+    // };
 
-  //   const {
-  //     formState: { errors },
-  //   } = form;
+    // console.log(payload);
 
-  //   function onSubmit(values: electricity) {
-  //     const payload = {
-  //       debitAccount: selectedAcc,
-  //       provider: selectedProvider,
-  //       ...values,
-  //     };
-
-  //     console.log(payload);
-
-  //     router.push(`/${params.appType}bills/summary/electricity`);
-  //   }
+    // router.push(`/${params.appType}bills/summary/electricity`);
+  }
+  if (loading) {
+    return <JunuvoOverlay isLoading={loading} />;
+  }
 
   return (
-    // <CustomForm className="space-y-5" successFunction={onSubmit} form={form}>
     <PageLayout
       title="Betting"
       description="Enter details to fund your betting account"
@@ -79,58 +92,61 @@ export default function Betting() {
         description="Select your desired type to begin"
         className="max-w-sm"
       >
-        <div className="space-y-7">
-          <CustomSelect
-            id="debitAccount"
-            label="Select Account to debit"
-            name="debitAccount"
-            value={selectedAcc}
-            options={[
-              {
-                label: "Savings",
-                value: "savings",
-              },
-              {
-                label: "Current",
-                value: "current",
-              },
-            ]}
-            onChange={setSelectedAcc}
-            searchable={false}
-          />
-          <CustomSelect
-            id="provider"
-            label="Select Provider"
-            name="provider"
-            value={selectedProvider}
-            options={option}
-            onChange={setSelectedProvider}
-            searchable={false}
-          />
-
-          <Input
-            id="userId"
-            label="User Id"
-            name="userId"
-            placeholder="Enter User ID"
-          />
-          <div>
-            <Input
-              id="amount"
-              label="Amount"
-              name="amount"
-              placeholder="Enter amount"
+        <CustomForm form={form} successFunction={onSubmit}>
+          <div className="space-y-7">
+            {/* <FormSelect
+              id="debitAccount"
+              label="Select Account to debit"
+              name="debitAccount"
+              control={control}
+              options={[
+                {
+                  label: "Savings",
+                  value: "134566789",
+                },
+                {
+                  label: "Current",
+                  value: "245678",
+                },
+              ]}
+              searchable={false}
+              error={errors.accountId?.message}
+            /> */}
+            <FormSelect
+              id="service"
+              label="Select Provider"
+              name="service"
+              control={control}
+              options={bettingOptions}
+              searchable={true}
+              error={errors.service?.message}
             />
-            <div className="flex justify-end text-button font-medium text-xs">
-              Avail Bal: N220.00
-            </div>
-          </div>
 
-          <div className=" border-t border-gray-200 w-full"></div>
-          <Link href={`/${params.appType}bills/summary/betting`}>
+            <CustomInput
+              id="walletId"
+              control={control}
+              label="Wallet Id"
+              name="walletId"
+              placeholder="Enter Wallet ID"
+              error={errors.walletId?.message}
+            />
+            <div>
+              <CustomInput
+                id="amount"
+                control={control}
+                label="Amount"
+                name="amount"
+                placeholder="Enter amount"
+                error={errors.amount?.message}
+              />
+              <div className="flex justify-end text-button font-medium text-xs">
+                Avail Bal: N220.00
+              </div>
+            </div>
+            <div className=" border-t border-gray-200 w-full"></div>
             <Button className="w-full">Proceed</Button>
-          </Link>
-        </div>
+          </div>
+        </CustomForm>
       </CardPageLayout>
     </PageLayout>
   );

@@ -1,17 +1,17 @@
 import { NextResponse } from 'next/server';
-import * as openpgp from 'openpgp';
+import {decryptKey, readPrivateKey, readMessage, decrypt} from 'openpgp';
 
 export async function POST(req: Request) {
   try {
     const { encryptedData } = await req.json();
-
-    const privateKey = await openpgp.decryptKey({
-      privateKey: await openpgp.readPrivateKey({ armoredKey: process.env.PCG_PRIVATE_KEY! }),
+    
+    const privateKey = await decryptKey({
+      privateKey: await readPrivateKey({ armoredKey: process.env.PCG_PRIVATE_KEY! }),
       passphrase: process.env.PGP_PASSPHRASE!
     });
 
-    const message = await openpgp.readMessage({ armoredMessage: atob(encryptedData) });
-    const { data: decryptedText } = await openpgp.decrypt({
+    const message = await readMessage({ armoredMessage: atob(encryptedData) });
+    const { data: decryptedText } = await decrypt({
       message,
       decryptionKeys: privateKey,
       // We can also verify signatures here using the backend's public key

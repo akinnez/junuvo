@@ -9,18 +9,25 @@ import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft } from "lucide-react";
 import BackButton from "@/components/BackButton";
 import { useSessionStorage } from "@/hooks/use-session-storage";
+import { confirmPhoneVerify } from "@/stores/onBoardingStore";
+import { showNotify } from "@/lib/notification";
+import { useAppNavigation } from "@/hooks/use-app-navigation";
 
 type PinFormValues = {
   pin: string;
 };
 const PinSchema = z.object({
-  pin: z.string().regex(/^\d{6}$/, "PIN must be exactly 6 digits."),
+  pin: z.string().regex(/^\d{5}$/, "PIN must be exactly 5 digits."),
 });
 export default function ConfirmOTP() {
   const router = useRouter();
+  const {
+    appType,
+    navigate: { createWallet },
+  } = useAppNavigation();
+
   const { getFromSession } = useSessionStorage();
   const {
     handleSubmit,
@@ -35,9 +42,14 @@ export default function ConfirmOTP() {
   const pin = watch("pin");
   const dataFromSession = getFromSession("onboarding_phone");
 
-  const onSubmit = (data: PinFormValues) => {
-    router.push("/${params.appType}dashboard");
-    // alert("OTP validated: " + data.pin);
+  const onSubmit = async (data: PinFormValues) => {
+    try {
+      const { message } = await confirmPhoneVerify.execute({ code: data.pin });
+      showNotify.success(message);
+      router.push(createWallet(appType));
+    } catch (error: any) {
+      showNotify.error(error);
+    }
   };
 
   const handleResendOTP = () => {
@@ -46,15 +58,15 @@ export default function ConfirmOTP() {
   };
   return (
     <div>
-      <BackButton />
+      <BackButton needText={false} className="shadow-none!" />
 
       {/* Header Text */}
-      <div className="mb-8">
+      <div className="mb-8 mt-5">
         <h2 className="text-2xl font-bold text-gray-900">Enter OTP</h2>
         <p className="text-gray-600 mt-1 text-sm">
-          A 6-digit OTP was shared to{" "}
-          <span className="font-semibold">+23481******625</span>. Input here to
-          continue
+          A 5-digit OTP was shared to{" "}
+          <span className="font-semibold">{`${dataFromSession}`}</span>. Input
+          here to continue
         </p>
       </div>
 
@@ -65,16 +77,16 @@ export default function ConfirmOTP() {
           </label>
 
           <InputOTP
-            maxLength={6}
+            maxLength={5}
             value={pin}
             onChange={(val) => setValue("pin", val, { shouldValidate: true })}
           >
             <InputOTPGroup>
-              {[0, 1, 2, 3, 4, 5].map((i) => (
+              {[0, 1, 2, 3, 4].map((i) => (
                 <InputOTPSlot
                   key={i}
                   index={i}
-                  className="h-10 w-10 mx-1 md:mx-2 border border-gray-300 rounded-md"
+                  className="h-14 w-14 mx-1 md:mx-2 border border-gray-300 rounded-md"
                 />
               ))}
             </InputOTPGroup>

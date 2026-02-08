@@ -1,4 +1,4 @@
-import apiStore from "@/api/apiStore";
+import apiStore from "@/apiClient/apiStore";
 import { getDeviceIdentity } from "@/lib/device";
 import {
   loginUser as LoginUser,
@@ -17,19 +17,12 @@ import {
 import {
   CreatePasscode,
   CreateUser,
-  DataResponse,
   LoginCred,
   LoginPasscode as loginPass,
   LoginResponse,
   PasscodeUpdate,
-  Response,
-  toggleType,
 } from "@/types/auth";
-import { asReadonly, computed, signal } from "nabd";
 
-const _refreshToken = signal<string | null>(null);
-const computeToken = computed(()=> _refreshToken.set('') )
-export const authRefreshToken = asReadonly(computeToken)
 
 export const loginUser = apiStore({
   mutation: (data: LoginCred) => {
@@ -77,7 +70,7 @@ export const verifyPassword = apiStore({
   onSuccess: (res: Response) => res,
 });
 export const refreshToken = apiStore({
-  mutation: (deviceId: string) => RefreshToken({ deviceId } as any),
+  mutation: (device: {deviceName:string, deviceModel:string}) => RefreshToken({ device } as any),
   onSuccess: (res: DataResponse<{accessToken:string}>) => res,
 });
 

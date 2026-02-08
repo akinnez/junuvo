@@ -6,6 +6,7 @@ export interface BalanceCardProps {
   flag: string;
   amount: number;
   ledgerBalance: string;
+  virtualAccount: string;
   // Custom Tailwind class for the unique background color
   bgColorClass: string;
 }
@@ -13,10 +14,14 @@ export interface BalanceCardProps {
 // components/BalanceCard.tsx
 import Card from "@/components/Card";
 import Button from "@/components/Button";
-import { Copy, Share2, CornerRightUp, CopyIcon } from "lucide-react"; // Example Lucide icons
+import { Copy } from "lucide-react"; // Example Lucide icons
 import Image from "next/image";
 import { formattedAmount } from "@/lib/currency-formatter";
 import { CurrencyType } from "@/types/currencyType";
+import Link from "next/link";
+import { useAppNavigation } from "@/hooks/use-app-navigation";
+import { useModal } from "@/hooks/useModal";
+import FundAccount from "@/modals/dashboard/FundTransfer";
 
 // Note: You would import the BalanceCardProps interface here
 // or define it directly above the component.
@@ -24,12 +29,26 @@ import { CurrencyType } from "@/types/currencyType";
 const BalanceCard: React.FC<BalanceCardProps> = ({
   currencyName,
   currencyCode,
+  virtualAccount,
   flag,
   amount,
   ledgerBalance,
   bgColorClass,
 }) => {
+  const {
+    appType,
+    navigate: { transactions },
+  } = useAppNavigation();
   // Function to format the number to a locale string with the currency symbol
+  const { openModal, closeModal } = useModal();
+
+  const handleOpenModal = () => {
+    openModal({
+      title: "Fund Account",
+      size: "md",
+      component: <FundAccount closeModal={closeModal} />,
+    });
+  };
 
   return (
     // The main card container with dynamic background color
@@ -63,26 +82,29 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
           <div className="text-sm opacity-80 mb-6 text-secondary">
             <p className="text-[10px]">Ledger Balance:: {ledgerBalance}</p>
             <div className="flex items-center mt-1">
-              <span className="text-xs mr-2">2534437777</span>
+              <span className="text-xs mr-2">{virtualAccount}</span>
               <span className="text-[8px] mr-2">Tap to copy</span>
               <Copy className="w-3 h-3 text-secondary" />
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex space-x-4">
+          <div className="grid grid-cols-2 gap-x-4 space-x-4">
             <Button
               size="sm"
-              className="flex-1 bg-white !text-button hover:bg-gray-100 font-bold text-sm"
+              className="flex-1 bg-white !text-button hover:bg-gray-100 font-bold text-sm! w-full"
+              onClick={handleOpenModal}
             >
               Fund Account
             </Button>
-            <Button
-              size="sm"
-              className="flex-1 bg-primary/50 text-white hover:bg-white/20 font-bold text-sm"
-            >
-              History
-            </Button>
+            <Link href={transactions(appType)} className="">
+              <Button
+                size="sm"
+                className="flex-1 bg-primary/50 text-white hover:bg-white/20 font-bold text-sm! w-full"
+              >
+                History
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

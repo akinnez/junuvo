@@ -3,19 +3,12 @@ import { UAParser } from 'ua-parser-js';
 
 
 
-export const getDeviceIdentity = (): Omit<LoginData, 'email' | 'password' | 'deviceToken'> => {
+export const getDeviceIdentity = (): Omit<LoginData, 'email' | 'password' | 'deviceToken' | 'deviceId'> => {
   if (typeof window === 'undefined') {
-    return { deviceId: '', deviceModel: '', deviceName: '' };
+    return { deviceModel: '', deviceName: '' };
   }
 
-  // 1. Get or Create persistent Device ID
-  let deviceId = localStorage.getItem('app_device_id');
-  if (!deviceId) {
-    deviceId = crypto.randomUUID(); // Standard Web Crypto API
-    localStorage.setItem('app_device_id', deviceId);
-  }
-
-  // 2. Parse Device Info from User Agent
+  //  Parse Device Info from User Agent
   const parser = new UAParser();
   const result = parser.getResult();
 
@@ -23,7 +16,6 @@ export const getDeviceIdentity = (): Omit<LoginData, 'email' | 'password' | 'dev
   const deviceName = `${result.browser.name} on ${result.os.name} ${result.os.version}`;
 
   return {
-    deviceId,
     deviceModel,
     deviceName,
   };

@@ -223,9 +223,9 @@ export default function ElectricityComponent({ type }: { type: string }) {
           Avail Bal: N220.00
         </div>
       </div>
-      <Link href={`/${params.appType}bills/summary/electricity`}>
-        <Button className="w-full">Continue</Button>
-      </Link>
+      {/* <Link href={`/${params.appType}bills/summary/electricity`}> */}
+      <Button className="w-full">Continue</Button>
+      {/* </Link> */}
     </>
   );
 }

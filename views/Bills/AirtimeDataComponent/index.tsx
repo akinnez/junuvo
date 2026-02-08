@@ -5,148 +5,122 @@ import CustomInput from "@/components/CustomInput";
 import FormSelect from "@/components/FormSelect";
 import { formattedAmount } from "@/lib/currency-formatter";
 import { airtimeSchema } from "@/schema/airtimeData";
+import {
+  airtimeProvider,
+  dataBundle,
+  dataProvider,
+} from "@/stores/Bills/airtimeDataStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter, useParams } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useSignal } from "nabd";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
 
+type AirtimeOption = {
+  billerProviderSlug: string;
+  billerProductSlug: string;
+  billerProductName: string;
+  icon: string;
+};
 interface airtime {
   amount: string;
   phone: string;
+  network: string;
+  plan?: string;
 }
-function DataLLabelComponent({
-  label,
-  amount,
-}: {
-  label: string;
-  amount: string;
-}) {
-  return (
-    <div className="flex justify-between items-center w-full font-medium text-xs">
-      <p>{label}</p>
-      <p className="bg-[#ECF0FE] py-1 px-3 rounded-full ml-5">
-        {formattedAmount("NGN", amount)}
-      </p>
-    </div>
-  );
-}
-const dataOption: Option[] = [
-  {
-    label: <DataLLabelComponent label="MTN 100MB - 7 Days" amount="200" />,
-    value: "weekly100m",
-  },
-  {
-    label: <DataLLabelComponent label="MTN 200MB - 30 Days" amount="200" />,
-    value: "monthly200m",
-  },
-  {
-    label: <DataLLabelComponent label="MTN 500MB - 30 Days" amount="1000" />,
-    value: "monthly500m",
-  },
-  {
-    label: <DataLLabelComponent label="MTN 1GB - 7 Days" amount="1500" />,
-    value: "weekly1g",
-  },
-  {
-    label: <DataLLabelComponent label="MTN 1GB - 30 Days" amount="1500" />,
-    value: "monthly1g",
-  },
-  {
-    label: <DataLLabelComponent label="MTN 2GB - 7 Days" amount="1500" />,
-    value: "weekly2g",
-  },
-];
-
-const option: Option[] = [
-  {
-    icon: "/images/bills/mtn.png",
-    label: "MTN",
-    value: "mtn",
-  },
-  {
-    icon: "/images/bills/airtel.png",
-    label: "Airtel",
-    value: "airtel",
-  },
-  {
-    icon: "/images/bills/glo.png",
-    label: "Glo",
-    value: "glo",
-  },
-  {
-    icon: "/images/bills/9mobile.png",
-    label: "9Mobile",
-    value: "9mobile",
-  },
-];
 
 function AirtelDataComponent({ type }: { type: string }) {
-  const [selectedAcc, setSelectedAcc] = useState<string>("");
-  const [selectedNetwork, setSelectedNetwork] = useState<string>("");
-  const [selectedPlan, setSelectedPlan] = useState<string>("");
+  const [selectedPlans, setSelectedPlans] = useState([]);
 
-  const router = useRouter();
+  const providersDetails = useSignal(
+    type == "airtime" ? airtimeProvider : dataProvider,
+  );
 
   const form = useForm<airtime>({
     resolver: zodResolver(airtimeSchema),
     defaultValues: {
       amount: "",
       phone: "",
+      network: "",
+      ...(type == "data" && { plan: "" }),
     },
   });
 
   const {
+    control,
     formState: { errors },
   } = form;
 
-  function onSubmit(values: airtime) {
-    const payload = {
-      debitAccount: selectedAcc,
-      plan: selectedPlan,
-      network: selectedNetwork,
-      ...values,
-    };
+  const networkWatch = useWatch({
+    control,
+    name: "network",
+  });
 
-    router.push(`/${params.appType}bills/summary/internet/${type}`);
+  useEffect(() => {
+    if (!networkWatch) {
+      setSelectedPlans([]);
+      return;
+    }
+    form.setValue("plan", "");
+
+    try {
+      const dataplans: any = dataBundle(networkWatch);
+      const plans: Option[] = dataplans?.map((plan: any) => ({
+        label: plan.name,
+        value: plan.value,
+        icon: plan.icon,
+      }));
+      setSelectedPlans(plans as any);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [networkWatch, form]);
+
+  const providersOptions: Option[] = providersDetails?.map(
+    (provider: AirtimeOption) => ({
+      label: provider.billerProductName,
+      value: provider.billerProductSlug,
+      icon: provider.icon,
+    }),
+  );
+
+  const router = useRouter();
+
+  function onSubmit(values: airtime) {
+    console.log(values);
   }
 
   return (
     <CustomForm className="space-y-5" successFunction={onSubmit} form={form}>
       <FormSelect
         id="debitAccount"
-        form={form}
+        control={control}
         label="Select Account to debit"
         name="debitAccount"
-        value={selectedAcc}
         options={[
           {
             label: "Savings",
             value: "savings",
           },
         ]}
-        onChange={setSelectedAcc}
         searchable={false}
       />
       <FormSelect
         id="network"
-        form={form}
+        control={control}
         label="Select Network"
         name="network"
-        value={selectedNetwork}
-        options={option}
-        onChange={setSelectedNetwork}
-        searchable={false}
+        options={providersOptions}
+        searchable={true}
       />
 
       {type == "data" && (
         <FormSelect
           id="plan"
-          form={form}
+          control={control}
           label="Data Plan"
           name="plan"
-          value={selectedPlan}
-          options={dataOption}
-          onChange={setSelectedPlan}
+          options={selectedPlans}
           searchable={true}
         />
       )}
@@ -154,7 +128,7 @@ function AirtelDataComponent({ type }: { type: string }) {
       <CustomInput
         id="phone"
         label="Phone Number"
-        form={form}
+        control={control}
         name="phone"
         placeholder="Enter Phone number"
         error={errors.phone?.message as string}
@@ -163,7 +137,7 @@ function AirtelDataComponent({ type }: { type: string }) {
         <CustomInput
           id="amount"
           label="Amount"
-          form={form}
+          control={control}
           name="amount"
           placeholder="Enter amount"
           error={errors.amount?.message as string}

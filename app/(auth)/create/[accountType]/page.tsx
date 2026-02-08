@@ -9,15 +9,12 @@ import { signupBusinessSchema, signupPersonalSchema } from "@/schema/auth";
 import { verifyEmail } from "@/stores/authStore";
 import { CreateUser } from "@/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { debounceSignal, useSignal } from "nabd";
+import { useSignal } from "nabd";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-interface createType extends Omit<
-  CreateUser,
-  "code" | "referralCode" | "userType"
-> {
+interface createType extends Omit<CreateUser, "code" | "userType"> {
   email: string;
   dateOfBirth?: string;
 }
@@ -27,7 +24,6 @@ function CreateProfile() {
   const { appType, navigate } = useAppNavigation();
   const { setSession } = useSessionStorage();
   const loading = useSignal(verifyEmail.isPending);
-  const error = useSignal(verifyEmail.error);
 
   useEffect(() => {
     setSession("app-step", "2");
@@ -35,7 +31,9 @@ function CreateProfile() {
 
   const form = useForm<createType>({
     resolver: zodResolver(
-      appType != "business" ? signupPersonalSchema : signupBusinessSchema,
+      appType != "CUSTOMER_BUSINESS".toLowerCase()
+        ? signupPersonalSchema
+        : signupBusinessSchema,
     ),
     defaultValues: {
       firstName: "",
@@ -45,24 +43,29 @@ function CreateProfile() {
     },
   });
   const {
+    control,
     formState: { errors },
   } = form;
 
   const personalLogic = async (val: createType) => {
+    const { email, ...data } = val;
+    const userData: CreateUser = {
+      ...data,
+      userType: appType.toUpperCase() as userType,
+      code: "",
+      ...(val.referralCode && { referralCode: val.referralCode }),
+    };
     try {
-      // const emailVerify = await verifyEmail.execute(val.email);
-      // const { success, message } = emailVerify;
+      const emailVerify = await verifyEmail.execute(email);
+      console.log(emailVerify.message);
 
-      // if (!success) {
-      //   //notification
-      //   console.log(message);
-      //   return console.log(error);
-      // }
-      setSession("create_user", val);
-      return router.push(navigate.createUser(appType) + "/profile_pin");
-    } catch (error) {
-      showNotify.error("Failed to verify email. Please try again.");
-      console.log(error);
+      showNotify.success(emailVerify.message);
+      setSession("create_user", btoa(JSON.stringify(userData)));
+      router.push(navigate.createUser(appType) + "/verify_otp");
+    } catch (error: any) {
+      showNotify.error(
+        error.message || "Failed to verify email. Please try again.",
+      );
     }
   };
 
@@ -88,7 +91,7 @@ function CreateProfile() {
   const handleProceed = async (val: createType) => {
     let timeout: any;
     // Logic to handle profile creation can be added here
-    if (appType != "business") {
+    if (appType != "CUSTOMER_BUSINESS".toLowerCase()) {
       clearTimeout(timeout);
       timeout = setTimeout(() => personalLogic(val), 300);
       return;
@@ -107,16 +110,17 @@ function CreateProfile() {
       <div className="flex flex-col gap-4">
         <CustomForm form={form} successFunction={handleProceed}>
           <CustomInput
-            form={form}
+            control={control}
             name="email"
             label="Email Address"
             type="email"
             error={errors.email?.message as string}
             placeholder="Enter your email address"
-            className="border-none bg-[#F0F2F5] rounded-md"
+            className="border-
+            none bg-[#F0F2F5] rounded-md"
           />
           <CustomInput
-            form={form}
+            control={control}
             name="firstName"
             label="First Name"
             error={errors.firstName?.message as string}
@@ -124,34 +128,43 @@ function CreateProfile() {
             className="border-none bg-[#F0F2F5] rounded-md"
           />
           <CustomInput
-            form={form}
+            control={control}
             name="lastName"
             label="Last Name"
             error={errors.lastName?.message as string}
             placeholder="Enter your last name"
             className="border-none bg-[#F0F2F5] rounded-md"
           />
-          <CustomInput
-            label="Password"
-            type="password"
-            name="password"
-            form={form}
-            placeholder="Enter your password"
-            error={errors.password?.message as string}
-          />
-          <span className="text-xs text-gray-600 block">
-            Password must have alphanumeric, number, and at least special
-            character.
-          </span>
-          {appType == "business" && (
+          <div>
             <CustomInput
-              form={form}
+              label="Password"
+              type="password"
+              name="password"
+              control={control}
+              placeholder="Enter your password"
+              error={errors.password?.message as string}
+            />
+            <span className="text-xs text-gray-600 block">
+              Password must have alphanumeric, number, and at least special
+              character.
+            </span>
+          </div>
+          {appType == "CUSTOMER_BUSINESS".toLowerCase() && (
+            <CustomInput
+              control={control}
               name="dateOfBirth"
               label="Date of Birth"
               type="date"
               error={errors.dateOfBirth?.message as string}
             />
           )}
+          <CustomInput
+            label="Referral Code"
+            name="referralCode"
+            control={control}
+            placeholder="Enter referral code"
+            error={errors.referralCode?.message as string}
+          />
 
           <div className="flex items-center gap-2 text-sm">
             <input

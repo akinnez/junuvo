@@ -4,8 +4,10 @@ export interface QuickAction {
   id: number;
   label: string;
   icon: string;
+  description?: string;
   iconStyle?: string;
   iconStyleCont?: string;
+  link?: string | any;
 }
 
 import Card from "@/components/Card";

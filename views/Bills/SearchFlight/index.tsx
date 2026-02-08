@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
 import { CustomSelect } from "@/components/Select";
+import { useAppNavigation } from "@/hooks/use-app-navigation";
 
 // import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -37,6 +38,7 @@ function SearchFlightComponent() {
   const [selectedChildren, setSelectedChildren] = useState<string>("");
   const [selectedInfants, setSelectedInfants] = useState<string>("");
   const [selectedClass, setSelectedClass] = useState<string>("");
+  const { appType } = useAppNavigation();
 
   const router = useRouter();
 
@@ -66,7 +68,7 @@ function SearchFlightComponent() {
 
     // console.log(payload);
 
-    router.push(`/${params.appType}bills/flight/tickets`);
+    router.push(`/${appType}/bills/flight/tickets`);
   }
 
   return (

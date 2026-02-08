@@ -69,9 +69,9 @@ export default function CableTv() {
               Avail Bal: N220.00
             </div>
           </div>
-          <Link href={`/${params.appType}bills/summary/cabletv`}>
-            <Button className="w-full">Continue</Button>
-          </Link>
+          {/* <Link href={`/${params.appType}bills/summary/cabletv`}> */}
+          <Button className="w-full">Continue</Button>
+          {/* </Link> */}
         </>
       </CardPageLayout>
     </PageLayout>

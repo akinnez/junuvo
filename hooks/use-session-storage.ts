@@ -13,9 +13,9 @@ export function useSessionStorage() {
 
   // 2. Map the browser value to React
 
-   // Default for SSR
+  // Default for SSR
 
-  const getFromSession = (key:string, defaultValue?:any) => {
+  const getFromSession = (key: string, defaultValue?: any) => {
     const getServerSnapshot = () => defaultValue;
     const getSnapshot = () => sessionStorage.getItem(key);
     const value = useSyncExternalStore(
@@ -24,14 +24,19 @@ export function useSessionStorage() {
       getServerSnapshot,
     );
 
-    return value ? JSON.parse(value) : '';
+    return value ? JSON.parse(value) : "";
   };
 
   // 3. Helper to update storage and notify the app
-  const setSession = (key:string, newValue: any) => {
+  const setSession = (key: string, newValue: any) => {
     sessionStorage.setItem(key, JSON.stringify(newValue));
     window.dispatchEvent(new Event("session-update"));
   };
 
-  return {getFromSession, setSession};
+  const clearItemSession = (key: string) => {
+    localStorage.removeItem(key);
+    window.dispatchEvent(new Event("session-update"));
+  };
+
+  return { getFromSession, setSession, clearItemSession };
 }

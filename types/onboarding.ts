@@ -1,5 +1,5 @@
 export type CreateWallet = {
   bvn: string;
   dateOfBirth: string;
-  phone: string;
+  phone: string | number;
 };

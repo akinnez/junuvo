@@ -1,8 +1,9 @@
 "use client";
 import PageLayout from "@/components/PageLayout";
 import { CardPageLayout } from "@/components/PageLayout/CardPageLayout";
+import { useAppNavigation } from "@/hooks/use-app-navigation";
 import SelectTypeAddForm from "@/views/SelectTypeAddFormComponent";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 const options = [
@@ -22,6 +23,7 @@ function FlightLayoutComp({ children }: { children: React.ReactNode }) {
   const [val, setValue] = useState<string>(options[0].value);
   const path = useSearchParams();
   const router = useRouter();
+  const { appType, getPath } = useAppNavigation();
 
   useEffect(() => {
     const params = path.get("type");
@@ -29,15 +31,15 @@ function FlightLayoutComp({ children }: { children: React.ReactNode }) {
     setValue(params as string);
 
     if (!["one-way", "round"].includes(params as string)) {
-      return router.push(`/${params.appType}bills/flight/round?type=one-way`);
+      return router.push(getPath("flight", "one-way"));
     }
   }, [path]);
 
   const handleSelectionChange = (values: string) => {
-    router.push(`/${params.appType}bills/flight/route?type=${values}`);
+    router.push(getPath("flight", values));
     setValue(values);
-    console.log("Selected option:", values);
   };
+
   return (
     <Suspense>
       <PageLayout

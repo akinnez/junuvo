@@ -10,12 +10,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { useEffect } from "react";
 import { useSessionStorage } from "@/hooks/use-session-storage";
-import { transactionPin } from "@/stores/userStore";
 import { showNotify } from "@/lib/notification";
 import { useSignal } from "nabd";
 import { useModal } from "@/hooks/useModal";
-import AccountCreatedSuccess from "@/modals/account/creation";
-import { AxiosError } from "axios";
+import { create } from "@/stores/authStore";
+import SuccessComponentModal from "@/modals/SuccessComponentModal";
 
 type PinFormValues = {
   pin: string;
@@ -36,15 +35,22 @@ const PinSchema = z
   });
 
 export default function CreateTransactionPinPage() {
-  const { setSession } = useSessionStorage();
+  const { setSession, getFromSession } = useSessionStorage();
   const { openModal, closeModal } = useModal();
-  const error = useSignal(transactionPin.error);
-  const loading = useSignal(transactionPin.isPending);
+  const loading = useSignal(create.isPending);
 
   const handleOpenSettings = () => {
     openModal({
       size: "sm",
-      component: <AccountCreatedSuccess closeModal={closeModal} />,
+      component: (
+        <SuccessComponentModal
+          title="Account created"
+          description="Proceed to login to enjoy limitless features"
+          onClose={closeModal}
+          buttonText="Proceed to Login"
+          href="/login"
+        />
+      ),
     });
   };
 
@@ -64,13 +70,18 @@ export default function CreateTransactionPinPage() {
   const pin = watch("pin");
   const confirm_pin = watch("confirm_pin");
 
+  const dataFromSession = JSON.parse(
+    atob(getFromSession("create_user") || "{}"),
+  );
+
   const onSubmit = async (data: PinFormValues) => {
     try {
-      await transactionPin.execute(data);
+      const payload = { ...dataFromSession, pin: data.pin };
+      await create.execute(payload);
       handleOpenSettings();
-    } catch (err: AxiosError | any) {
-      const { message } = err;
-      showNotify.error(message || "Something went wrong. Please try again.");
+    } catch (error: any) {
+      showNotify.error(error?.message || "Failed to create profile");
+      console.log(error);
     }
   };
 

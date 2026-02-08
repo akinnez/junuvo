@@ -2,17 +2,18 @@
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import clsx from "clsx";
 import Input, { InputProps } from "../Input";
+import { Control } from "react-hook-form";
 
 interface CustomInputProps extends InputProps {
+  control: Control<any>;
   className?: string;
-  form: any;
   name: string;
   required?: boolean;
   id?: string;
 }
 
 const CustomInput = ({
-  form,
+  control,
   name,
   label,
   required,
@@ -24,7 +25,7 @@ const CustomInput = ({
 }: CustomInputProps) => {
   return (
     <FormField
-      control={form.control}
+      control={control}
       name={name as string}
       render={({ field }) => {
         return (
